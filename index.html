@@ -286,8 +286,8 @@
             padding: 20px;
             margin-top: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            height: auto;
-            min-height: 400px;
+            height: 480px; 
+            position: relative;
         }
         
         .chart-title {
@@ -295,6 +295,14 @@
             margin-bottom: 30px;
             font-size: 1.5rem;
             color: #333;
+        }
+
+        .chart-wrapper {
+            position: absolute;
+            top: 70px; /* Space for title and period selector */
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
         }
         
         .period-selector {
@@ -422,6 +430,9 @@
       </div>
       <div class="chart-title" id="chartTitle">
        Stretching Sessions - Last 7 Days
+      </div>
+      <div class="chart-wrapper">
+       <canvas id="mainChart"></canvas>
       </div>
       <canvas id="mainChart" width="400" height="150"></canvas>
      </div>
@@ -1086,6 +1097,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
