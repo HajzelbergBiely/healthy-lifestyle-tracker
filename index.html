@@ -179,6 +179,60 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
+       
+        .sleep-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .sleep-score {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #667eea;
+        }
+        
+        .sleep-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .sleep-metric {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .sleep-metric-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .sleep-metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .sleep-stage-bar {
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+            background: #e0e0e0;
+        }
+        
+        .sleep-stage-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
         
         .sleep-detail-item, .run-detail-item {
             display: flex;
@@ -376,6 +430,7 @@
    <div class="main-content">
     <div class="tracking-section">
      <div class="input-grid">
+      <button class="nav-btn" onclick="showChart('sleepQuality')">⭐ Sleep Quality</button>
       <div class="input-group"><label for="stretching">🧘 Stretching Sessions</label> <input type="number" id="stretching" placeholder="Enter sessions">
       </div>
       <div class="input-group"><label for="steps">👟 Steps Taken</label> <input type="number" id="steps" placeholder="Enter steps">
@@ -442,6 +497,16 @@
       <div class="quote-text" id="dailyQuote"></div>
       <div class="quote-author" id="quoteAuthor"></div>
      </div>
+     <div class="sleep-card">
+      <div class="consistency-title">
+        😴 Sleep Analysis
+      </div>
+      <div id="sleepAnalysis">
+        <div style="text-align: center; color: #888; padding: 20px;">
+          Enter sleep data to see analysis
+        </div>
+      </div>
+    </div>
      <div class="consistency-card">
       <div class="consistency-title">
        🎯 Today's Goals
@@ -478,7 +543,113 @@
             { text: "A year from now you may wish you had started today.", author: "Karen Lamb" }
         ];
 
-        // Goals for consistency tracking
+        function updateSleepAnalysis() {
+           const sleepQuality = parseInt(document.getElementById('sleepQuality').value) || 0;
+           const remSleep = parseInt(document.getElementById('remSleep').value) || 0;
+           const deepSleep = parseInt(document.getElementById('deepSleep').value) || 0;
+           const lightSleep = parseInt(document.getElementById('lightSleep').value) || 0;
+           const totalSleep = parseFloat(document.getElementById('sleep').value) || 0;
+           const napped = document.getElementById('napped').checked;
+           
+           const sleepAnalysis = document.getElementById('sleepAnalysis');
+           
+           let html = '';
+           
+           // Sleep Score with emoji based on quality
+           let sleepEmoji = '😴';
+           let sleepColor = '#667eea';
+           if (sleepQuality >= 80) {
+               sleepEmoji = '😊';
+               sleepColor = '#4CAF50';
+           } else if (sleepQuality >= 60) {
+               sleepEmoji = '😐';
+               sleepColor = '#FF9800';
+           } else if (sleepQuality > 0) {
+               sleepEmoji = '😟';
+               sleepColor = '#f44336';
+           }
+           
+           html += `
+               <div class="sleep-score" style="color: ${sleepColor}">
+                   ${sleepQuality > 0 ? sleepQuality : '--'}/100 ${sleepEmoji}
+               </div>
+               <div style="text-align: center; color: #666; margin-bottom: 15px;">
+                   ${totalSleep > 0 ? totalSleep + ' hours' : 'No sleep data'}
+                   ${napped ? ' + Nap 💤' : ''}
+               </div>
+           `;
+           
+           // Sleep stage breakdown (only show if we have data)
+           const totalMinutes = remSleep + deepSleep + lightSleep;
+           if (totalMinutes > 0) {
+               const remPercent = Math.round((remSleep/totalMinutes)*100);
+               const deepPercent = Math.round((deepSleep/totalMinutes)*100);
+               const lightPercent = Math.round((lightSleep/totalMinutes)*100);
+               
+               html += `
+                   <div class="sleep-breakdown">
+                       <div class="sleep-metric" style="border-left: 4px solid #667eea;">
+                           <div class="sleep-metric-label">REM Sleep</div>
+                           <div class="sleep-metric-value">${remSleep}min</div>
+                           <div style="font-size: 0.7rem; color: #888;">
+                               ${remPercent}%
+                           </div>
+                           <div class="sleep-stage-bar">
+                               <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
+                           </div>
+                       </div>
+                       <div class="sleep-metric" style="border-left: 4px solid #4CAF50;">
+                           <div class="sleep-metric-label">Deep Sleep</div>
+                           <div class="sleep-metric-value">${deepSleep}min</div>
+                           <div style="font-size: 0.7rem; color: #888;">
+                               ${deepPercent}%
+                           </div>
+                           <div class="sleep-stage-bar">
+                               <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #4CAF50;"></div>
+                           </div>
+                       </div>
+                       <div class="sleep-metric" style="border-left: 4px solid #FF9800;">
+                           <div class="sleep-metric-label">Light Sleep</div>
+                           <div class="sleep-metric-value">${lightSleep}min</div>
+                           <div style="font-size: 0.7rem; color: #888;">
+                               ${lightPercent}%
+                           </div>
+                           <div class="sleep-stage-bar">
+                               <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #FF9800;"></div>
+                           </div>
+                       </div>
+                       <div class="sleep-metric" style="border-left: 4px solid #9C27B0;">
+                           <div class="sleep-metric-label">Total Sleep</div>
+                           <div class="sleep-metric-value">${totalMinutes}min</div>
+                           <div style="font-size: 0.7rem; color: #888;">
+                               ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m
+                           </div>
+                           <div class="sleep-stage-bar">
+                               <div class="sleep-stage-fill" style="width: 100%; background: #9C27B0;"></div>
+                           </div>
+                       </div>
+                   </div>
+                   
+                   <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 0.9rem; color: #666;">
+                       <div>💡 Ideal sleep: 20-25% Deep, 20-25% REM</div>
+                   </div>
+               `;
+           } else if (totalSleep > 0) {
+               html += `
+                   <div style="text-align: center; color: #888; padding: 20px;">
+                       Enter sleep stage details for breakdown
+                   </div>
+               `;
+           } else {
+               html += `
+                   <div style="text-align: center; color: #888; padding: 20px;">
+                       Enter sleep data to see analysis
+                   </div>
+               `;
+           }
+           
+           sleepAnalysis.innerHTML = html;
+       }
         const goals = {
             steps: 10000,
             water: 2,
@@ -502,7 +673,23 @@
             updateStreakTracker();
             updateTotalStats();
             initializeChart();
+            updateSleepAnalysis();
+         
+
+            // Add sleep input event listeners
+            ['sleepQuality', 'remSleep', 'deepSleep', 'lightSleep', 'sleep'].forEach(id => {
+                document.getElementById(id).addEventListener('input', function() {
+                    updateSleepAnalysis();
+                    updateConsistencyTracker();
+                });
+            });
             
+            document.getElementById('napped').addEventListener('change', function() {
+                updateSleepAnalysis();
+            });
+            
+            // Initialize sleep analysis
+            updateSleepAnalysis();
             // Add event listeners for checkboxes
             document.getElementById('coldShower').addEventListener('change', updateCheckboxStyles);
             document.getElementById('lust').addEventListener('change', updateCheckboxStyles);
@@ -1030,6 +1217,7 @@
                 stretching: 'Stretching Sessions',
                 steps: 'Steps Taken',
                 sleep: 'Sleep Hours',
+                sleepQuality: 'Sleep Quality & Hours',
                 water: 'Water Intake (Liters)',
                 screenTime: 'Screen Time (Hours)',
                 pages: 'Pages Read',
@@ -1073,13 +1261,96 @@
         }
 
         function getSingleMetricChartData(labels, allData, metric) {
-            const data = labels.map(label => {
-                if (currentPeriod === 'daily') {
-                    const dayData = allData[label];
-                    return dayData ? (parseFloat(dayData[metric]) || 0) : 0;
+           if (metric === 'sleepQuality') {
+               // For sleep quality, show quality score and hours
+               const qualityData = labels.map(label => {
+                   const dayData = allData[label];
+                   return dayData ? (parseFloat(dayData.sleepQuality) || 0) : 0;
+               });
+               
+               const sleepHoursData = labels.map(label => {
+                   const dayData = allData[label];
+                   return dayData ? (parseFloat(dayData.sleep) || 0) : 0;
+               });
+               
+               const napData = labels.map(label => {
+                   const dayData = allData[label];
+                   return dayData && dayData.napped ? 1 : 0;
+               });
+               
+               return {
+                   labels,
+                   datasets: [
+                       {
+                           label: 'Sleep Quality (1-100)',
+                           data: qualityData,
+                           borderColor: '#667eea',
+                           backgroundColor: '#667eea20',
+                           tension: 0.4,
+                           fill: true,
+                           yAxisID: 'y'
+                       },
+                       {
+                           label: 'Sleep Hours',
+                           data: sleepHoursData,
+                           borderColor: '#4CAF50',
+                           backgroundColor: '#4CAF5020',
+                           tension: 0.4,
+                           fill: false,
+                           yAxisID: 'y1'
+                       },
+                       {
+                           label: 'Naps Taken',
+                           data: napData,
+                           borderColor: '#FF9800',
+                           backgroundColor: '#FF980020',
+                           type: 'bar',
+                           yAxisID: 'y2'
+                       }
+                   ]
+               };
+           }
+    
+    const data = labels.map(label => {
+        if (currentPeriod === 'daily') {
+            const dayData = allData[label];
+            if (metric === 'training') {
+                // Special handling for training
+                if (dayData) {
+                    const hadGym = dayData.hadGym === true ? 1 : 0;
+                    const hadRun = dayData.hadRun === true ? 1 : 0;
+                    return hadGym + hadRun;
                 }
-                return 0; // Simplified for demo
-            });
+                return 0;
+            }
+            return dayData ? (parseFloat(dayData[metric]) || 0) : 0;
+        }
+        return 0; // Simplified for demo
+    });
+    
+    // Chart colors based on metric
+    const colors = {
+        stretching: '#667eea',
+        steps: '#4CAF50',
+        sleep: '#2196F3',
+        water: '#00BCD4',
+        screenTime: '#FF9800',
+        pages: '#9C27B0',
+        training: '#f44336'
+    };
+    
+    return {
+        labels,
+        datasets: [{
+            label: metric.charAt(0).toUpperCase() + metric.slice(1),
+            data,
+            borderColor: colors[metric] || '#667eea',
+            backgroundColor: (colors[metric] || '#667eea') + '20',
+            tension: 0.4,
+            fill: true
+        }]
+    };
+}
             
             return {
                 labels,
@@ -1097,6 +1368,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
