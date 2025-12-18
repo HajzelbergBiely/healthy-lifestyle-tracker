@@ -194,7 +194,37 @@
             margin: 10px 0;
             color: #667eea;
         }
+
+         /* Style for hour/minute input pairs */
+        .hour-minute-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
         
+        .hour-minute-group input {
+            text-align: center;
+            padding: 8px;
+        }
+        
+        /* Style for sleep time inputs */
+        .sleep-time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .sleep-time-inputs > div {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sleep-time-inputs label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
         .sleep-breakdown {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -435,19 +465,53 @@
       </div>
       <div class="input-group"><label for="steps">👟 Steps Taken</label> <input type="number" id="steps" placeholder="Enter steps">
       </div>
-      <div class="input-group sleep-expanded"><label for="sleep">😴 Sleep Hours</label> <input type="number" id="sleep" step="0.5" placeholder="Enter hours">
-       <div class="sleep-details">
-        <div class="sleep-detail-item"><label for="sleepQuality">Quality (1-100)</label> <input type="number" id="sleepQuality" min="1" max="100" placeholder="Rate 1-100">
+      <div class="input-group sleep-expanded">
+        <label for="sleepHours">😴 Sleep Time</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+          <div>
+            <label for="sleepHours" style="font-size: 0.9rem; color: #666;">Hours</label>
+            <input type="number" id="sleepHours" step="0.5" placeholder="Hours" min="0" max="24">
+          </div>
+          <div>
+            <label for="sleepMinutes" style="font-size: 0.9rem; color: #666;">Minutes</label>
+            <input type="number" id="sleepMinutes" placeholder="Minutes" min="0" max="59">
+          </div>
         </div>
-        <div class="sleep-detail-item"><label for="remSleep">REM Sleep (min)</label> <input type="number" id="remSleep" placeholder="Minutes">
+        <div class="sleep-details">
+          <div class="sleep-detail-item">
+            <label for="sleepQuality">Quality (1-100)</label>
+            <input type="number" id="sleepQuality" min="1" max="100" placeholder="Rate 1-100">
+          </div>
+          
+          <div class="sleep-detail-item">
+            <label>REM Sleep</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+              <input type="number" id="remHours" placeholder="H" min="0" max="24" style="text-align: center;">
+              <input type="number" id="remMinutes" placeholder="M" min="0" max="59" style="text-align: center;">
+            </div>
+          </div>
+          
+          <div class="sleep-detail-item">
+            <label>Deep Sleep</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+              <input type="number" id="deepHours" placeholder="H" min="0" max="24" style="text-align: center;">
+              <input type="number" id="deepMinutes" placeholder="M" min="0" max="59" style="text-align: center;">
+            </div>
+          </div>
+          
+          <div class="sleep-detail-item">
+            <label>Light Sleep</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+              <input type="number" id="lightHours" placeholder="H" min="0" max="24" style="text-align: center;">
+              <input type="number" id="lightMinutes" placeholder="M" min="0" max="59" style="text-align: center;">
+            </div>
+          </div>
+          
+          <div class="checkbox-group" style="margin-top: 10px;">
+            <input type="checkbox" id="napped">
+            <label for="napped">Took a nap today</label>
+          </div>
         </div>
-        <div class="sleep-detail-item"><label for="deepSleep">Deep Sleep (min)</label> <input type="number" id="deepSleep" placeholder="Minutes">
-        </div>
-        <div class="sleep-detail-item"><label for="lightSleep">Light Sleep (min)</label> <input type="number" id="lightSleep" placeholder="Minutes">
-        </div>
-        <div class="checkbox-group" style="margin-top: 10px;"><input type="checkbox" id="napped"> <label for="napped">Took a nap today</label>
-        </div>
-       </div>
       </div>
       <div class="input-group"><label for="water">💧 Water (Liters)</label> <input type="number" id="water" step="0.1" placeholder="Enter liters">
       </div>
@@ -594,8 +658,10 @@
          // Add event listeners for gym and run checkboxes
          document.getElementById('hadGym').addEventListener('change', updateConsistencyTracker);
          
-         // Sleep input listeners
-         ['sleepQuality', 'remSleep', 'deepSleep', 'lightSleep', 'sleep'].forEach(id => {
+        
+         // Sleep input listeners - update to include all new inputs
+         ['sleepHours', 'sleepMinutes', 'sleepQuality', 'remHours', 'remMinutes', 
+          'deepHours', 'deepMinutes', 'lightHours', 'lightMinutes'].forEach(id => {
              document.getElementById(id).addEventListener('input', function() {
                  updateSleepAnalysis();
                  updateConsistencyTracker();
@@ -605,11 +671,7 @@
          document.getElementById('napped').addEventListener('change', function() {
              updateSleepAnalysis();
          });
-         
-         // Initialize sleep analysis
-         updateSleepAnalysis();
-     });
-     
+      
      function displayCurrentDate() {
          const today = new Date();
          const options = { 
@@ -878,14 +940,43 @@
      }
      
      function getCurrentInputs() {
+         
+         // Calculate total sleep in hours (including decimals)
+         const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
+         const sleepMinutes = parseFloat(document.getElementById('sleepMinutes').value) || 0;
+         const totalSleepHours = sleepHours + (sleepMinutes / 60);
+         
+         // Calculate REM sleep in minutes
+         const remHours = parseFloat(document.getElementById('remHours').value) || 0;
+         const remMinutes = parseFloat(document.getElementById('remMinutes').value) || 0;
+         const totalRemMinutes = (remHours * 60) + remMinutes;
+         
+         // Calculate Deep sleep in minutes
+         const deepHours = parseFloat(document.getElementById('deepHours').value) || 0;
+         const deepMinutes = parseFloat(document.getElementById('deepMinutes').value) || 0;
+         const totalDeepMinutes = (deepHours * 60) + deepMinutes;
+         
+         // Calculate Light sleep in minutes
+         const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
+         const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
+         const totalLightMinutes = (lightHours * 60) + lightMinutes;
+         
          return {
              stretching: document.getElementById('stretching').value,
              steps: document.getElementById('steps').value,
-             sleep: document.getElementById('sleep').value,
+             sleep: totalSleepHours.toFixed(2), // Keep as decimal hours for chart
+             sleepHours: sleepHours,
+             sleepMinutes: sleepMinutes,
              sleepQuality: document.getElementById('sleepQuality').value,
-             remSleep: document.getElementById('remSleep').value,
-             deepSleep: document.getElementById('deepSleep').value,
-             lightSleep: document.getElementById('lightSleep').value,
+             remSleep: totalRemMinutes, // Store as total minutes
+             remHours: remHours,
+             remMinutes: remMinutes,
+             deepSleep: totalDeepMinutes, // Store as total minutes
+             deepHours: deepHours,
+             deepMinutes: deepMinutes,
+             lightSleep: totalLightMinutes, // Store as total minutes
+             lightHours: lightHours,
+             lightMinutes: lightMinutes,
              napped: document.getElementById('napped').checked,
              water: document.getElementById('water').value,
              screenTime: document.getElementById('screenTime').value,
@@ -899,113 +990,155 @@
          };
      }
      
+     
      function updateSleepAnalysis() {
-         const sleepQuality = parseInt(document.getElementById('sleepQuality').value) || 0;
-         const remSleep = parseInt(document.getElementById('remSleep').value) || 0;
-         const deepSleep = parseInt(document.getElementById('deepSleep').value) || 0;
-         const lightSleep = parseInt(document.getElementById('lightSleep').value) || 0;
-         const totalSleep = parseFloat(document.getElementById('sleep').value) || 0;
-         const napped = document.getElementById('napped').checked;
-         
-         const sleepAnalysis = document.getElementById('sleepAnalysis');
-         
-         let html = '';
-         
-         // Sleep Score with emoji based on quality
-         let sleepEmoji = '😴';
-         let sleepColor = '#667eea';
-         if (sleepQuality >= 80) {
-             sleepEmoji = '😊';
-             sleepColor = '#4CAF50';
-         } else if (sleepQuality >= 60) {
-             sleepEmoji = '😐';
-             sleepColor = '#FF9800';
-         } else if (sleepQuality > 0) {
-             sleepEmoji = '😟';
-             sleepColor = '#f44336';
-         }
-         
-         html += `
-             <div class="sleep-score" style="color: ${sleepColor}">
-                 ${sleepQuality > 0 ? sleepQuality : '--'}/100 ${sleepEmoji}
-             </div>
-             <div style="text-align: center; color: #666; margin-bottom: 15px;">
-                 ${totalSleep > 0 ? totalSleep + ' hours' : 'No sleep data'}
-                 ${napped ? ' + Nap 💤' : ''}
-             </div>
-         `;
-         
-         // Sleep stage breakdown (only show if we have data)
-         const totalMinutes = remSleep + deepSleep + lightSleep;
-         if (totalMinutes > 0) {
-             const remPercent = Math.round((remSleep/totalMinutes)*100);
-             const deepPercent = Math.round((deepSleep/totalMinutes)*100);
-             const lightPercent = Math.round((lightSleep/totalMinutes)*100);
-             
-             html += `
-                 <div class="sleep-breakdown">
-                     <div class="sleep-metric" style="border-left: 4px solid #667eea;">
-                         <div class="sleep-metric-label">REM Sleep</div>
-                         <div class="sleep-metric-value">${remSleep}min</div>
-                         <div style="font-size: 0.7rem; color: #888;">
-                             ${remPercent}%
-                         </div>
-                         <div class="sleep-stage-bar">
-                             <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
-                         </div>
-                     </div>
-                     <div class="sleep-metric" style="border-left: 4px solid #4CAF50;">
-                         <div class="sleep-metric-label">Deep Sleep</div>
-                         <div class="sleep-metric-value">${deepSleep}min</div>
-                         <div style="font-size: 0.7rem; color: #888;">
-                             ${deepPercent}%
-                         </div>
-                         <div class="sleep-stage-bar">
-                             <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #4CAF50;"></div>
-                         </div>
-                     </div>
-                     <div class="sleep-metric" style="border-left: 4px solid #FF9800;">
-                         <div class="sleep-metric-label">Light Sleep</div>
-                         <div class="sleep-metric-value">${lightSleep}min</div>
-                         <div style="font-size: 0.7rem; color: #888;">
-                             ${lightPercent}%
-                         </div>
-                         <div class="sleep-stage-bar">
-                             <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #FF9800;"></div>
-                         </div>
-                     </div>
-                     <div class="sleep-metric" style="border-left: 4px solid #9C27B0;">
-                         <div class="sleep-metric-label">Total Sleep</div>
-                         <div class="sleep-metric-value">${totalMinutes}min</div>
-                         <div style="font-size: 0.7rem; color: #888;">
-                             ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m
-                         </div>
-                         <div class="sleep-stage-bar">
-                             <div class="sleep-stage-fill" style="width: 100%; background: #9C27B0;"></div>
-                         </div>
-                     </div>
-                 </div>
-                 
-                 <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 0.9rem; color: #666;">
-                     <div>💡 Ideal sleep: 20-25% Deep, 20-25% REM</div>
-                 </div>
-             `;
-         } else if (totalSleep > 0) {
-             html += `
-                 <div style="text-align: center; color: #888; padding: 20px;">
-                     Enter sleep stage details for breakdown
-                 </div>
-             `;
-         } else {
-             html += `
-                 <div style="text-align: center; color: #888; padding: 20px;">
-                     Enter sleep data to see analysis
-                 </div>
-             `;
-         }
-         
-         sleepAnalysis.innerHTML = html;
-     }
+            const sleepQuality = parseInt(document.getElementById('sleepQuality').value) || 0;
+            const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
+            const sleepMinutes = parseFloat(document.getElementById('sleepMinutes').value) || 0;
+            const totalSleepHours = sleepHours + (sleepMinutes / 60);
+            
+            // Calculate REM sleep in minutes
+            const remHours = parseFloat(document.getElementById('remHours').value) || 0;
+            const remMinutes = parseFloat(document.getElementById('remMinutes').value) || 0;
+            const totalRemMinutes = (remHours * 60) + remMinutes;
+            
+            // Calculate Deep sleep in minutes
+            const deepHours = parseFloat(document.getElementById('deepHours').value) || 0;
+            const deepMinutes = parseFloat(document.getElementById('deepMinutes').value) || 0;
+            const totalDeepMinutes = (deepHours * 60) + deepMinutes;
+            
+            // Calculate Light sleep in minutes
+            const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
+            const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
+            const totalLightMinutes = (lightHours * 60) + lightMinutes;
+            
+            const napped = document.getElementById('napped').checked;
+            
+            const sleepAnalysis = document.getElementById('sleepAnalysis');
+            
+            let html = '';
+            
+            // Sleep Score with emoji based on quality
+            let sleepEmoji = '😴';
+            let sleepColor = '#667eea';
+            if (sleepQuality >= 80) {
+                sleepEmoji = '😊';
+                sleepColor = '#4CAF50';
+            } else if (sleepQuality >= 60) {
+                sleepEmoji = '😐';
+                sleepColor = '#FF9800';
+            } else if (sleepQuality > 0) {
+                sleepEmoji = '😟';
+                sleepColor = '#f44336';
+            }
+            
+            // Format sleep time display
+            let sleepTimeDisplay = '';
+            if (sleepHours > 0 || sleepMinutes > 0) {
+                if (sleepHours > 0 && sleepMinutes > 0) {
+                    sleepTimeDisplay = `${sleepHours}h ${sleepMinutes}m`;
+                } else if (sleepHours > 0) {
+                    sleepTimeDisplay = `${sleepHours}h`;
+                } else {
+                    sleepTimeDisplay = `${sleepMinutes}m`;
+                }
+            }
+            
+            html += `
+                <div class="sleep-score" style="color: ${sleepColor}">
+                    ${sleepQuality > 0 ? sleepQuality : '--'}/100 ${sleepEmoji}
+                </div>
+                <div style="text-align: center; color: #666; margin-bottom: 15px;">
+                    ${sleepTimeDisplay || 'No sleep data'}
+                    ${napped ? ' + Nap 💤' : ''}
+                </div>
+            `;
+            
+            // Sleep stage breakdown (only show if we have data)
+            const totalMinutes = totalRemMinutes + totalDeepMinutes + totalLightMinutes;
+            if (totalMinutes > 0) {
+                const remPercent = Math.round((totalRemMinutes/totalMinutes)*100);
+                const deepPercent = Math.round((totalDeepMinutes/totalMinutes)*100);
+                const lightPercent = Math.round((totalLightMinutes/totalMinutes)*100);
+                
+                // Format function for display
+                const formatTime = (totalMinutes) => {
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+                    if (hours > 0 && minutes > 0) {
+                        return `${hours}h ${minutes}m`;
+                    } else if (hours > 0) {
+                        return `${hours}h`;
+                    } else {
+                        return `${minutes}m`;
+                    }
+                };
+                
+                html += `
+                    <div class="sleep-breakdown">
+                        <div class="sleep-metric" style="border-left: 4px solid #667eea;">
+                            <div class="sleep-metric-label">REM Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(totalRemMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${remPercent}%
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #4CAF50;">
+                            <div class="sleep-metric-label">Deep Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(totalDeepMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${deepPercent}%
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #4CAF50;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #FF9800;">
+                            <div class="sleep-metric-label">Light Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(totalLightMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${lightPercent}%
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #FF9800;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #9C27B0;">
+                            <div class="sleep-metric-label">Total Stages</div>
+                            <div class="sleep-metric-value">${formatTime(totalMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: 100%; background: #9C27B0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 0.9rem; color: #666;">
+                        <div>💡 Ideal: 1.5-2h REM, 1-1.5h Deep sleep</div>
+                        <div style="font-size: 0.8rem; color: #888; margin-top: 3px;">(20-25% each of total sleep)</div>
+                    </div>
+                `;
+            } else if (totalSleepHours > 0) {
+                html += `
+                    <div style="text-align: center; color: #888; padding: 20px;">
+                        Enter sleep stage details for breakdown
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div style="text-align: center; color: #888; padding: 20px;">
+                        Enter sleep data to see analysis
+                    </div>
+                `;
+            }
+            
+            sleepAnalysis.innerHTML = html;
+        }
      
      function saveData() {
          const today = new Date().toISOString().split('T')[0];
@@ -1036,34 +1169,48 @@
      }
      
      function loadTodaysData() {
-         const today = new Date().toISOString().split('T')[0];
-         const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-         const todaysData = allData[today];
-         
-         if (todaysData) {
-             Object.keys(todaysData).forEach(key => {
-                 const element = document.getElementById(key);
-                 if (element) {
-                     if (element.type === 'checkbox') {
-                         element.checked = todaysData[key];
-                     } else if (element.tagName === 'SELECT') {
-                         element.value = todaysData[key] || '';
-                     } else {
-                         element.value = todaysData[key];
-                     }
-                 }
-             });
-             
-             // Show run details if hadRun is checked
-             if (todaysData.hadRun) {
-                 document.getElementById('runDetails').style.display = 'grid';
-             }
-             
-             updateCheckboxStyles();
-             updateConsistencyTracker();
-             updateSleepAnalysis();
-         }
-     }
+        const today = new Date().toISOString().split('T')[0];
+        const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+        const todaysData = allData[today];
+        
+        if (todaysData) {
+            // List of all possible fields
+            const fields = [
+                'stretching', 'steps', 'sleep', 'sleepHours', 'sleepMinutes',
+                'sleepQuality', 'remSleep', 'remHours', 'remMinutes',
+                'deepSleep', 'deepHours', 'deepMinutes', 'lightSleep', 
+                'lightHours', 'lightMinutes', 'water', 'screenTime', 'pages',
+                'runType', 'runDistance'
+            ];
+            
+            const checkboxes = ['napped', 'hadGym', 'hadRun', 'coldShower', 'lust'];
+            
+            // Set values for regular fields
+            fields.forEach(key => {
+                const element = document.getElementById(key);
+                if (element && todaysData[key] !== undefined) {
+                    element.value = todaysData[key];
+                }
+            });
+            
+            // Set values for checkboxes
+            checkboxes.forEach(key => {
+                const element = document.getElementById(key);
+                if (element && todaysData[key] !== undefined) {
+                    element.checked = todaysData[key];
+                }
+            });
+            
+            // Show run details if hadRun is checked
+            if (todaysData.hadRun) {
+                document.getElementById('runDetails').style.display = 'grid';
+            }
+            
+            updateCheckboxStyles();
+            updateConsistencyTracker();
+            updateSleepAnalysis();
+        }
+    }
      
      function showChart(type) {
          currentView = type;
@@ -1258,6 +1405,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
