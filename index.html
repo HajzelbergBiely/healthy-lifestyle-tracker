@@ -732,13 +732,26 @@
                if (key === 'coldShower') displayName = 'Cold Shower';
                if (key === 'lustControl') displayName = 'Lust Control';
                
-               const streakColor = streak >= 7 ? '#4CAF50' : streak >= 3 ? '#FF9800' : '#666';
+               // Determine color based on streak length
+               let streakColor = '#666';
+               let flameIcon = '';
+               
+               if (streak >= 7) {
+                   streakColor = '#4CAF50';
+                   flameIcon = '🔥';
+               } else if (streak >= 3) {
+                   streakColor = '#FF9800';
+                   flameIcon = '🔥';
+               } else if (streak > 0) {
+                   streakColor = '#667eea';
+                   flameIcon = '✨';
+               }
                
                html += `
                    <div class="consistency-item">
                        <span>${displayName}</span>
                        <div style="color: ${streakColor}; font-weight: bold; font-size: 1.1rem;">
-                           ${streak} days 🔥
+                           ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}
                        </div>
                    </div>
                `;
@@ -748,31 +761,110 @@
        }
        
        function calculateStreaks(dates, allData) {
-           const streaks = {
-               stretching: 0,
-               steps: 0,
-               sleep: 0,
-               water: 0,
-               screenTime: 0,
-               pages: 0,
-               training: 0,
-               coldShower: 0,
-               lustControl: 0
-           };
-           
-           // Simple streak calculation
-           const today = new Date();
-           const todayStr = today.toISOString().split('T')[0];
-           const todayData = allData[todayStr];
-           
-           if (todayData) {
-               Object.keys(streaks).forEach(key => {
-                   streaks[key] = Math.floor(Math.random() * 10) + 1; // Temporary random streaks
-               });
-           }
-           
-           return streaks;
-       }
+          const streaks = {
+              stretching: 0,
+              steps: 0,
+              sleep: 0,
+              water: 0,
+              screenTime: 0,
+              pages: 0,
+              training: 0,
+              coldShower: 0,
+              lustControl: 0
+          };
+          
+          if (dates.length === 0) return streaks;
+          
+          // Sort dates in descending order (most recent first)
+          const sortedDates = [...dates].sort((a, b) => new Date(b) - new Date(a));
+          
+          // Helper function to check if a goal was met on a specific day
+          function goalMet(date, goalKey) {
+              const dayData = allData[date];
+              if (!dayData) return false;
+              
+              if (goalKey === 'coldShower') {
+                  return dayData.coldShower === true;
+              }
+              
+              if (goalKey === 'lustControl') {
+                  return dayData.lust !== true; // Note: lust control means NOT checking the box
+              }
+              
+              if (goalKey === 'training') {
+                  const hadGym = dayData.hadGym === true ? 1 : 0;
+                  const hadRun = dayData.hadRun === true ? 1 : 0;
+                  return (hadGym + hadRun) >= goals.training;
+              }
+              
+              const value = parseFloat(dayData[goalKey]) || 0;
+              const goal = goals[goalKey];
+              
+              if (goalKey === 'screenTime') {
+                  return value <= goal; // For screen time, lower is better
+              }
+              
+              return value >= goal; // For others, higher is better
+          }
+          
+          // Calculate current streak for each goal
+          Object.keys(streaks).forEach(goalKey => {
+              let currentStreak = 0;
+              let streakBroken = false;
+              
+              // Get today's date
+              const today = new Date();
+              const todayStr = today.toISOString().split('T')[0];
+              
+              // Check if today's goal is met (if data exists for today)
+              if (allData[todayStr]) {
+                  if (goalMet(todayStr, goalKey)) {
+                      currentStreak = 1;
+                  }
+              }
+              
+              // Now check previous days
+              for (let i = 0; i < sortedDates.length; i++) {
+                  const currentDate = sortedDates[i];
+                  const currentDateObj = new Date(currentDate);
+                  const prevDate = new Date(currentDateObj);
+                  prevDate.setDate(prevDate.getDate() - 1);
+                  const prevDateStr = prevDate.toISOString().split('T')[0];
+                  
+                  // Skip if we're checking today (already handled above)
+                  if (currentDate === todayStr) continue;
+                  
+                  // Check if current day's goal was met
+                  if (goalMet(currentDate, goalKey)) {
+                      // If this is the first day we're checking, start the streak
+                      if (currentStreak === 0) {
+                          currentStreak = 1;
+                      }
+                      
+                      // Check if there's consecutive data for the previous day
+                      if (allData[prevDateStr] && goalMet(prevDateStr, goalKey)) {
+                          currentStreak++;
+                      } else {
+                          // If previous day doesn't exist or goal wasn't met, stop counting
+                          // but keep the streak for this isolated day
+                          streakBroken = true;
+                          break;
+                      }
+                  } else {
+                      // Goal wasn't met on this day, streak is broken
+                      streakBroken = true;
+                      break;
+                  }
+                  
+                  // Safety break to prevent infinite loops
+                  if (i > 100) break;
+              }
+              
+              streaks[goalKey] = currentStreak;
+          });
+          
+          return streaks;
+      }
        
        function updateTotalStats() {
            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
@@ -1408,6 +1500,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
