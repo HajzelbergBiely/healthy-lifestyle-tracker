@@ -449,6 +449,108 @@
             text-align: center;
             margin-top: 5px;
         }
+
+        /* Points System Styles */
+        .points-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .points-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .points-title {
+            font-size: 1.3rem;
+            color: #333;
+        }
+        
+        .points-total {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+        }
+        
+        .points-breakdown {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        
+        .points-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .points-item:last-child {
+            border-bottom: none;
+        }
+        
+        .points-activity {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .points-emoji {
+            font-size: 1.2rem;
+        }
+        
+        .points-value {
+            font-weight: bold;
+            color: #FF9800;
+        }
+        
+        .points-multiplier {
+            font-size: 0.8rem;
+            color: #4CAF50;
+            margin-left: 5px;
+        }
+        
+        .points-today {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #FFD700;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .level-indicator {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .level-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        
+        .level-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .level-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
         
         @media (max-width: 768px) {
             .sleep-expanded, .training-expanded {
@@ -709,6 +811,22 @@
      </div>
     </div>
     <div class="sidebar">
+     <div class="points-card">
+       <div class="points-header">
+         <div class="points-title">🎮 Points System</div>
+         <div class="points-total" id="totalPoints">0</div>
+       </div>
+       <div class="level-indicator">
+         <div class="level-text" id="levelText">Level 1 (0/100)</div>
+         <div class="level-bar">
+           <div class="level-progress" id="levelProgress" style="width: 0%"></div>
+         </div>
+       </div>
+       <div class="points-today" id="todayPoints">Today: 0 points</div>
+       <div class="points-breakdown" id="pointsBreakdown">
+         <!-- Points breakdown will be added here by JavaScript -->
+       </div>
+     </div>
      <div class="pause-section">
        <div class="pause-title">⏸️ Pause Streaks</div>
        <div class="pause-toggle" onclick="togglePause('steps')">
@@ -827,6 +945,26 @@
             updateStreakTracker();
             updateTotalStats();
             initializeChart();
+            // Initialize points display
+            updatePointsDisplay();
+            
+            // Update points when inputs change
+            ['stretching', 'steps', 'sleepHours', 'water', 'screenTime', 'pages', 
+             'sleepQuality', 'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
+             'lightHours', 'lightMinutes'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', updatePointsDisplay);
+                }
+            });
+            
+            // Update points when checkboxes change
+            ['hadGym', 'hadRun', 'coldShower', 'lust', 'napped'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', updatePointsDisplay);
+                }
+            });
             
             // Initialize pause system
             updatePauseDisplay();
@@ -874,7 +1012,348 @@
             // Initialize sleep analysis
             updateSleepAnalysis();
         });
+
+        // Points System Configuration
+        const pointsConfig = {
+            // Base points for reaching goals
+            stretching: 10,
+            steps: 15,
+            sleep: 20,
+            water: 10,
+            screenTime: 15, // For staying under limit
+            pages: 10,
+            training: 25,
+            coldShower: 20,
+            lustControl: 30, // High value for self-control
+            
+            // Bonus points for exceeding goals
+            stepsExceed: 0.001, // 1 point per 1000 extra steps
+            sleepExceed: 5, // 5 points per extra hour
+            waterExceed: 5, // 5 points per extra liter
+            pagesExceed: 0.5, // 1 point per 2 extra pages
+            stretchingExceed: 3, // 3 points per extra session
+            
+            // Streak multipliers
+            streakMultipliers: {
+                3: 1.2,  // 20% bonus for 3-day streak
+                7: 1.5,  // 50% bonus for 7-day streak
+                14: 2.0, // 100% bonus for 14-day streak
+                30: 3.0  // 200% bonus for 30-day streak
+            },
+            
+            // Daily bonus for completing all goals
+            dailyCompletionBonus: 50
+        };
         
+        // Calculate points for today
+        function calculateTodayPoints() {
+            const currentData = getCurrentInputs();
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            const streaks = calculateStreaksWithPause(dates, allData);
+            
+            let totalPoints = 0;
+            let pointsBreakdown = [];
+            let completedGoals = 0;
+            const totalGoals = Object.keys(goals).length + 2; // +2 for coldShower and lustControl
+            
+            // Calculate points for each goal
+            Object.keys(goals).forEach(key => {
+                let points = 0;
+                let multiplier = 1;
+                let description = '';
+                let emoji = '';
+                
+                // Get streak multiplier
+                const streak = streaks[key] || 0;
+                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
+                    if (streak >= parseInt(days)) {
+                        multiplier = mult;
+                        break;
+                    }
+                }
+                
+                if (key === 'training') {
+                    const hadGym = currentData.hadGym;
+                    const hadRun = currentData.hadRun;
+                    const trainingSessions = (hadGym ? 1 : 0) + (hadRun ? 1 : 0);
+                    
+                    if (trainingSessions >= goals.training) {
+                        points = pointsConfig.training * multiplier;
+                        description = `Training Sessions (${trainingSessions} sessions)`;
+                        emoji = '💪';
+                        completedGoals++;
+                        
+                        // Bonus for extra sessions
+                        if (trainingSessions > goals.training) {
+                            const extraSessions = trainingSessions - goals.training;
+                            const bonus = extraSessions * 10; // 10 points per extra session
+                            points += bonus;
+                        }
+                    }
+                } else {
+                    const current = parseFloat(currentData[key]) || 0;
+                    const goal = goals[key];
+                    const metGoal = key === 'screenTime' ? current <= goal : current >= goal;
+                    
+                    if (metGoal) {
+                        points = pointsConfig[key] * multiplier;
+                        description = key.charAt(0).toUpperCase() + key.slice(1);
+                        if (key === 'screenTime') description = 'Screen Time';
+                        emoji = getEmojiForActivity(key);
+                        completedGoals++;
+                        
+                        // Bonus for exceeding goals (except screen time - lower is better)
+                        if (key !== 'screenTime' && current > goal) {
+                            const exceeded = current - goal;
+                            let bonus = 0;
+                            
+                            if (key === 'steps' && pointsConfig.stepsExceed > 0) {
+                                bonus = Math.floor(exceeded * pointsConfig.stepsExceed);
+                            } else if (key === 'sleep' && pointsConfig.sleepExceed > 0) {
+                                bonus = Math.floor(exceeded * pointsConfig.sleepExceed);
+                            } else if (key === 'water' && pointsConfig.waterExceed > 0) {
+                                bonus = Math.floor(exceeded * pointsConfig.waterExceed);
+                            } else if (key === 'pages' && pointsConfig.pagesExceed > 0) {
+                                bonus = Math.floor(exceeded * pointsConfig.pagesExceed);
+                            } else if (key === 'stretching' && pointsConfig.stretchingExceed > 0) {
+                                bonus = Math.floor(exceeded * pointsConfig.stretchingExceed);
+                            }
+                            
+                            if (bonus > 0) {
+                                points += bonus;
+                                description += ` (+${bonus} bonus)`;
+                            }
+                        }
+                    }
+                }
+                
+                if (points > 0) {
+                    totalPoints += points;
+                    pointsBreakdown.push({
+                        emoji: emoji,
+                        description: description,
+                        points: Math.round(points),
+                        multiplier: multiplier > 1 ? `x${multiplier}` : ''
+                    });
+                }
+            });
+            
+            // Cold shower points
+            if (currentData.coldShower) {
+                const streak = streaks.coldShower || 0;
+                let multiplier = 1;
+                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
+                    if (streak >= parseInt(days)) {
+                        multiplier = mult;
+                        break;
+                    }
+                }
+                
+                const points = pointsConfig.coldShower * multiplier;
+                totalPoints += points;
+                completedGoals++;
+                pointsBreakdown.push({
+                    emoji: '🚿',
+                    description: 'Cold Shower',
+                    points: Math.round(points),
+                    multiplier: multiplier > 1 ? `x${multiplier}` : ''
+                });
+            }
+            
+            // Lust control points (inverted - NOT checking the box is good)
+            if (!currentData.lust) {
+                const streak = streaks.lustControl || 0;
+                let multiplier = 1;
+                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
+                    if (streak >= parseInt(days)) {
+                        multiplier = mult;
+                        break;
+                    }
+                }
+                
+                const points = pointsConfig.lustControl * multiplier;
+                totalPoints += points;
+                completedGoals++;
+                pointsBreakdown.push({
+                    emoji: '🚫',
+                    description: 'Lust Control',
+                    points: Math.round(points),
+                    multiplier: multiplier > 1 ? `x${multiplier}` : ''
+                });
+            }
+            
+            // Daily completion bonus
+            if (completedGoals === totalGoals) {
+                totalPoints += pointsConfig.dailyCompletionBonus;
+                pointsBreakdown.push({
+                    emoji: '🏆',
+                    description: 'All Goals Completed!',
+                    points: pointsConfig.dailyCompletionBonus,
+                    multiplier: 'BONUS'
+                });
+            }
+            
+            return {
+                total: Math.round(totalPoints),
+                breakdown: pointsBreakdown,
+                completedGoals: completedGoals,
+                totalGoals: totalGoals
+            };
+        }
+        
+        function getEmojiForActivity(activity) {
+            const emojis = {
+                stretching: '🧘',
+                steps: '👟',
+                sleep: '😴',
+                water: '💧',
+                screenTime: '📱',
+                pages: '📚',
+                training: '💪'
+            };
+            return emojis[activity] || '⭐';
+        }
+        
+        // Update points display
+        function updatePointsDisplay() {
+            const pointsData = calculateTodayPoints();
+            const totalPointsElement = document.getElementById('totalPoints');
+            const todayPointsElement = document.getElementById('todayPoints');
+            const breakdownElement = document.getElementById('pointsBreakdown');
+            
+            // Get lifetime points
+            const lifetimePoints = calculateLifetimePoints();
+            totalPointsElement.textContent = lifetimePoints.total;
+            
+            // Update today's points
+            todayPointsElement.textContent = `Today: ${pointsData.total} points`;
+            
+            // Update breakdown
+            let html = '';
+            if (pointsData.breakdown.length > 0) {
+                pointsData.breakdown.forEach(item => {
+                    html += `
+                        <div class="points-item">
+                            <div class="points-activity">
+                                <span class="points-emoji">${item.emoji}</span>
+                                <span>${item.description}</span>
+                            </div>
+                            <div>
+                                <span class="points-value">+${item.points}</span>
+                                ${item.multiplier ? `<span class="points-multiplier">${item.multiplier}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                html = `<div style="text-align: center; color: #888; padding: 10px;">Complete goals to earn points!</div>`;
+            }
+            
+            breakdownElement.innerHTML = html;
+            
+            // Update level progress
+            updateLevelProgress(lifetimePoints.total);
+        }
+        
+        // Calculate lifetime points from all saved data
+        function calculateLifetimePoints() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            
+            let totalPoints = 0;
+            let daysWithData = 0;
+            
+            // For each day with data, calculate what the points would have been
+            dates.forEach(date => {
+                // We can't perfectly recalculate without the exact inputs,
+                // so we'll estimate or store points when saving
+                daysWithData++;
+            });
+            
+            // For now, return today's points as total
+            // We'll need to modify saveData() to store points
+            const todayPoints = calculateTodayPoints();
+            
+            // Try to get stored points from localStorage
+            const storedPoints = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0 };
+            
+            return {
+                total: storedPoints.total + todayPoints.total,
+                days: daysWithData
+            };
+        }
+        
+        // Update level and progress bar
+        function updateLevelProgress(totalPoints) {
+            const levelProgress = document.getElementById('levelProgress');
+            const levelText = document.getElementById('levelText');
+            
+            // Level formula: each level requires 100 * level points
+            // Level 1: 0-100, Level 2: 100-300, Level 3: 300-600, etc.
+            let level = 1;
+            let pointsNeededForLevel = 100;
+            let pointsForNextLevel = 100;
+            let pointsInCurrentLevel = totalPoints;
+            
+            while (pointsInCurrentLevel >= pointsNeededForLevel) {
+                pointsInCurrentLevel -= pointsNeededForLevel;
+                level++;
+                pointsNeededForLevel = level * 100;
+                pointsForNextLevel = level * 100;
+            }
+            
+            const progressPercent = (pointsInCurrentLevel / pointsForNextLevel) * 100;
+            
+            levelProgress.style.width = `${progressPercent}%`;
+            levelText.textContent = `Level ${level} (${pointsInCurrentLevel}/${pointsForNextLevel})`;
+        }
+        
+        // Modify saveData() to store points
+        // Find your existing saveData() function and add this at the end:
+        function saveData() {
+            const today = new Date().toISOString().split('T')[0];
+            const data = getCurrentInputs();
+            
+            // Get existing data
+            let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            allData[today] = data;
+            
+            // Save to localStorage
+            localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
+            
+            // Calculate and save points
+            const pointsData = calculateTodayPoints();
+            let pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0, days: {} };
+            
+            // Only add points if we haven't already today
+            if (!pointsHistory.days[today]) {
+                pointsHistory.total += pointsData.total;
+                pointsHistory.days[today] = {
+                    points: pointsData.total,
+                    breakdown: pointsData.breakdown
+                };
+                localStorage.setItem('lifeTrackerPoints', JSON.stringify(pointsHistory));
+            }
+            
+            // Show success message
+            const btn = document.querySelector('.save-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Saved Successfully!';
+            btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            }, 2000);
+            
+            // Update chart and streaks
+            updateChart();
+            updateStreakTracker();
+            updateTotalStats();
+            updatePointsDisplay(); // Add this line
+        }
+   
         function displayCurrentDate() {
             const today = new Date();
             const options = { 
@@ -1854,6 +2333,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
