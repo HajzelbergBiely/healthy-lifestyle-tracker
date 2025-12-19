@@ -364,6 +364,91 @@
             padding-top: 10px;
             border-top: 1px solid #eee;
         }
+
+        /* Reset Button Styles */
+        .reset-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        
+        .reset-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+        }
+        
+        .reset-confirm {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            border: 1px solid #ffc107;
+        }
+        
+        .reset-confirm-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .reset-confirm-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-confirm-yes {
+            background: #f44336;
+            color: white;
+        }
+        
+        .reset-confirm-yes:hover {
+            background: #d32f2f;
+        }
+        
+        .reset-confirm-no {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .reset-confirm-no:hover {
+            background: #545b62;
+        }
+        
+        .reset-note {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            margin-top: 5px;
+        }
         
         @media (max-width: 768px) {
             .sleep-expanded, .training-expanded {
@@ -644,6 +729,22 @@
        <div class="pause-note">
          Toggle on to freeze streak when sick/resting
        </div>
+       <div class="reset-section">
+        <div class="reset-title">⚠️ Reset All Data</div>
+        <button class="reset-btn" onclick="showResetConfirm()">🗑️ Hard Reset All Data</button>
+        <div class="reset-confirm" id="resetConfirm">
+          <div style="color: #856404; margin-bottom: 10px; font-weight: 600;">
+            ⚠️ Are you sure? This will delete ALL data permanently!
+          </div>
+          <div class="reset-confirm-buttons">
+            <button class="reset-confirm-btn reset-confirm-yes" onclick="hardReset()">Yes, Delete Everything</button>
+            <button class="reset-confirm-btn reset-confirm-no" onclick="hideResetConfirm()">Cancel</button>
+          </div>
+        </div>
+        <div class="reset-note">
+          This will clear all input fields and delete all saved data
+        </div>
+      </div>
      </div>
      <div class="quote-card">
       <div class="quote-text" id="dailyQuote"></div>
@@ -829,7 +930,91 @@
             updateConsistencyTracker();
             updateSleepAnalysis();
         }
+
+        // Hard Reset functionality
+        function showResetConfirm() {
+            document.getElementById('resetConfirm').style.display = 'block';
+        }
         
+        function hideResetConfirm() {
+            document.getElementById('resetConfirm').style.display = 'none';
+        }
+        
+        function hardReset() {
+            // Clear all localStorage data
+            localStorage.removeItem('lifeTrackerData');
+            localStorage.removeItem('pausedStreaks');
+            localStorage.removeItem('lastPauseReset');
+            
+            // Clear all input fields
+            const inputsToClear = [
+                'stretching', 'steps', 'sleepHours', 'sleepMinutes', 
+                'water', 'screenTime', 'pages', 'sleepQuality',
+                'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
+                'lightHours', 'lightMinutes', 'runDistance'
+            ];
+            
+            inputsToClear.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.value = '';
+            });
+            
+            // Clear checkboxes
+            const checkboxesToClear = ['hadGym', 'hadRun', 'coldShower', 'lust', 'napped'];
+            checkboxesToClear.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.checked = false;
+            });
+            
+            // Clear select dropdowns
+            document.getElementById('runType').value = '';
+            
+            // Hide run details
+            document.getElementById('runDetails').style.display = 'none';
+            
+            // Reset pause streaks
+            pausedStreaks = {
+                steps: { paused: false, days: 0 },
+                training: { paused: false, days: 0 },
+                coldShower: { paused: false, days: 0 }
+            };
+            
+            // Reset today's date for pause reset
+            const today = new Date().toISOString().split('T')[0];
+            localStorage.setItem('lastPauseReset', today);
+            localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
+            
+            // Hide confirmation
+            hideResetConfirm();
+            
+            // Update all UI components
+            updateCheckboxStyles();
+            updateConsistencyTracker();
+            updateSleepAnalysis();
+            updateStreakTracker();
+            updateTotalStats();
+            updatePauseDisplay();
+            updateChart();
+            
+            // Show success message
+            const resetBtn = document.querySelector('.reset-btn');
+            const originalText = resetBtn.textContent;
+            resetBtn.textContent = '✅ All Data Cleared!';
+            resetBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            
+            setTimeout(() => {
+                resetBtn.textContent = originalText;
+                resetBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+            }, 3000);
+        }
+        
+        // Optional: Add a keyboard shortcut for reset (Shift+R)
+        document.addEventListener('keydown', function(event) {
+            if (event.shiftKey && event.key === 'R') {
+                showResetConfirm();
+            }
+        });
+   
         function displayDailyQuote() {
             const today = new Date();
             const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
@@ -1669,6 +1854,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
