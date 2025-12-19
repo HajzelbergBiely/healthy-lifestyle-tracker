@@ -686,52 +686,32 @@
             box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
         }
 
-        /* Training Details Styles */
+        /* Training Details */
         .training-details {
+            margin-top: 10px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 15px;
-            margin-top: 10px;
             border-left: 4px solid #667eea;
         }
         
-        .workout-types {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+        .training-details input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
             margin-top: 5px;
         }
         
-        .workout-type-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .workout-type-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin: 0;
-        }
-        
-        .workout-type-checkbox label {
-            font-size: 0.9rem;
-            color: #555;
-            cursor: pointer;
-            margin: 0;
-        }
-        
-        /* Update existing run-details to match */
         .run-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
             margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #e0e0e0;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 15px;
             border-left: 4px solid #4CAF50;
         }
         
@@ -742,8 +722,8 @@
         
         .run-detail-item label {
             font-size: 0.9rem;
-            margin-bottom: 5px;
             color: #666;
+            margin-bottom: 5px;
         }
         
         .run-detail-item input,
@@ -760,10 +740,6 @@
         }
         
         @media (max-width: 768px) {
-            .workout-types {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .run-details {
                 grid-template-columns: 1fr;
             }
@@ -857,252 +833,209 @@
       <div class="input-group"><label for="pages">📚 Pages Read</label> <input type="number" id="pages" placeholder="Enter pages">
       </div>
       <div class="input-group training-expanded">
-         <label>💪 Training Sessions</label>
-         
-         <div class="training-checkboxes">
-           <!-- Gym Session -->
-           <div class="checkbox-group" style="margin-bottom: 15px;">
-             <input type="checkbox" id="hadGym">
-             <label for="hadGym" style="font-weight: bold;">🏋️ Gym Session</label>
-           </div>
-           
-           <div id="gymDetails" class="training-details" style="display: none; margin-left: 20px; margin-bottom: 15px;">
-             <div style="margin-bottom: 10px;">
-               <label style="font-size: 0.9rem; color: #666;">Workout Types:</label>
-               <div class="workout-types">
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gymCore" class="workout-type">
-                   <label for="gymCore">Core</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gymLegs" class="workout-type">
-                   <label for="gymLegs">Legs</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gymUpper" class="workout-type">
-                   <label for="gymUpper">Upper Body</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gymFull" class="workout-type">
-                   <label for="gymFull">Full Body</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gymCardio" class="workout-type">
-                   <label for="gymCardio">Cardio</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gymOther" class="workout-type">
-                   <label for="gymOther">Other</label>
-                 </div>
-               </div>
-             </div>
-             
-             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-               <div>
-                 <label for="gymDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                 <input type="number" id="gymDuration" placeholder="Minutes" min="0" style="width: 100%;">
-               </div>
-               <div>
-                 <label for="gymIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                 <input type="number" id="gymIntensity" min="1" max="10" placeholder="1-10" style="width: 100%;">
-               </div>
-             </div>
-             
-             <div style="margin-bottom: 10px;">
-               <label for="gymNotes" style="font-size: 0.9rem; color: #666;">Notes (optional)</label>
-               <input type="text" id="gymNotes" placeholder="e.g., heavy squats, bench press" style="width: 100%;">
-             </div>
-           </div>
-           
-           <!-- Second Gym Session (optional) -->
-           <div class="checkbox-group" style="margin-bottom: 15px;">
-             <input type="checkbox" id="hadGym2">
-             <label for="hadGym2" style="font-weight: bold;">🏋️ Second Gym Session</label>
-           </div>
-           
-           <div id="gymDetails2" class="training-details" style="display: none; margin-left: 20px; margin-bottom: 15px;">
-             <div style="margin-bottom: 10px;">
-               <label style="font-size: 0.9rem; color: #666;">Workout Types:</label>
-               <div class="workout-types">
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gym2Core" class="workout-type">
-                   <label for="gym2Core">Core</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gym2Legs" class="workout-type">
-                   <label for="gym2Legs">Legs</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gym2Upper" class="workout-type">
-                   <label for="gym2Upper">Upper Body</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gym2Full" class="workout-type">
-                   <label for="gym2Full">Full Body</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gym2Cardio" class="workout-type">
-                   <label for="gym2Cardio">Cardio</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="gym2Other" class="workout-type">
-                   <label for="gym2Other">Other</label>
-                 </div>
-               </div>
-             </div>
-             
-             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-               <div>
-                 <label for="gym2Duration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                 <input type="number" id="gym2Duration" placeholder="Minutes" min="0" style="width: 100%;">
-               </div>
-               <div>
-                 <label for="gym2Intensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                 <input type="number" id="gym2Intensity" min="1" max="10" placeholder="1-10" style="width: 100%;">
-               </div>
-             </div>
-             
-             <div style="margin-bottom: 10px;">
-               <label for="gym2Notes" style="font-size: 0.9rem; color: #666;">Notes (optional)</label>
-               <input type="text" id="gym2Notes" placeholder="e.g., light workout, mobility" style="width: 100%;">
-             </div>
-           </div>
-           
-           <!-- Home Workout -->
-           <div class="checkbox-group" style="margin-bottom: 15px;">
-             <input type="checkbox" id="hadHome">
-             <label for="hadHome" style="font-weight: bold;">🏠 Home Workout</label>
-           </div>
-           
-           <div id="homeDetails" class="training-details" style="display: none; margin-left: 20px; margin-bottom: 15px;">
-             <div style="margin-bottom: 10px;">
-               <label style="font-size: 0.9rem; color: #666;">Workout Types:</label>
-               <div class="workout-types">
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeCore" class="workout-type">
-                   <label for="homeCore">Core</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeLegs" class="workout-type">
-                   <label for="homeLegs">Legs</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeUpper" class="workout-type">
-                   <label for="homeUpper">Upper Body</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeFull" class="workout-type">
-                   <label for="homeFull">Full Body</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeCardio" class="workout-type">
-                   <label for="homeCardio">Cardio</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeYoga" class="workout-type">
-                   <label for="homeYoga">Yoga/Stretch</label>
-                 </div>
-                 <div class="workout-type-checkbox">
-                   <input type="checkbox" id="homeOther" class="workout-type">
-                   <label for="homeOther">Other</label>
-                 </div>
-               </div>
-             </div>
-             
-             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-               <div>
-                 <label for="homeDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                 <input type="number" id="homeDuration" placeholder="Minutes" min="0" style="width: 100%;">
-               </div>
-               <div>
-                 <label for="homeIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                 <input type="number" id="homeIntensity" min="1" max="10" placeholder="1-10" style="width: 100%;">
-               </div>
-             </div>
-             
-             <div style="margin-bottom: 10px;">
-               <label for="homeNotes" style="font-size: 0.9rem; color: #666;">Notes (optional)</label>
-               <input type="text" id="homeNotes" placeholder="e.g., bodyweight, resistance bands" style="width: 100%;">
-             </div>
-           </div>
-           
-           <!-- Running Session -->
-           <div class="checkbox-group" style="margin-bottom: 15px;">
-             <input type="checkbox" id="hadRun">
-             <label for="hadRun" style="font-weight: bold;">🏃 Running Session</label>
-           </div>
-           
-           <div id="runDetails" class="training-details" style="display: none; margin-left: 20px; margin-bottom: 15px;">
-             <div class="run-detail-item">
-               <label for="runType">Run Type</label>
-               <select id="runType">
-                 <option value="">Select type</option>
-                 <option value="interval">Interval Training</option>
-                 <option value="free">Free Run</option>
-                 <option value="race">Race</option>
-                 <option value="tempo">Tempo Run</option>
-                 <option value="long">Long Distance</option>
-                 <option value="recovery">Recovery Run</option>
-                 <option value="hill">Hill Training</option>
-               </select>
-             </div>
-             <div class="run-detail-item">
-               <label for="runDistance">Distance (km)</label>
-               <input type="number" id="runDistance" step="0.1" placeholder="Enter distance">
-             </div>
-             <div class="run-detail-item">
-               <label for="runDuration">Duration (min)</label>
-               <input type="number" id="runDuration" placeholder="Minutes">
-             </div>
-             <div class="run-detail-item">
-               <label for="runIntensity">Intensity (1-10)</label>
-               <input type="number" id="runIntensity" min="1" max="10" placeholder="1-10">
-             </div>
-             <div class="run-detail-item" style="grid-column: span 2;">
-               <label for="runNotes">Notes (optional)</label>
-               <input type="text" id="runNotes" placeholder="e.g., felt good, rainy weather">
-             </div>
-           </div>
-           
-           <!-- Second Running Session (optional) -->
-           <div class="checkbox-group" style="margin-bottom: 15px;">
-             <input type="checkbox" id="hadRun2">
-             <label for="hadRun2" style="font-weight: bold;">🏃 Second Running Session</label>
-           </div>
-           
-           <div id="runDetails2" class="training-details" style="display: none; margin-left: 20px; margin-bottom: 15px;">
-             <div class="run-detail-item">
-               <label for="runType2">Run Type</label>
-               <select id="runType2">
-                 <option value="">Select type</option>
-                 <option value="interval">Interval Training</option>
-                 <option value="free">Free Run</option>
-                 <option value="race">Race</option>
-                 <option value="tempo">Tempo Run</option>
-                 <option value="long">Long Distance</option>
-                 <option value="recovery">Recovery Run</option>
-                 <option value="hill">Hill Training</option>
-               </select>
-             </div>
-             <div class="run-detail-item">
-               <label for="runDistance2">Distance (km)</label>
-               <input type="number" id="runDistance2" step="0.1" placeholder="Enter distance">
-             </div>
-             <div class="run-detail-item">
-               <label for="runDuration2">Duration (min)</label>
-               <input type="number" id="runDuration2" placeholder="Minutes">
-             </div>
-             <div class="run-detail-item">
-               <label for="runIntensity2">Intensity (1-10)</label>
-               <input type="number" id="runIntensity2" min="1" max="10" placeholder="1-10">
-             </div>
-             <div class="run-detail-item" style="grid-column: span 2;">
-               <label for="runNotes2">Notes (optional)</label>
-               <input type="text" id="runNotes2" placeholder="e.g., morning run, felt tired">
-             </div>
-           </div>
-         </div>
-       </div>
+        <label>💪 Training Sessions</label>
+        
+        <div class="training-checkboxes">
+          <!-- Gym Session 1 -->
+          <div class="checkbox-group">
+            <input type="checkbox" id="hadGym">
+            <label for="hadGym">🏋️ Gym Session 1</label>
+          </div>
+          
+          <div id="gymDetails" class="training-details" style="display: none;">
+            <div style="margin-bottom: 10px;">
+              <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gymCore">
+                  <label for="gymCore" style="font-size: 0.9rem;">Core</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gymLegs">
+                  <label for="gymLegs" style="font-size: 0.9rem;">Legs</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gymUpper">
+                  <label for="gymUpper" style="font-size: 0.9rem;">Upper</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gymFull">
+                  <label for="gymFull" style="font-size: 0.9rem;">Full Body</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gymCardio">
+                  <label for="gymCardio" style="font-size: 0.9rem;">Cardio</label>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label for="gymDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
+                <input type="number" id="gymDuration" placeholder="Minutes" min="0">
+              </div>
+              <div>
+                <label for="gymIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
+                <input type="number" id="gymIntensity" min="1" max="10" placeholder="1-10">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gym Session 2 -->
+          <div class="checkbox-group" style="margin-top: 15px;">
+            <input type="checkbox" id="hadGym2">
+            <label for="hadGym2">🏋️ Gym Session 2</label>
+          </div>
+          
+          <div id="gymDetails2" class="training-details" style="display: none;">
+            <div style="margin-bottom: 10px;">
+              <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gym2Core">
+                  <label for="gym2Core" style="font-size: 0.9rem;">Core</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gym2Legs">
+                  <label for="gym2Legs" style="font-size: 0.9rem;">Legs</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gym2Upper">
+                  <label for="gym2Upper" style="font-size: 0.9rem;">Upper</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gym2Full">
+                  <label for="gym2Full" style="font-size: 0.9rem;">Full Body</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="gym2Cardio">
+                  <label for="gym2Cardio" style="font-size: 0.9rem;">Cardio</label>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label for="gym2Duration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
+                <input type="number" id="gym2Duration" placeholder="Minutes" min="0">
+              </div>
+              <div>
+                <label for="gym2Intensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
+                <input type="number" id="gym2Intensity" min="1" max="10" placeholder="1-10">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Home Workout -->
+          <div class="checkbox-group" style="margin-top: 15px;">
+            <input type="checkbox" id="hadHome">
+            <label for="hadHome">🏠 Home Workout</label>
+          </div>
+          
+          <div id="homeDetails" class="training-details" style="display: none;">
+            <div style="margin-bottom: 10px;">
+              <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Type:</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="homeBodyweight">
+                  <label for="homeBodyweight" style="font-size: 0.9rem;">Bodyweight</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="homeYoga">
+                  <label for="homeYoga" style="font-size: 0.9rem;">Yoga/Stretch</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="homeHIIT">
+                  <label for="homeHIIT" style="font-size: 0.9rem;">HIIT</label>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="checkbox" id="homeOther">
+                  <label for="homeOther" style="font-size: 0.9rem;">Other</label>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label for="homeDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
+                <input type="number" id="homeDuration" placeholder="Minutes" min="0">
+              </div>
+              <div>
+                <label for="homeIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
+                <input type="number" id="homeIntensity" min="1" max="10" placeholder="1-10">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Running Session 1 -->
+          <div class="checkbox-group" style="margin-top: 15px;">
+            <input type="checkbox" id="hadRun">
+            <label for="hadRun">🏃 Running Session 1</label>
+          </div>
+          
+          <div id="runDetails" class="run-details" style="display: none;">
+            <div class="run-detail-item">
+              <label for="runType">Run Type</label>
+              <select id="runType">
+                <option value="">Select type</option>
+                <option value="interval">Interval Training</option>
+                <option value="free">Free Run</option>
+                <option value="race">Race</option>
+                <option value="tempo">Tempo Run</option>
+                <option value="long">Long Distance</option>
+                <option value="recovery">Recovery Run</option>
+                <option value="hill">Hill Training</option>
+              </select>
+            </div>
+            <div class="run-detail-item">
+              <label for="runDistance">Distance (km)</label>
+              <input type="number" id="runDistance" step="0.1" placeholder="Enter distance">
+            </div>
+            <div class="run-detail-item">
+              <label for="runDuration">Duration (min)</label>
+              <input type="number" id="runDuration" placeholder="Minutes">
+            </div>
+            <div class="run-detail-item">
+              <label for="runIntensity">Intensity (1-10)</label>
+              <input type="number" id="runIntensity" min="1" max="10" placeholder="1-10">
+            </div>
+          </div>
+          
+          <!-- Running Session 2 -->
+          <div class="checkbox-group" style="margin-top: 15px;">
+            <input type="checkbox" id="hadRun2">
+            <label for="hadRun2">🏃 Running Session 2</label>
+          </div>
+          
+          <div id="runDetails2" class="run-details" style="display: none;">
+            <div class="run-detail-item">
+              <label for="runType2">Run Type</label>
+              <select id="runType2">
+                <option value="">Select type</option>
+                <option value="interval">Interval Training</option>
+                <option value="free">Free Run</option>
+                <option value="race">Race</option>
+                <option value="tempo">Tempo Run</option>
+                <option value="long">Long Distance</option>
+                <option value="recovery">Recovery Run</option>
+                <option value="hill">Hill Training</option>
+              </select>
+            </div>
+            <div class="run-detail-item">
+              <label for="runDistance2">Distance (km)</label>
+              <input type="number" id="runDistance2" step="0.1" placeholder="Enter distance">
+            </div>
+            <div class="run-detail-item">
+              <label for="runDuration2">Duration (min)</label>
+              <input type="number" id="runDuration2" placeholder="Minutes">
+            </div>
+            <div class="run-detail-item">
+              <label for="runIntensity2">Intensity (1-10)</label>
+              <input type="number" id="runIntensity2" min="1" max="10" placeholder="1-10">
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="input-group" id="coldShowerGroup"><label>🚿 Cold Shower</label>
        <div class="checkbox-group"><input type="checkbox" id="coldShower"> <label for="coldShower">Took cold shower today</label>
        </div>
@@ -1260,7 +1193,7 @@
             updateConsistencyTracker();
             updateStreakTracker();
             updateTotalStats();
-            // Training session toggle listeners
+            // Training session toggle listeners - SIMPLIFIED
             document.getElementById('hadGym').addEventListener('change', function() {
                 document.getElementById('gymDetails').style.display = this.checked ? 'block' : 'none';
                 updateConsistencyTracker();
@@ -1290,25 +1223,41 @@
                 updateConsistencyTracker();
                 updatePointsDisplay();
             });
-           
-           // Add input listeners for all training fields
-           const trainingInputs = [
-               'gymDuration', 'gymIntensity', 'gymNotes',
-               'gym2Duration', 'gym2Intensity', 'gym2Notes',
-               'homeDuration', 'homeIntensity', 'homeNotes',
-               'runType', 'runDistance', 'runDuration', 'runIntensity', 'runNotes',
-               'runType2', 'runDistance2', 'runDuration2', 'runIntensity2', 'runNotes2'
-           ];
-           
-           trainingInputs.forEach(id => {
-               const element = document.getElementById(id);
-               if (element) {
-                   element.addEventListener('input', function() {
-                       updateConsistencyTracker();
-                       updatePointsDisplay();
-                   });
-               }
-           });
+            
+            // Simple input listeners for training
+            ['gymDuration', 'gymIntensity', 'gym2Duration', 'gym2Intensity', 
+             'homeDuration', 'homeIntensity', 'runDistance', 'runDuration', 
+             'runIntensity', 'runDistance2', 'runDuration2', 'runIntensity2'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', function() {
+                        updateConsistencyTracker();
+                        updatePointsDisplay();
+                    });
+                }
+            });
+            
+            // Listeners for workout type checkboxes
+            ['gymCore', 'gymLegs', 'gymUpper', 'gymFull', 'gymCardio',
+             'gym2Core', 'gym2Legs', 'gym2Upper', 'gym2Full', 'gym2Cardio',
+             'homeBodyweight', 'homeYoga', 'homeHIIT', 'homeOther'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', function() {
+                        updatePointsDisplay();
+                    });
+                }
+            });
+            
+            // Run type select listeners
+            ['runType', 'runType2'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', function() {
+                        updatePointsDisplay();
+                    });
+                }
+            });
            
            // Add listeners for workout type checkboxes
            const workoutTypeCheckboxes = document.querySelectorAll('.workout-type');
@@ -2229,10 +2178,12 @@
             
             // Regular metrics
             Object.keys(goals).forEach(key => {
-                // In updateConsistencyTracker(), replace the training section with:
+                // In updateConsistencyTracker():
                 if (key === 'training') {
-                    // Count all training sessions
+                    // Count ALL training sessions
                     let trainingSessions = 0;
+                    const currentData = getCurrentInputs();
+                    
                     if (currentData.hadGym) trainingSessions++;
                     if (currentData.hadGym2) trainingSessions++;
                     if (currentData.hadHome) trainingSessions++;
@@ -2275,21 +2226,60 @@
         }
         
         function getCurrentInputs() {
-            function getCurrentInputs() {
-            // ... (keep all your existing code for sleep, steps, etc.)
-            
-            // Get selected workout types for each session
-            const getSelectedWorkoutTypes = (prefix) => {
-                const types = ['Core', 'Legs', 'Upper', 'Full', 'Cardio', 'Other', 'Yoga'];
-                const selected = [];
-                types.forEach(type => {
-                    const checkbox = document.getElementById(`${prefix}${type}`);
-                    if (checkbox && checkbox.checked) {
-                        selected.push(type.toLowerCase());
-                    }
-                });
-                return selected;
-            };
+           // ... (keep all existing sleep, steps, water, etc.)
+           
+           // Get selected workout types
+           const getSelectedTypes = (prefix, types) => {
+               const selected = [];
+               types.forEach(type => {
+                   const checkbox = document.getElementById(`${prefix}${type}`);
+                   if (checkbox && checkbox.checked) {
+                       selected.push(type);
+                   }
+               });
+               return selected;
+           };
+           
+           return {
+               // ... (keep all existing fields)
+               
+               // Training checkboxes
+               hadGym: document.getElementById('hadGym').checked,
+               hadGym2: document.getElementById('hadGym2').checked,
+               hadHome: document.getElementById('hadHome').checked,
+               hadRun: document.getElementById('hadRun').checked,
+               hadRun2: document.getElementById('hadRun2').checked,
+               
+               // Gym 1
+               gymTypes: getSelectedTypes('gym', ['Core', 'Legs', 'Upper', 'Full', 'Cardio']),
+               gymDuration: document.getElementById('gymDuration').value,
+               gymIntensity: document.getElementById('gymIntensity').value,
+               
+               // Gym 2
+               gym2Types: getSelectedTypes('gym2', ['Core', 'Legs', 'Upper', 'Full', 'Cardio']),
+               gym2Duration: document.getElementById('gym2Duration').value,
+               gym2Intensity: document.getElementById('gym2Intensity').value,
+               
+               // Home
+               homeTypes: getSelectedTypes('home', ['Bodyweight', 'Yoga', 'HIIT', 'Other']),
+               homeDuration: document.getElementById('homeDuration').value,
+               homeIntensity: document.getElementById('homeIntensity').value,
+               
+               // Run 1
+               runType: document.getElementById('runType').value,
+               runDistance: document.getElementById('runDistance').value,
+               runDuration: document.getElementById('runDuration').value,
+               runIntensity: document.getElementById('runIntensity').value,
+               
+               // Run 2
+               runType2: document.getElementById('runType2').value,
+               runDistance2: document.getElementById('runDistance2').value,
+               runDuration2: document.getElementById('runDuration2').value,
+               runIntensity2: document.getElementById('runIntensity2').value,
+               
+               // ... (keep the rest of your fields)
+           };
+       }
             
             return {
                 // ... (keep all your existing fields)
@@ -2758,6 +2748,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
