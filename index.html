@@ -682,36 +682,43 @@
   </div>
   <script>
         // Motivational quotes
-       const quotes = [
-           { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-           { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
-           { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-           { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
-           { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
-           { text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein" },
-           { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-           { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
-           { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
-           { text: "A year from now you may wish you had started today.", author: "Karen Lamb" }
-       ];
-       
-       // Goals for consistency tracking
-       const goals = {
-           steps: 10000,
-           water: 2,
-           pages: 20,
-           stretching: 2,
-           sleep: 8,
-           screenTime: 2,
-           training: 2
-       };
-       
-       let currentChart = null;
-       let currentView = 'stretching';
-       let currentPeriod = 'daily';
-       
-       // Initialize the app
-       document.addEventListener('DOMContentLoaded', function() {
+        const quotes = [
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+            { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
+            { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
+            { text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein" },
+            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+            { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+            { text: "A year from now you may wish you had started today.", author: "Karen Lamb" }
+        ];
+        
+        // Goals for consistency tracking
+        const goals = {
+            steps: 10000,
+            water: 2,
+            pages: 20,
+            stretching: 2,
+            sleep: 8,
+            screenTime: 2,
+            training: 2
+        };
+        
+        // Pause/Freeze functionality storage
+        let pausedStreaks = JSON.parse(localStorage.getItem('pausedStreaks')) || {
+            steps: { paused: false, days: 0 },
+            training: { paused: false, days: 0 },
+            coldShower: { paused: false, days: 0 }
+        };
+        
+        let currentChart = null;
+        let currentView = 'stretching';
+        let currentPeriod = 'daily';
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
             displayCurrentDate();
             displayDailyQuote();
             loadTodaysData();
@@ -724,1019 +731,945 @@
             updatePauseDisplay();
             resetPauseCounters();
             
-            // ... rest of your event listeners ...
+            // Add event listeners for checkboxes
+            document.getElementById('coldShower').addEventListener('change', updateCheckboxStyles);
+            document.getElementById('lust').addEventListener('change', updateCheckboxStyles);
+            
+            // Add input event listeners for real-time consistency updates
+            const inputs = ['stretching', 'steps', 'sleepHours', 'water', 'screenTime', 'pages'];
+            inputs.forEach(input => {
+                document.getElementById(input).addEventListener('input', updateConsistencyTracker);
+            });
+            
+            // Add event listener for run checkbox to show/hide run details
+            document.getElementById('hadRun').addEventListener('change', function() {
+                const runDetails = document.getElementById('runDetails');
+                if (this.checked) {
+                    runDetails.style.display = 'grid';
+                } else {
+                    runDetails.style.display = 'none';
+                    document.getElementById('runType').value = '';
+                    document.getElementById('runDistance').value = '';
+                }
+                updateConsistencyTracker();
+            });
+            
+            // Add event listeners for gym and run checkboxes
+            document.getElementById('hadGym').addEventListener('change', updateConsistencyTracker);
+            
+            // Sleep input listeners - update to include all new inputs
+            ['sleepHours', 'sleepMinutes', 'sleepQuality', 'remHours', 'remMinutes', 
+             'deepHours', 'deepMinutes', 'lightHours', 'lightMinutes'].forEach(id => {
+                document.getElementById(id).addEventListener('input', function() {
+                    updateSleepAnalysis();
+                    updateConsistencyTracker();
+                });
+            });
+            
+            document.getElementById('napped').addEventListener('change', function() {
+                updateSleepAnalysis();
+            });
+            
+            // Initialize sleep analysis
+            updateSleepAnalysis();
         });
-           
-           // Add event listeners for checkboxes
-           document.getElementById('coldShower').addEventListener('change', updateCheckboxStyles);
-           document.getElementById('lust').addEventListener('change', updateCheckboxStyles);
-           
-           // Add input event listeners for real-time consistency updates
-           const inputs = ['stretching', 'steps', 'sleepHours', 'water', 'screenTime', 'pages'];
-           inputs.forEach(input => {
-               document.getElementById(input).addEventListener('input', updateConsistencyTracker);
-           });
-           
-           // Add event listener for run checkbox to show/hide run details
-           document.getElementById('hadRun').addEventListener('change', function() {
-               const runDetails = document.getElementById('runDetails');
-               if (this.checked) {
-                   runDetails.style.display = 'grid';
-               } else {
-                   runDetails.style.display = 'none';
-                   document.getElementById('runType').value = '';
-                   document.getElementById('runDistance').value = '';
-               }
-               updateConsistencyTracker();
-           });
-           
-           // Add event listeners for gym and run checkboxes
-           document.getElementById('hadGym').addEventListener('change', updateConsistencyTracker);
-           
-           // Sleep input listeners - update to include all new inputs
-           ['sleepHours', 'sleepMinutes', 'sleepQuality', 'remHours', 'remMinutes', 
-            'deepHours', 'deepMinutes', 'lightHours', 'lightMinutes'].forEach(id => {
-               document.getElementById(id).addEventListener('input', function() {
-                   updateSleepAnalysis();
-                   updateConsistencyTracker();
-               });
-           });
-           
-           document.getElementById('napped').addEventListener('change', function() {
-               updateSleepAnalysis();
-           });
-           
-           // Initialize sleep analysis
-           updateSleepAnalysis();
-       });
-
-       // Pause/Freeze functionality
-       let pausedStreaks = JSON.parse(localStorage.getItem('pausedStreaks')) || {
-           steps: { paused: false, days: 0 },
-           training: { paused: false, days: 0 },
-           coldShower: { paused: false, days: 0 }
-       };
-
-       function clearOldData() {
-           const today = new Date().toISOString().split('T')[0];
-           const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-           
-           // Check if we already have data for today
-           if (allData[today]) {
-               // We have data for today, so don't clear
-               return;
-           }
-           
-           // Clear all input fields
-           const inputsToClear = [
-               'stretching', 'steps', 'sleepHours', 'sleepMinutes', 
-               'water', 'screenTime', 'pages', 'sleepQuality',
-               'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
-               'lightHours', 'lightMinutes', 'runDistance'
-           ];
-           
-           inputsToClear.forEach(id => {
-               const element = document.getElementById(id);
-               if (element) element.value = '';
-           });
-           
-           // Clear checkboxes
-           const checkboxesToClear = ['hadGym', 'hadRun', 'coldShower', 'lust', 'napped'];
-           checkboxesToClear.forEach(id => {
-               const element = document.getElementById(id);
-               if (element) element.checked = false;
-           });
-           
-           // Clear select dropdowns
-           document.getElementById('runType').value = '';
-           
-           // Hide run details
-           document.getElementById('runDetails').style.display = 'none';
-           
-           // Update UI
-           updateCheckboxStyles();
-           updateConsistencyTracker();
-           updateSleepAnalysis();
-       }
-       
-       function togglePause(streakType) {
-           const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
-           const toggleElement = checkbox.parentElement;
-           
-           // Toggle the paused state
-           pausedStreaks[streakType].paused = !pausedStreaks[streakType].paused;
-           
-           // Update UI
-           checkbox.checked = pausedStreaks[streakType].paused;
-           toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
-           
-           // If pausing, increment days counter
-           if (pausedStreaks[streakType].paused) {
-               pausedStreaks[streakType].days++;
-               updatePauseDisplay();
-           }
-           
-           // Save to localStorage
-           localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
-           
-           // Update streaks display
-           updateStreakTracker();
-       }
-       
-       function updatePauseDisplay() {
-           // Update the days counters
-           Object.keys(pausedStreaks).forEach(streakType => {
-               const daysElement = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}Days`);
-               if (daysElement) {
-                   daysElement.textContent = `${pausedStreaks[streakType].days} day${pausedStreaks[streakType].days !== 1 ? 's' : ''}`;
-               }
-               
-               // Update checkbox and toggle state
-               const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
-               const toggleElement = checkbox.parentElement;
-               
-               checkbox.checked = pausedStreaks[streakType].paused;
-               toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
-           });
-       }
-       
-       function resetPauseCounters() {
-           const today = new Date().toISOString().split('T')[0];
-           const lastReset = localStorage.getItem('lastPauseReset') || '';
-           
-           // Reset pause days if it's a new day
-           if (today !== lastReset) {
-               Object.keys(pausedStreaks).forEach(streakType => {
-                   // If streak was paused yesterday, keep counting
-                   if (pausedStreaks[streakType].paused) {
-                       // Don't reset the counter, let it keep counting
-                       // This allows multiple consecutive paused days
-                   } else {
-                       // If not paused, reset counter to 0
-                       pausedStreaks[streakType].days = 0;
-                   }
-               });
-               
-               localStorage.setItem('lastPauseReset', today);
-               localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
-               updatePauseDisplay();
-           }
-       }
-       
-       function calculateStreaksWithPause(dates, allData) {
-           const streaks = calculateStreaks(dates, allData);
-           
-           // Apply pause to specific streaks
-           if (pausedStreaks.steps.paused) {
-               streaks.steps = Math.max(streaks.steps, pausedStreaks.steps.days + 1);
-           }
-           
-           if (pausedStreaks.training.paused) {
-               streaks.training = Math.max(streaks.training, pausedStreaks.training.days + 1);
-           }
-           
-           if (pausedStreaks.coldShower.paused) {
-               streaks.coldShower = Math.max(streaks.coldShower, pausedStreaks.coldShower.days + 1);
-           }
-           
-           return streaks;
-       }
-   
-       function displayCurrentDate() {
-           const today = new Date();
-           const options = { 
-               weekday: 'long', 
-               year: 'numeric', 
-               month: 'long', 
-               day: 'numeric' 
-           };
-           document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
-           
-           // Clear old data for new day
-           clearOldData();
-       }
-       
-       function displayDailyQuote() {
-           const today = new Date();
-           const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-           const quoteIndex = dayOfYear % quotes.length;
-           const todaysQuote = quotes[quoteIndex];
-           
-           document.getElementById('dailyQuote').textContent = `"${todaysQuote.text}"`;
-           document.getElementById('quoteAuthor').textContent = `— ${todaysQuote.author}`;
-       }
-       
-       function updateCheckboxStyles() {
-           const coldShowerGroup = document.getElementById('coldShowerGroup');
-           const lustGroup = document.getElementById('lustGroup');
-           const coldShowerChecked = document.getElementById('coldShower').checked;
-           const lustChecked = document.getElementById('lust').checked;
-           
-           if (coldShowerChecked) {
-               coldShowerGroup.classList.add('cold-shower-checked');
-           } else {
-               coldShowerGroup.classList.remove('cold-shower-checked');
-           }
-           
-           if (lustChecked) {
-               lustGroup.classList.add('lust-checked');
-           } else {
-               lustGroup.classList.remove('lust-checked');
-           }
-           
-           updateConsistencyTracker();
-       }
-       
-       function updateStreakTracker() {
-           const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-           const dates = Object.keys(allData).sort();
-           const streakTracker = document.getElementById('streakTracker');
-           
-           const streaks = calculateStreaksWithPause(dates, allData);
-           
-           let html = '';
-           Object.keys(streaks).forEach(key => {
-               const streak = streaks[key];
-               let displayName = key.charAt(0).toUpperCase() + key.slice(1);
-               if (key === 'screenTime') displayName = 'Screen Time';
-               if (key === 'coldShower') displayName = 'Cold Shower';
-               if (key === 'lustControl') displayName = 'Lust Control';
-               
-               // Determine color based on streak length
-               let streakColor = '#666';
-               let flameIcon = '';
-               let pausedIndicator = '';
-               
-               // Check if this streak is paused
-               if ((key === 'steps' && pausedStreaks.steps.paused) ||
-                   (key === 'training' && pausedStreaks.training.paused) ||
-                   (key === 'coldShower' && pausedStreaks.coldShower.paused)) {
-                   pausedIndicator = ' ⏸️';
-                   streakColor = '#6c757d'; // Gray color for paused streaks
-               } else if (streak >= 7) {
-                   streakColor = '#4CAF50';
-                   flameIcon = '🔥';
-               } else if (streak >= 3) {
-                   streakColor = '#FF9800';
-                   flameIcon = '🔥';
-               } else if (streak > 0) {
-                   streakColor = '#667eea';
-                   flameIcon = '✨';
-               }
-               
-               html += `
-                   <div class="consistency-item">
-                       <span>${displayName}</span>
-                       <div style="color: ${streakColor}; font-weight: bold; font-size: 1.1rem;">
-                           ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}${pausedIndicator}
-                       </div>
-                   </div>
-               `;
-           });
-           
-           streakTracker.innerHTML = html;
-       }
-       
-       function calculateStreaks(dates, allData) {
-          const streaks = {
-              stretching: 0,
-              steps: 0,
-              sleep: 0,
-              water: 0,
-              screenTime: 0,
-              pages: 0,
-              training: 0,
-              coldShower: 0,
-              lustControl: 0
-          };
-          
-          if (dates.length === 0) return streaks;
-          
-          // Sort dates in descending order (most recent first)
-          const sortedDates = [...dates].sort((a, b) => new Date(b) - new Date(a));
-          
-          // Helper function to check if a goal was met on a specific day
-          function goalMet(date, goalKey) {
-              const dayData = allData[date];
-              if (!dayData) return false;
-              
-              if (goalKey === 'coldShower') {
-                  return dayData.coldShower === true;
-              }
-              
-              if (goalKey === 'lustControl') {
-                  return dayData.lust !== true; // Note: lust control means NOT checking the box
-              }
-              
-              if (goalKey === 'training') {
-                  const hadGym = dayData.hadGym === true ? 1 : 0;
-                  const hadRun = dayData.hadRun === true ? 1 : 0;
-                  return (hadGym + hadRun) >= goals.training;
-              }
-              
-              const value = parseFloat(dayData[goalKey]) || 0;
-              const goal = goals[goalKey];
-              
-              if (goalKey === 'screenTime') {
-                  return value <= goal; // For screen time, lower is better
-              }
-              
-              return value >= goal; // For others, higher is better
-          }
-          
-          // Calculate current streak for each goal
-          Object.keys(streaks).forEach(goalKey => {
-              let currentStreak = 0;
-              let streakBroken = false;
-              
-              // Get today's date
-              const today = new Date();
-              const todayStr = today.toISOString().split('T')[0];
-              
-              // Check if today's goal is met (if data exists for today)
-              if (allData[todayStr]) {
-                  if (goalMet(todayStr, goalKey)) {
-                      currentStreak = 1;
-                  }
-              }
-              
-              // Now check previous days
-              for (let i = 0; i < sortedDates.length; i++) {
-                  const currentDate = sortedDates[i];
-                  const currentDateObj = new Date(currentDate);
-                  const prevDate = new Date(currentDateObj);
-                  prevDate.setDate(prevDate.getDate() - 1);
-                  const prevDateStr = prevDate.toISOString().split('T')[0];
-                  
-                  // Skip if we're checking today (already handled above)
-                  if (currentDate === todayStr) continue;
-                  
-                  // Check if current day's goal was met
-                  if (goalMet(currentDate, goalKey)) {
-                      // If this is the first day we're checking, start the streak
-                      if (currentStreak === 0) {
-                          currentStreak = 1;
-                      }
-                      
-                      // Check if there's consecutive data for the previous day
-                      if (allData[prevDateStr] && goalMet(prevDateStr, goalKey)) {
-                          currentStreak++;
-                      } else {
-                          // If previous day doesn't exist or goal wasn't met, stop counting
-                          // but keep the streak for this isolated day
-                          streakBroken = true;
-                          break;
-                      }
-                  } else {
-                      // Goal wasn't met on this day, streak is broken
-                      streakBroken = true;
-                      break;
-                  }
-                  
-                  // Safety break to prevent infinite loops
-                  if (i > 100) break;
-              }
-              
-              streaks[goalKey] = currentStreak;
-          });
-          
-          return streaks;
-      }
-       
-       function updateTotalStats() {
-           const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-           const totalStatsElement = document.getElementById('totalStats');
-           
-           // Calculate totals
-           const totals = {
-               stretching: 0,
-               steps: 0,
-               sleep: 0,
-               water: 0,
-               screenTime: 0,
-               pages: 0,
-               gymSessions: 0,
-               runs: 0,
-               totalRunDistance: 0,
-               coldShowers: 0,
-               naps: 0
-           };
-           
-           let totalDays = 0;
-           
-           Object.keys(allData).forEach(date => {
-               const dayData = allData[date];
-               totalDays++;
-               
-               totals.stretching += parseFloat(dayData.stretching) || 0;
-               totals.steps += parseFloat(dayData.steps) || 0;
-               totals.sleep += parseFloat(dayData.sleep) || 0;
-               totals.water += parseFloat(dayData.water) || 0;
-               totals.screenTime += parseFloat(dayData.screenTime) || 0;
-               totals.pages += parseFloat(dayData.pages) || 0;
-               
-               if (dayData.hadGym === true) totals.gymSessions++;
-               if (dayData.hadRun === true) {
-                   totals.runs++;
-                   totals.totalRunDistance += parseFloat(dayData.runDistance) || 0;
-               }
-               
-               if (dayData.coldShower === true) totals.coldShowers++;
-               if (dayData.napped === true) totals.naps++;
-           });
-           
-           let html = '';
-           
-           // Format numbers nicely
-           const formatNumber = (num) => {
-               if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-               if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-               return Math.round(num * 10) / 10;
-           };
-           
-           html += `
-               <div class="consistency-item">
-                   <span>🧘 Total Stretching</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.stretching)}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>👟 Total Steps</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.steps)}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>😴 Total Sleep</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.sleep)}h</div>
-               </div>
-               <div class="consistency-item">
-                   <span>💧 Total Water</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.water)}L</div>
-               </div>
-               <div class="consistency-item">
-                   <span>📱 Total Screen Time</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.screenTime)}h</div>
-               </div>
-               <div class="consistency-item">
-                   <span>📚 Total Pages</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pages)}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>🏋️ Gym Sessions</span>
-                   <div style="font-weight: bold; color: #667eea;">${totals.gymSessions}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>🏃 Total Runs</span>
-                   <div style="font-weight: bold; color: #667eea;">${totals.runs}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>📏 Total Distance</span>
-                   <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.totalRunDistance)}km</div>
-               </div>
-               <div class="consistency-item">
-                   <span>🚿 Cold Showers</span>
-                   <div style="font-weight: bold; color: #4CAF50;">${totals.coldShowers}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>😴 Naps Taken</span>
-                   <div style="font-weight: bold; color: #667eea;">${totals.naps}</div>
-               </div>
-               <div class="consistency-item">
-                   <span>📅 Days Tracked</span>
-                   <div style="font-weight: bold; color: #764ba2;">${totalDays}</div>
-               </div>
-           `;
-           
-           totalStatsElement.innerHTML = html;
-       }
-       
-       function updateConsistencyTracker() {
-           const tracker = document.getElementById('consistencyTracker');
-           const currentData = getCurrentInputs();
-           
-           let html = '';
-           
-           // Regular metrics
-           Object.keys(goals).forEach(key => {
-               if (key === 'training') {
-                   // Special handling for training
-                   const hadGym = currentData.hadGym;
-                   const hadRun = currentData.hadRun;
-                   const trainingSessions = (hadGym ? 1 : 0) + (hadRun ? 1 : 0);
-                   const isGood = trainingSessions >= goals.training;
-                   const status = isGood ? 'good' : 'bad';
-                   const icon = isGood ? '✓' : '✗';
-                   
-                   html += `
-                       <div class="consistency-item">
-                           <span>Training</span>
-                           <div class="consistency-status status-${status}">${icon}</div>
-                       </div>
-                   `;
-               } else {
-                   const current = parseFloat(currentData[key]) || 0;
-                   const goal = goals[key];
-                   const isGood = key === 'screenTime' ? current <= goal : current >= goal;
-                   const status = isGood ? 'good' : 'bad';
-                   const icon = isGood ? '✓' : '✗';
-                   
-                   let displayName = key.charAt(0).toUpperCase() + key.slice(1);
-                   if (key === 'screenTime') displayName = 'Screen Time';
-                   
-                   html += `
-                       <div class="consistency-item">
-                           <span>${displayName}</span>
-                           <div class="consistency-status status-${status}">${icon}</div>
-                       </div>
-                   `;
-               }
-           });
-           
-           // Cold shower
-           const coldShower = document.getElementById('coldShower').checked;
-           html += `
-               <div class="consistency-item">
-                   <span>Cold Shower</span>
-                   <div class="consistency-status status-${coldShower ? 'good' : 'bad'}">${coldShower ? '✓' : '✗'}</div>
-               </div>
-           `;
-           
-           // Lust control (inverted - checked is bad)
-           const lust = document.getElementById('lust').checked;
-           html += `
-               <div class="consistency-item">
-                   <span>Lust Control</span>
-                   <div class="consistency-status status-${lust ? 'bad' : 'good'}">${lust ? '✗' : '✓'}</div>
-               </div>
-           `;
-           
-           tracker.innerHTML = html;
-       }
-       
-       function getCurrentInputs() {
-           // Calculate total sleep in hours (including decimals)
-           const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
-           const sleepMinutes = parseFloat(document.getElementById('sleepMinutes').value) || 0;
-           const totalSleepHours = sleepHours + (sleepMinutes / 60);
-           
-           // Calculate REM sleep in minutes
-           const remHours = parseFloat(document.getElementById('remHours').value) || 0;
-           const remMinutes = parseFloat(document.getElementById('remMinutes').value) || 0;
-           const totalRemMinutes = (remHours * 60) + remMinutes;
-           
-           // Calculate Deep sleep in minutes
-           const deepHours = parseFloat(document.getElementById('deepHours').value) || 0;
-           const deepMinutes = parseFloat(document.getElementById('deepMinutes').value) || 0;
-           const totalDeepMinutes = (deepHours * 60) + deepMinutes;
-           
-           // Calculate Light sleep in minutes
-           const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
-           const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
-           const totalLightMinutes = (lightHours * 60) + lightMinutes;
-           
-           return {
-               stretching: document.getElementById('stretching').value,
-               steps: document.getElementById('steps').value,
-               sleep: totalSleepHours.toFixed(2), // Keep as decimal hours for chart
-               sleepHours: sleepHours,
-               sleepMinutes: sleepMinutes,
-               sleepQuality: document.getElementById('sleepQuality').value,
-               remSleep: totalRemMinutes, // Store as total minutes
-               remHours: remHours,
-               remMinutes: remMinutes,
-               deepSleep: totalDeepMinutes, // Store as total minutes
-               deepHours: deepHours,
-               deepMinutes: deepMinutes,
-               lightSleep: totalLightMinutes, // Store as total minutes
-               lightHours: lightHours,
-               lightMinutes: lightMinutes,
-               napped: document.getElementById('napped').checked,
-               water: document.getElementById('water').value,
-               screenTime: document.getElementById('screenTime').value,
-               pages: document.getElementById('pages').value,
-               hadGym: document.getElementById('hadGym').checked,
-               hadRun: document.getElementById('hadRun').checked,
-               runType: document.getElementById('runType').value,
-               runDistance: document.getElementById('runDistance').value,
-               coldShower: document.getElementById('coldShower').checked,
-               lust: document.getElementById('lust').checked
-           };
-       }
-       
-       function updateSleepAnalysis() {
-           const sleepQuality = parseInt(document.getElementById('sleepQuality').value) || 0;
-           const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
-           const sleepMinutes = parseFloat(document.getElementById('sleepMinutes').value) || 0;
-           const totalSleepHours = sleepHours + (sleepMinutes / 60);
-           
-           // Calculate REM sleep in minutes
-           const remHours = parseFloat(document.getElementById('remHours').value) || 0;
-           const remMinutes = parseFloat(document.getElementById('remMinutes').value) || 0;
-           const totalRemMinutes = (remHours * 60) + remMinutes;
-           
-           // Calculate Deep sleep in minutes
-           const deepHours = parseFloat(document.getElementById('deepHours').value) || 0;
-           const deepMinutes = parseFloat(document.getElementById('deepMinutes').value) || 0;
-           const totalDeepMinutes = (deepHours * 60) + deepMinutes;
-           
-           // Calculate Light sleep in minutes
-           const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
-           const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
-           const totalLightMinutes = (lightHours * 60) + lightMinutes;
-           
-           const napped = document.getElementById('napped').checked;
-           
-           const sleepAnalysis = document.getElementById('sleepAnalysis');
-           
-           let html = '';
-           
-           // Sleep Score with emoji based on quality
-           let sleepEmoji = '😴';
-           let sleepColor = '#667eea';
-           if (sleepQuality >= 80) {
-               sleepEmoji = '😊';
-               sleepColor = '#4CAF50';
-           } else if (sleepQuality >= 60) {
-               sleepEmoji = '😐';
-               sleepColor = '#FF9800';
-           } else if (sleepQuality > 0) {
-               sleepEmoji = '😟';
-               sleepColor = '#f44336';
-           }
-           
-           // Format sleep time display
-           let sleepTimeDisplay = '';
-           if (sleepHours > 0 || sleepMinutes > 0) {
-               if (sleepHours > 0 && sleepMinutes > 0) {
-                   sleepTimeDisplay = `${sleepHours}h ${sleepMinutes}m`;
-               } else if (sleepHours > 0) {
-                   sleepTimeDisplay = `${sleepHours}h`;
-               } else {
-                   sleepTimeDisplay = `${sleepMinutes}m`;
-               }
-           }
-           
-           html += `
-               <div class="sleep-score" style="color: ${sleepColor}">
-                   ${sleepQuality > 0 ? sleepQuality : '--'}/100 ${sleepEmoji}
-               </div>
-               <div style="text-align: center; color: #666; margin-bottom: 15px;">
-                   ${sleepTimeDisplay || 'No sleep data'}
-                   ${napped ? ' + Nap 💤' : ''}
-               </div>
-           `;
-           
-           // Sleep stage breakdown (only show if we have data)
-           const totalMinutes = totalRemMinutes + totalDeepMinutes + totalLightMinutes;
-           if (totalMinutes > 0) {
-               const remPercent = Math.round((totalRemMinutes/totalMinutes)*100);
-               const deepPercent = Math.round((totalDeepMinutes/totalMinutes)*100);
-               const lightPercent = Math.round((totalLightMinutes/totalMinutes)*100);
-               
-               // Format function for display
-               const formatTime = (totalMinutes) => {
-                   const hours = Math.floor(totalMinutes / 60);
-                   const minutes = totalMinutes % 60;
-                   if (hours > 0 && minutes > 0) {
-                       return `${hours}h ${minutes}m`;
-                   } else if (hours > 0) {
-                       return `${hours}h`;
-                   } else {
-                       return `${minutes}m`;
-                   }
-               };
-               
-               html += `
-                   <div class="sleep-breakdown">
-                       <div class="sleep-metric" style="border-left: 4px solid #667eea;">
-                           <div class="sleep-metric-label">REM Sleep</div>
-                           <div class="sleep-metric-value">${formatTime(totalRemMinutes)}</div>
-                           <div style="font-size: 0.7rem; color: #888;">
-                               ${remPercent}%
-                           </div>
-                           <div class="sleep-stage-bar">
-                               <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
-                           </div>
-                       </div>
-                       <div class="sleep-metric" style="border-left: 4px solid #4CAF50;">
-                           <div class="sleep-metric-label">Deep Sleep</div>
-                           <div class="sleep-metric-value">${formatTime(totalDeepMinutes)}</div>
-                           <div style="font-size: 0.7rem; color: #888;">
-                               ${deepPercent}%
-                           </div>
-                           <div class="sleep-stage-bar">
-                               <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #4CAF50;"></div>
-                           </div>
-                       </div>
-                       <div class="sleep-metric" style="border-left: 4px solid #FF9800;">
-                           <div class="sleep-metric-label">Light Sleep</div>
-                           <div class="sleep-metric-value">${formatTime(totalLightMinutes)}</div>
-                           <div style="font-size: 0.7rem; color: #888;">
-                               ${lightPercent}%
-                           </div>
-                           <div class="sleep-stage-bar">
-                               <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #FF9800;"></div>
-                           </div>
-                       </div>
-                       <div class="sleep-metric" style="border-left: 4px solid #9C27B0;">
-                           <div class="sleep-metric-label">Total Stages</div>
-                           <div class="sleep-metric-value">${formatTime(totalMinutes)}</div>
-                           <div style="font-size: 0.7rem; color: #888;">
-                               ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m
-                           </div>
-                           <div class="sleep-stage-bar">
-                               <div class="sleep-stage-fill" style="width: 100%; background: #9C27B0;"></div>
-                           </div>
-                       </div>
-                   </div>
-                   
-                   <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 0.9rem; color: #666;">
-                       <div>💡 Ideal: 1.5-2h REM, 1-1.5h Deep sleep</div>
-                       <div style="font-size: 0.8rem; color: #888; margin-top: 3px;">(20-25% each of total sleep)</div>
-                   </div>
-               `;
-           } else if (totalSleepHours > 0) {
-               html += `
-                   <div style="text-align: center; color: #888; padding: 20px;">
-                       Enter sleep stage details for breakdown
-                   </div>
-               `;
-           } else {
-               html += `
-                   <div style="text-align: center; color: #888; padding: 20px;">
-                       Enter sleep data to see analysis
-                   </div>
-               `;
-           }
-           
-           sleepAnalysis.innerHTML = html;
-       }
-       
-       function saveData() {
-           const today = new Date().toISOString().split('T')[0];
-           const data = getCurrentInputs();
-           
-           // Get existing data
-           let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-           allData[today] = data;
-           
-           // Save to localStorage
-           localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
-           
-           // Show success message
-           const btn = document.querySelector('.save-btn');
-           const originalText = btn.textContent;
-           btn.textContent = '✅ Saved Successfully!';
-           btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-           
-           setTimeout(() => {
-               btn.textContent = originalText;
-               btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-           }, 2000);
-           
-           // Update chart and streaks
-           updateChart();
-           updateStreakTracker();
-           updateTotalStats();
-       }
-       
-       function loadTodaysData() {
-           const today = new Date().toISOString().split('T')[0];
-           const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-           const todaysData = allData[today];
-           
-           if (todaysData) {
-               // List of all possible fields
-               const fields = [
-                   'stretching', 'steps', 'sleep', 'sleepHours', 'sleepMinutes',
-                   'sleepQuality', 'remSleep', 'remHours', 'remMinutes',
-                   'deepSleep', 'deepHours', 'deepMinutes', 'lightSleep', 
-                   'lightHours', 'lightMinutes', 'water', 'screenTime', 'pages',
-                   'runType', 'runDistance'
-               ];
-               
-               const checkboxes = ['napped', 'hadGym', 'hadRun', 'coldShower', 'lust'];
-               
-               // Set values for regular fields
-               fields.forEach(key => {
-                   const element = document.getElementById(key);
-                   if (element && todaysData[key] !== undefined) {
-                       element.value = todaysData[key];
-                   }
-               });
-               
-               // Set values for checkboxes
-               checkboxes.forEach(key => {
-                   const element = document.getElementById(key);
-                   if (element && todaysData[key] !== undefined) {
-                       element.checked = todaysData[key];
-                   }
-               });
-               
-               // Show run details if hadRun is checked
-               if (todaysData.hadRun) {
-                   document.getElementById('runDetails').style.display = 'grid';
-               }
-               
-               updateCheckboxStyles();
-               updateConsistencyTracker();
-               updateSleepAnalysis();
-           }
-       }
-       
-       function showChart(type) {
-           currentView = type;
-           
-           // Update active button
-           document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-           event.target.classList.add('active');
-           
-           updateChart();
-       }
-       
-       function changePeriod(period) {
-           currentPeriod = period;
-           
-           // Update active button
-           document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-           event.target.classList.add('active');
-           
-           updateChart();
-       }
-       
-       function initializeChart() {
-           const ctx = document.getElementById('mainChart').getContext('2d');
-           currentChart = new Chart(ctx, {
-               type: 'line',
-               data: {
-                   labels: [],
-                   datasets: []
-               },
-               options: {
-                   responsive: true,
-                   maintainAspectRatio: false,
-                   scales: {
-                       y: {
-                           beginAtZero: true
-                       }
-                   },
-                   plugins: {
-                       legend: {
-                           display: true,
-                           position: 'top'
-                       }
-                   }
-               }
-           });
-           
-           updateChart();
-       }
-       
-       function updateChart() {
-           const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-           const dates = Object.keys(allData).sort();
-           
-           let chartData = getChartData(dates, allData);
-           
-           if (currentChart) {
-               currentChart.data = chartData;
-               currentChart.update();
-           }
-           
-           // Update chart title
-           const titles = {
-               stretching: 'Stretching Sessions',
-               steps: 'Steps Taken',
-               sleep: 'Sleep Hours',
-               sleepQuality: 'Sleep Quality & Hours',
-               water: 'Water Intake (Liters)',
-               screenTime: 'Screen Time (Hours)',
-               pages: 'Pages Read',
-               training: 'Training Sessions'
-           };
-           
-           const periodText = currentPeriod === 'daily' ? 'Last 7 Days' : 
-                             currentPeriod === 'weekly' ? 'Last 4 Weeks' : 'Last 6 Months';
-           
-           document.getElementById('chartTitle').textContent = `${titles[currentView] || currentView} - ${periodText}`;
-       }
-       
-       function getChartData(dates, allData) {
-           const now = new Date();
-           let filteredDates = [];
-           
-           if (currentPeriod === 'daily') {
-               // Last 7 days
-               for (let i = 6; i >= 0; i--) {
-                   const date = new Date(now);
-                   date.setDate(date.getDate() - i);
-                   filteredDates.push(date.toISOString().split('T')[0]);
-               }
-           } else if (currentPeriod === 'weekly') {
-               // Last 4 weeks (weekly averages)
-               for (let i = 3; i >= 0; i--) {
-                   const date = new Date(now);
-                   date.setDate(date.getDate() - (i * 7));
-                   filteredDates.push(`Week of ${date.toLocaleDateString()}`);
-               }
-           } else {
-               // Last 6 months (monthly averages)
-               for (let i = 5; i >= 0; i--) {
-                   const date = new Date(now);
-                   date.setMonth(date.getMonth() - i);
-                   filteredDates.push(date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }));
-               }
-           }
-           
-           return getSingleMetricChartData(filteredDates, allData, currentView);
-       }
-       
-       function getSingleMetricChartData(labels, allData, metric) {
-           if (metric === 'sleepQuality') {
-               // For sleep quality, show quality score and hours
-               const qualityData = labels.map(label => {
-                   if (currentPeriod === 'daily') {
-                       const dayData = allData[label];
-                       return dayData ? (parseFloat(dayData.sleepQuality) || 0) : 0;
-                   }
-                   return 0;
-               });
-               
-               const sleepHoursData = labels.map(label => {
-                   if (currentPeriod === 'daily') {
-                       const dayData = allData[label];
-                       return dayData ? (parseFloat(dayData.sleep) || 0) : 0;
-                   }
-                   return 0;
-               });
-               
-               return {
-                   labels,
-                   datasets: [
-                       {
-                           label: 'Sleep Quality (1-100)',
-                           data: qualityData,
-                           borderColor: '#667eea',
-                           backgroundColor: '#667eea20',
-                           tension: 0.4,
-                           fill: true,
-                           yAxisID: 'y'
-                       },
-                       {
-                           label: 'Sleep Hours',
-                           data: sleepHoursData,
-                           borderColor: '#4CAF50',
-                           backgroundColor: '#4CAF5020',
-                           tension: 0.4,
-                           fill: false,
-                           yAxisID: 'y1'
-                       }
-                   ]
-               };
-           }
-           
-           const data = labels.map(label => {
-               if (currentPeriod === 'daily') {
-                   const dayData = allData[label];
-                   if (metric === 'training') {
-                       // Special handling for training
-                       if (dayData) {
-                           const hadGym = dayData.hadGym === true ? 1 : 0;
-                           const hadRun = dayData.hadRun === true ? 1 : 0;
-                           return hadGym + hadRun;
-                       }
-                       return 0;
-                   }
-                   return dayData ? (parseFloat(dayData[metric]) || 0) : 0;
-               }
-               return 0; // Simplified for demo
-           });
-           
-           // Chart colors based on metric
-           const colors = {
-               stretching: '#667eea',
-               steps: '#4CAF50',
-               sleep: '#2196F3',
-               water: '#00BCD4',
-               screenTime: '#FF9800',
-               pages: '#9C27B0',
-               training: '#f44336'
-           };
-           
-           return {
-               labels,
-               datasets: [{
-                   label: metric.charAt(0).toUpperCase() + metric.slice(1),
-                   data,
-                   borderColor: colors[metric] || '#667eea',
-                   backgroundColor: (colors[metric] || '#667eea') + '20',
-                   tension: 0.4,
-                   fill: true
-               }]
-           };
-       }
+        
+        function displayCurrentDate() {
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+            
+            // Clear old data for new day
+            clearOldData();
+        }
+        
+        function clearOldData() {
+            const today = new Date().toISOString().split('T')[0];
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            
+            // Check if we already have data for today
+            if (allData[today]) {
+                // We have data for today, so don't clear
+                return;
+            }
+            
+            // Clear all input fields
+            const inputsToClear = [
+                'stretching', 'steps', 'sleepHours', 'sleepMinutes', 
+                'water', 'screenTime', 'pages', 'sleepQuality',
+                'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
+                'lightHours', 'lightMinutes', 'runDistance'
+            ];
+            
+            inputsToClear.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.value = '';
+            });
+            
+            // Clear checkboxes
+            const checkboxesToClear = ['hadGym', 'hadRun', 'coldShower', 'lust', 'napped'];
+            checkboxesToClear.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.checked = false;
+            });
+            
+            // Clear select dropdowns
+            document.getElementById('runType').value = '';
+            
+            // Hide run details
+            document.getElementById('runDetails').style.display = 'none';
+            
+            // Update UI
+            updateCheckboxStyles();
+            updateConsistencyTracker();
+            updateSleepAnalysis();
+        }
+        
+        function displayDailyQuote() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const quoteIndex = dayOfYear % quotes.length;
+            const todaysQuote = quotes[quoteIndex];
+            
+            document.getElementById('dailyQuote').textContent = `"${todaysQuote.text}"`;
+            document.getElementById('quoteAuthor').textContent = `— ${todaysQuote.author}`;
+        }
+        
+        function updateCheckboxStyles() {
+            const coldShowerGroup = document.getElementById('coldShowerGroup');
+            const lustGroup = document.getElementById('lustGroup');
+            const coldShowerChecked = document.getElementById('coldShower').checked;
+            const lustChecked = document.getElementById('lust').checked;
+            
+            if (coldShowerChecked) {
+                coldShowerGroup.classList.add('cold-shower-checked');
+            } else {
+                coldShowerGroup.classList.remove('cold-shower-checked');
+            }
+            
+            if (lustChecked) {
+                lustGroup.classList.add('lust-checked');
+            } else {
+                lustGroup.classList.remove('lust-checked');
+            }
+            
+            updateConsistencyTracker();
+        }
+        
+        // Pause/Freeze functionality
+        function togglePause(streakType) {
+            const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
+            const toggleElement = checkbox.parentElement;
+            
+            // Toggle the paused state
+            pausedStreaks[streakType].paused = !pausedStreaks[streakType].paused;
+            
+            // Update UI
+            checkbox.checked = pausedStreaks[streakType].paused;
+            toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
+            
+            // If pausing, increment days counter
+            if (pausedStreaks[streakType].paused) {
+                pausedStreaks[streakType].days++;
+                updatePauseDisplay();
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
+            
+            // Update streaks display
+            updateStreakTracker();
+        }
+        
+        function updatePauseDisplay() {
+            // Update the days counters
+            Object.keys(pausedStreaks).forEach(streakType => {
+                const daysElement = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}Days`);
+                if (daysElement) {
+                    daysElement.textContent = `${pausedStreaks[streakType].days} day${pausedStreaks[streakType].days !== 1 ? 's' : ''}`;
+                }
+                
+                // Update checkbox and toggle state
+                const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
+                if (checkbox) {
+                    const toggleElement = checkbox.parentElement;
+                    checkbox.checked = pausedStreaks[streakType].paused;
+                    if (toggleElement) {
+                        toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
+                    }
+                }
+            });
+        }
+        
+        function resetPauseCounters() {
+            const today = new Date().toISOString().split('T')[0];
+            const lastReset = localStorage.getItem('lastPauseReset') || '';
+            
+            // Reset pause days if it's a new day
+            if (today !== lastReset) {
+                Object.keys(pausedStreaks).forEach(streakType => {
+                    // If streak was paused yesterday, keep counting
+                    if (pausedStreaks[streakType].paused) {
+                        // Don't reset the counter, let it keep counting
+                        // This allows multiple consecutive paused days
+                    } else {
+                        // If not paused, reset counter to 0
+                        pausedStreaks[streakType].days = 0;
+                    }
+                });
+                
+                localStorage.setItem('lastPauseReset', today);
+                localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
+                updatePauseDisplay();
+            }
+        }
+        
+        function updateStreakTracker() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            const streakTracker = document.getElementById('streakTracker');
+            
+            const streaks = calculateStreaksWithPause(dates, allData);
+            
+            let html = '';
+            Object.keys(streaks).forEach(key => {
+                const streak = streaks[key];
+                let displayName = key.charAt(0).toUpperCase() + key.slice(1);
+                if (key === 'screenTime') displayName = 'Screen Time';
+                if (key === 'coldShower') displayName = 'Cold Shower';
+                if (key === 'lustControl') displayName = 'Lust Control';
+                
+                // Determine color based on streak length
+                let streakColor = '#666';
+                let flameIcon = '';
+                let pausedIndicator = '';
+                
+                // Check if this streak is paused
+                if ((key === 'steps' && pausedStreaks.steps.paused) ||
+                    (key === 'training' && pausedStreaks.training.paused) ||
+                    (key === 'coldShower' && pausedStreaks.coldShower.paused)) {
+                    pausedIndicator = ' ⏸️';
+                    streakColor = '#6c757d'; // Gray color for paused streaks
+                } else if (streak >= 7) {
+                    streakColor = '#4CAF50';
+                    flameIcon = '🔥';
+                } else if (streak >= 3) {
+                    streakColor = '#FF9800';
+                    flameIcon = '🔥';
+                } else if (streak > 0) {
+                    streakColor = '#667eea';
+                    flameIcon = '✨';
+                }
+                
+                html += `
+                    <div class="consistency-item">
+                        <span>${displayName}</span>
+                        <div style="color: ${streakColor}; font-weight: bold; font-size: 1.1rem;">
+                            ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}${pausedIndicator}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            streakTracker.innerHTML = html;
+        }
+        
+        function calculateStreaksWithPause(dates, allData) {
+            const streaks = calculateStreaks(dates, allData);
+            
+            // Apply pause to specific streaks
+            if (pausedStreaks.steps.paused) {
+                streaks.steps = Math.max(streaks.steps, pausedStreaks.steps.days + 1);
+            }
+            
+            if (pausedStreaks.training.paused) {
+                streaks.training = Math.max(streaks.training, pausedStreaks.training.days + 1);
+            }
+            
+            if (pausedStreaks.coldShower.paused) {
+                streaks.coldShower = Math.max(streaks.coldShower, pausedStreaks.coldShower.days + 1);
+            }
+            
+            return streaks;
+        }
+        
+        function calculateStreaks(dates, allData) {
+            const streaks = {
+                stretching: 0,
+                steps: 0,
+                sleep: 0,
+                water: 0,
+                screenTime: 0,
+                pages: 0,
+                training: 0,
+                coldShower: 0,
+                lustControl: 0
+            };
+            
+            if (dates.length === 0) return streaks;
+            
+            // Get today's date
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            
+            // Helper function to check if a goal was met on a specific day
+            function goalMet(date, goalKey) {
+                const dayData = allData[date];
+                if (!dayData) return false;
+                
+                if (goalKey === 'coldShower') {
+                    return dayData.coldShower === true;
+                }
+                
+                if (goalKey === 'lustControl') {
+                    return dayData.lust !== true;
+                }
+                
+                if (goalKey === 'training') {
+                    const hadGym = dayData.hadGym === true ? 1 : 0;
+                    const hadRun = dayData.hadRun === true ? 1 : 0;
+                    return (hadGym + hadRun) >= goals.training;
+                }
+                
+                const value = parseFloat(dayData[goalKey]) || 0;
+                const goal = goals[goalKey];
+                
+                if (goalKey === 'screenTime') {
+                    return value <= goal;
+                }
+                
+                return value >= goal;
+            }
+            
+            // Calculate streak for each goal
+            Object.keys(streaks).forEach(goalKey => {
+                let streak = 0;
+                let checkingDate = new Date(today);
+                
+                // Start checking from today backwards
+                for (let i = 0; i < 365; i++) { // Check up to a year back
+                    const dateStr = checkingDate.toISOString().split('T')[0];
+                    const dayData = allData[dateStr];
+                    
+                    if (dayData) {
+                        // If we have data for this day and goal was met
+                        if (goalMet(dateStr, goalKey)) {
+                            streak++;
+                        } else {
+                            // Goal wasn't met, streak ends
+                            break;
+                        }
+                    } else {
+                        // No data for this day, streak ends
+                        break;
+                    }
+                    
+                    // Move to previous day
+                    checkingDate.setDate(checkingDate.getDate() - 1);
+                }
+                
+                streaks[goalKey] = streak;
+            });
+            
+            return streaks;
+        }
+        
+        function updateTotalStats() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const totalStatsElement = document.getElementById('totalStats');
+            
+            // Calculate totals
+            const totals = {
+                stretching: 0,
+                steps: 0,
+                sleep: 0,
+                water: 0,
+                screenTime: 0,
+                pages: 0,
+                gymSessions: 0,
+                runs: 0,
+                totalRunDistance: 0,
+                coldShowers: 0,
+                naps: 0
+            };
+            
+            let totalDays = 0;
+            
+            Object.keys(allData).forEach(date => {
+                const dayData = allData[date];
+                totalDays++;
+                
+                totals.stretching += parseFloat(dayData.stretching) || 0;
+                totals.steps += parseFloat(dayData.steps) || 0;
+                totals.sleep += parseFloat(dayData.sleep) || 0;
+                totals.water += parseFloat(dayData.water) || 0;
+                totals.screenTime += parseFloat(dayData.screenTime) || 0;
+                totals.pages += parseFloat(dayData.pages) || 0;
+                
+                if (dayData.hadGym === true) totals.gymSessions++;
+                if (dayData.hadRun === true) {
+                    totals.runs++;
+                    totals.totalRunDistance += parseFloat(dayData.runDistance) || 0;
+                }
+                
+                if (dayData.coldShower === true) totals.coldShowers++;
+                if (dayData.napped === true) totals.naps++;
+            });
+            
+            let html = '';
+            
+            // Format numbers nicely
+            const formatNumber = (num) => {
+                if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                return Math.round(num * 10) / 10;
+            };
+            
+            html += `
+                <div class="consistency-item">
+                    <span>🧘 Total Stretching</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.stretching)}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>👟 Total Steps</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.steps)}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>😴 Total Sleep</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.sleep)}h</div>
+                </div>
+                <div class="consistency-item">
+                    <span>💧 Total Water</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.water)}L</div>
+                </div>
+                <div class="consistency-item">
+                    <span>📱 Total Screen Time</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.screenTime)}h</div>
+                </div>
+                <div class="consistency-item">
+                    <span>📚 Total Pages</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pages)}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>🏋️ Gym Sessions</span>
+                    <div style="font-weight: bold; color: #667eea;">${totals.gymSessions}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>🏃 Total Runs</span>
+                    <div style="font-weight: bold; color: #667eea;">${totals.runs}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>📏 Total Distance</span>
+                    <div style="font-weight: bold; color: #667eea;">${formatNumber(totals.totalRunDistance)}km</div>
+                </div>
+                <div class="consistency-item">
+                    <span>🚿 Cold Showers</span>
+                    <div style="font-weight: bold; color: #4CAF50;">${totals.coldShowers}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>😴 Naps Taken</span>
+                    <div style="font-weight: bold; color: #667eea;">${totals.naps}</div>
+                </div>
+                <div class="consistency-item">
+                    <span>📅 Days Tracked</span>
+                    <div style="font-weight: bold; color: #764ba2;">${totalDays}</div>
+                </div>
+            `;
+            
+            totalStatsElement.innerHTML = html;
+        }
+        
+        function updateConsistencyTracker() {
+            const tracker = document.getElementById('consistencyTracker');
+            const currentData = getCurrentInputs();
+            
+            let html = '';
+            
+            // Regular metrics
+            Object.keys(goals).forEach(key => {
+                if (key === 'training') {
+                    // Special handling for training
+                    const hadGym = currentData.hadGym;
+                    const hadRun = currentData.hadRun;
+                    const trainingSessions = (hadGym ? 1 : 0) + (hadRun ? 1 : 0);
+                    const isGood = trainingSessions >= goals.training;
+                    const status = isGood ? 'good' : 'bad';
+                    const icon = isGood ? '✓' : '✗';
+                    
+                    html += `
+                        <div class="consistency-item">
+                            <span>Training</span>
+                            <div class="consistency-status status-${status}">${icon}</div>
+                        </div>
+                    `;
+                } else {
+                    const current = parseFloat(currentData[key]) || 0;
+                    const goal = goals[key];
+                    const isGood = key === 'screenTime' ? current <= goal : current >= goal;
+                    const status = isGood ? 'good' : 'bad';
+                    const icon = isGood ? '✓' : '✗';
+                    
+                    let displayName = key.charAt(0).toUpperCase() + key.slice(1);
+                    if (key === 'screenTime') displayName = 'Screen Time';
+                    
+                    html += `
+                        <div class="consistency-item">
+                            <span>${displayName}</span>
+                            <div class="consistency-status status-${status}">${icon}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Cold shower
+            const coldShower = document.getElementById('coldShower').checked;
+            html += `
+                <div class="consistency-item">
+                    <span>Cold Shower</span>
+                    <div class="consistency-status status-${coldShower ? 'good' : 'bad'}">${coldShower ? '✓' : '✗'}</div>
+                </div>
+            `;
+            
+            // Lust control (inverted - checked is bad)
+            const lust = document.getElementById('lust').checked;
+            html += `
+                <div class="consistency-item">
+                    <span>Lust Control</span>
+                    <div class="consistency-status status-${lust ? 'bad' : 'good'}">${lust ? '✗' : '✓'}</div>
+                </div>
+            `;
+            
+            tracker.innerHTML = html;
+        }
+        
+        function getCurrentInputs() {
+            // Calculate total sleep in hours (including decimals)
+            const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
+            const sleepMinutes = parseFloat(document.getElementById('sleepMinutes').value) || 0;
+            const totalSleepHours = sleepHours + (sleepMinutes / 60);
+            
+            // Calculate REM sleep in minutes
+            const remHours = parseFloat(document.getElementById('remHours').value) || 0;
+            const remMinutes = parseFloat(document.getElementById('remMinutes').value) || 0;
+            const totalRemMinutes = (remHours * 60) + remMinutes;
+            
+            // Calculate Deep sleep in minutes
+            const deepHours = parseFloat(document.getElementById('deepHours').value) || 0;
+            const deepMinutes = parseFloat(document.getElementById('deepMinutes').value) || 0;
+            const totalDeepMinutes = (deepHours * 60) + deepMinutes;
+            
+            // Calculate Light sleep in minutes
+            const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
+            const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
+            const totalLightMinutes = (lightHours * 60) + lightMinutes;
+            
+            return {
+                stretching: document.getElementById('stretching').value,
+                steps: document.getElementById('steps').value,
+                sleep: totalSleepHours.toFixed(2), // Keep as decimal hours for chart
+                sleepHours: sleepHours,
+                sleepMinutes: sleepMinutes,
+                sleepQuality: document.getElementById('sleepQuality').value,
+                remSleep: totalRemMinutes, // Store as total minutes
+                remHours: remHours,
+                remMinutes: remMinutes,
+                deepSleep: totalDeepMinutes, // Store as total minutes
+                deepHours: deepHours,
+                deepMinutes: deepMinutes,
+                lightSleep: totalLightMinutes, // Store as total minutes
+                lightHours: lightHours,
+                lightMinutes: lightMinutes,
+                napped: document.getElementById('napped').checked,
+                water: document.getElementById('water').value,
+                screenTime: document.getElementById('screenTime').value,
+                pages: document.getElementById('pages').value,
+                hadGym: document.getElementById('hadGym').checked,
+                hadRun: document.getElementById('hadRun').checked,
+                runType: document.getElementById('runType').value,
+                runDistance: document.getElementById('runDistance').value,
+                coldShower: document.getElementById('coldShower').checked,
+                lust: document.getElementById('lust').checked
+            };
+        }
+        
+        function updateSleepAnalysis() {
+            const sleepQuality = parseInt(document.getElementById('sleepQuality').value) || 0;
+            const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
+            const sleepMinutes = parseFloat(document.getElementById('sleepMinutes').value) || 0;
+            const totalSleepHours = sleepHours + (sleepMinutes / 60);
+            
+            // Calculate REM sleep in minutes
+            const remHours = parseFloat(document.getElementById('remHours').value) || 0;
+            const remMinutes = parseFloat(document.getElementById('remMinutes').value) || 0;
+            const totalRemMinutes = (remHours * 60) + remMinutes;
+            
+            // Calculate Deep sleep in minutes
+            const deepHours = parseFloat(document.getElementById('deepHours').value) || 0;
+            const deepMinutes = parseFloat(document.getElementById('deepMinutes').value) || 0;
+            const totalDeepMinutes = (deepHours * 60) + deepMinutes;
+            
+            // Calculate Light sleep in minutes
+            const lightHours = parseFloat(document.getElementById('lightHours').value) || 0;
+            const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
+            const totalLightMinutes = (lightHours * 60) + lightMinutes;
+            
+            const napped = document.getElementById('napped').checked;
+            
+            const sleepAnalysis = document.getElementById('sleepAnalysis');
+            
+            let html = '';
+            
+            // Sleep Score with emoji based on quality
+            let sleepEmoji = '😴';
+            let sleepColor = '#667eea';
+            if (sleepQuality >= 80) {
+                sleepEmoji = '😊';
+                sleepColor = '#4CAF50';
+            } else if (sleepQuality >= 60) {
+                sleepEmoji = '😐';
+                sleepColor = '#FF9800';
+            } else if (sleepQuality > 0) {
+                sleepEmoji = '😟';
+                sleepColor = '#f44336';
+            }
+            
+            // Format sleep time display
+            let sleepTimeDisplay = '';
+            if (sleepHours > 0 || sleepMinutes > 0) {
+                if (sleepHours > 0 && sleepMinutes > 0) {
+                    sleepTimeDisplay = `${sleepHours}h ${sleepMinutes}m`;
+                } else if (sleepHours > 0) {
+                    sleepTimeDisplay = `${sleepHours}h`;
+                } else {
+                    sleepTimeDisplay = `${sleepMinutes}m`;
+                }
+            }
+            
+            html += `
+                <div class="sleep-score" style="color: ${sleepColor}">
+                    ${sleepQuality > 0 ? sleepQuality : '--'}/100 ${sleepEmoji}
+                </div>
+                <div style="text-align: center; color: #666; margin-bottom: 15px;">
+                    ${sleepTimeDisplay || 'No sleep data'}
+                    ${napped ? ' + Nap 💤' : ''}
+                </div>
+            `;
+            
+            // Sleep stage breakdown (only show if we have data)
+            const totalMinutes = totalRemMinutes + totalDeepMinutes + totalLightMinutes;
+            if (totalMinutes > 0) {
+                const remPercent = Math.round((totalRemMinutes/totalMinutes)*100);
+                const deepPercent = Math.round((totalDeepMinutes/totalMinutes)*100);
+                const lightPercent = Math.round((totalLightMinutes/totalMinutes)*100);
+                
+                // Format function for display
+                const formatTime = (totalMinutes) => {
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+                    if (hours > 0 && minutes > 0) {
+                        return `${hours}h ${minutes}m`;
+                    } else if (hours > 0) {
+                        return `${hours}h`;
+                    } else {
+                        return `${minutes}m`;
+                    }
+                };
+                
+                html += `
+                    <div class="sleep-breakdown">
+                        <div class="sleep-metric" style="border-left: 4px solid #667eea;">
+                            <div class="sleep-metric-label">REM Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(totalRemMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${remPercent}%
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #4CAF50;">
+                            <div class="sleep-metric-label">Deep Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(totalDeepMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${deepPercent}%
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #4CAF50;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #FF9800;">
+                            <div class="sleep-metric-label">Light Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(totalLightMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${lightPercent}%
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #FF9800;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #9C27B0;">
+                            <div class="sleep-metric-label">Total Stages</div>
+                            <div class="sleep-metric-value">${formatTime(totalMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #888;">
+                                ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m
+                            </div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: 100%; background: #9C27B0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; text-align: center; font-size: 0.9rem; color: #666;">
+                        <div>💡 Ideal: 1.5-2h REM, 1-1.5h Deep sleep</div>
+                        <div style="font-size: 0.8rem; color: #888; margin-top: 3px;">(20-25% each of total sleep)</div>
+                    </div>
+                `;
+            } else if (totalSleepHours > 0) {
+                html += `
+                    <div style="text-align: center; color: #888; padding: 20px;">
+                        Enter sleep stage details for breakdown
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div style="text-align: center; color: #888; padding: 20px;">
+                        Enter sleep data to see analysis
+                    </div>
+                `;
+            }
+            
+            sleepAnalysis.innerHTML = html;
+        }
+        
+        function saveData() {
+            const today = new Date().toISOString().split('T')[0];
+            const data = getCurrentInputs();
+            
+            // Get existing data
+            let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            allData[today] = data;
+            
+            // Save to localStorage
+            localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
+            
+            // Show success message
+            const btn = document.querySelector('.save-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Saved Successfully!';
+            btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            }, 2000);
+            
+            // Update chart and streaks
+            updateChart();
+            updateStreakTracker();
+            updateTotalStats();
+        }
+        
+        function loadTodaysData() {
+            const today = new Date().toISOString().split('T')[0];
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const todaysData = allData[today];
+            
+            if (todaysData) {
+                // List of all possible fields
+                const fields = [
+                    'stretching', 'steps', 'sleep', 'sleepHours', 'sleepMinutes',
+                    'sleepQuality', 'remSleep', 'remHours', 'remMinutes',
+                    'deepSleep', 'deepHours', 'deepMinutes', 'lightSleep', 
+                    'lightHours', 'lightMinutes', 'water', 'screenTime', 'pages',
+                    'runType', 'runDistance'
+                ];
+                
+                const checkboxes = ['napped', 'hadGym', 'hadRun', 'coldShower', 'lust'];
+                
+                // Set values for regular fields
+                fields.forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element && todaysData[key] !== undefined) {
+                        element.value = todaysData[key];
+                    }
+                });
+                
+                // Set values for checkboxes
+                checkboxes.forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element && todaysData[key] !== undefined) {
+                        element.checked = todaysData[key];
+                    }
+                });
+                
+                // Show run details if hadRun is checked
+                if (todaysData.hadRun) {
+                    document.getElementById('runDetails').style.display = 'grid';
+                }
+                
+                updateCheckboxStyles();
+                updateConsistencyTracker();
+                updateSleepAnalysis();
+            }
+        }
+        
+        function showChart(type) {
+            currentView = type;
+            
+            // Update active button
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateChart();
+        }
+        
+        function changePeriod(period) {
+            currentPeriod = period;
+            
+            // Update active button
+            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateChart();
+        }
+        
+        function initializeChart() {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: []
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+            
+            updateChart();
+        }
+        
+        function updateChart() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            
+            let chartData = getChartData(dates, allData);
+            
+            if (currentChart) {
+                currentChart.data = chartData;
+                currentChart.update();
+            }
+            
+            // Update chart title
+            const titles = {
+                stretching: 'Stretching Sessions',
+                steps: 'Steps Taken',
+                sleep: 'Sleep Hours',
+                water: 'Water Intake (Liters)',
+                screenTime: 'Screen Time (Hours)',
+                pages: 'Pages Read',
+                training: 'Training Sessions'
+            };
+            
+            const periodText = currentPeriod === 'daily' ? 'Last 7 Days' : 
+                              currentPeriod === 'weekly' ? 'Last 4 Weeks' : 'Last 6 Months';
+            
+            document.getElementById('chartTitle').textContent = `${titles[currentView] || currentView} - ${periodText}`;
+        }
+        
+        function getChartData(dates, allData) {
+            const now = new Date();
+            let filteredDates = [];
+            
+            if (currentPeriod === 'daily') {
+                // Last 7 days
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    filteredDates.push(date.toISOString().split('T')[0]);
+                }
+            } else if (currentPeriod === 'weekly') {
+                // Last 4 weeks (weekly averages)
+                for (let i = 3; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - (i * 7));
+                    filteredDates.push(`Week of ${date.toLocaleDateString()}`);
+                }
+            } else {
+                // Last 6 months (monthly averages)
+                for (let i = 5; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setMonth(date.getMonth() - i);
+                    filteredDates.push(date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }));
+                }
+            }
+            
+            return getSingleMetricChartData(filteredDates, allData, currentView);
+        }
+        
+        function getSingleMetricChartData(labels, allData, metric) {
+            const data = labels.map(label => {
+                if (currentPeriod === 'daily') {
+                    const dayData = allData[label];
+                    if (metric === 'training') {
+                        // Special handling for training
+                        if (dayData) {
+                            const hadGym = dayData.hadGym === true ? 1 : 0;
+                            const hadRun = dayData.hadRun === true ? 1 : 0;
+                            return hadGym + hadRun;
+                        }
+                        return 0;
+                    }
+                    return dayData ? (parseFloat(dayData[metric]) || 0) : 0;
+                }
+                return 0; // Simplified for demo
+            });
+            
+            // Chart colors based on metric
+            const colors = {
+                stretching: '#667eea',
+                steps: '#4CAF50',
+                sleep: '#2196F3',
+                water: '#00BCD4',
+                screenTime: '#FF9800',
+                pages: '#9C27B0',
+                training: '#f44336'
+            };
+            
+            return {
+                labels,
+                datasets: [{
+                    label: metric.charAt(0).toUpperCase() + metric.slice(1),
+                    data,
+                    borderColor: colors[metric] || '#667eea',
+                    backgroundColor: (colors[metric] || '#667eea') + '20',
+                    tension: 0.4,
+                    fill: true
+                }]
+            };
+        }
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
