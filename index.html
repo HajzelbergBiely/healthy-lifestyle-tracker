@@ -297,6 +297,73 @@
             padding-top: 15px;
             border-top: 2px solid #e0e0e0;
         }
+        /* Pause/Freeze Button Styles */
+        .pause-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        
+        .pause-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .pause-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pause-toggle:hover {
+            background: #e9ecef;
+        }
+        
+        .pause-toggle.active {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+        
+        .pause-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        
+        .pause-label {
+            flex-grow: 1;
+            margin-left: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .pause-days {
+            font-size: 0.9rem;
+            color: #666;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .pause-note {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
         
         @media (max-width: 768px) {
             .sleep-expanded, .training-expanded {
@@ -557,6 +624,27 @@
      </div>
     </div>
     <div class="sidebar">
+     <div class="pause-section">
+       <div class="pause-title">⏸️ Pause Streaks</div>
+       <div class="pause-toggle" onclick="togglePause('steps')">
+         <input type="checkbox" class="pause-checkbox" id="pauseSteps">
+         <span class="pause-label">Steps Taken</span>
+         <span class="pause-days" id="pauseStepsDays">0 days</span>
+       </div>
+       <div class="pause-toggle" onclick="togglePause('training')">
+         <input type="checkbox" class="pause-checkbox" id="pauseTraining">
+         <span class="pause-label">Training Sessions</span>
+         <span class="pause-days" id="pauseTrainingDays">0 days</span>
+       </div>
+       <div class="pause-toggle" onclick="togglePause('coldShower')">
+         <input type="checkbox" class="pause-checkbox" id="pauseColdShower">
+         <span class="pause-label">Cold Showers</span>
+         <span class="pause-days" id="pauseColdShowerDays">0 days</span>
+       </div>
+       <div class="pause-note">
+         Toggle on to freeze streak when sick/resting
+       </div>
+     </div>
      <div class="quote-card">
       <div class="quote-text" id="dailyQuote"></div>
       <div class="quote-author" id="quoteAuthor"></div>
@@ -624,13 +712,20 @@
        
        // Initialize the app
        document.addEventListener('DOMContentLoaded', function() {
-           displayCurrentDate();
-           displayDailyQuote();
-           loadTodaysData();
-           updateConsistencyTracker();
-           updateStreakTracker();
-           updateTotalStats();
-           initializeChart();
+            displayCurrentDate();
+            displayDailyQuote();
+            loadTodaysData();
+            updateConsistencyTracker();
+            updateStreakTracker();
+            updateTotalStats();
+            initializeChart();
+            
+            // Initialize pause system
+            updatePauseDisplay();
+            resetPauseCounters();
+            
+            // ... rest of your event listeners ...
+        });
            
            // Add event listeners for checkboxes
            document.getElementById('coldShower').addEventListener('change', updateCheckboxStyles);
@@ -674,7 +769,139 @@
            // Initialize sleep analysis
            updateSleepAnalysis();
        });
+
+       // Pause/Freeze functionality
+       let pausedStreaks = JSON.parse(localStorage.getItem('pausedStreaks')) || {
+           steps: { paused: false, days: 0 },
+           training: { paused: false, days: 0 },
+           coldShower: { paused: false, days: 0 }
+       };
+
+       function clearOldData() {
+           const today = new Date().toISOString().split('T')[0];
+           const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+           
+           // Check if we already have data for today
+           if (allData[today]) {
+               // We have data for today, so don't clear
+               return;
+           }
+           
+           // Clear all input fields
+           const inputsToClear = [
+               'stretching', 'steps', 'sleepHours', 'sleepMinutes', 
+               'water', 'screenTime', 'pages', 'sleepQuality',
+               'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
+               'lightHours', 'lightMinutes', 'runDistance'
+           ];
+           
+           inputsToClear.forEach(id => {
+               const element = document.getElementById(id);
+               if (element) element.value = '';
+           });
+           
+           // Clear checkboxes
+           const checkboxesToClear = ['hadGym', 'hadRun', 'coldShower', 'lust', 'napped'];
+           checkboxesToClear.forEach(id => {
+               const element = document.getElementById(id);
+               if (element) element.checked = false;
+           });
+           
+           // Clear select dropdowns
+           document.getElementById('runType').value = '';
+           
+           // Hide run details
+           document.getElementById('runDetails').style.display = 'none';
+           
+           // Update UI
+           updateCheckboxStyles();
+           updateConsistencyTracker();
+           updateSleepAnalysis();
+       }
        
+       function togglePause(streakType) {
+           const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
+           const toggleElement = checkbox.parentElement;
+           
+           // Toggle the paused state
+           pausedStreaks[streakType].paused = !pausedStreaks[streakType].paused;
+           
+           // Update UI
+           checkbox.checked = pausedStreaks[streakType].paused;
+           toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
+           
+           // If pausing, increment days counter
+           if (pausedStreaks[streakType].paused) {
+               pausedStreaks[streakType].days++;
+               updatePauseDisplay();
+           }
+           
+           // Save to localStorage
+           localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
+           
+           // Update streaks display
+           updateStreakTracker();
+       }
+       
+       function updatePauseDisplay() {
+           // Update the days counters
+           Object.keys(pausedStreaks).forEach(streakType => {
+               const daysElement = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}Days`);
+               if (daysElement) {
+                   daysElement.textContent = `${pausedStreaks[streakType].days} day${pausedStreaks[streakType].days !== 1 ? 's' : ''}`;
+               }
+               
+               // Update checkbox and toggle state
+               const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
+               const toggleElement = checkbox.parentElement;
+               
+               checkbox.checked = pausedStreaks[streakType].paused;
+               toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
+           });
+       }
+       
+       function resetPauseCounters() {
+           const today = new Date().toISOString().split('T')[0];
+           const lastReset = localStorage.getItem('lastPauseReset') || '';
+           
+           // Reset pause days if it's a new day
+           if (today !== lastReset) {
+               Object.keys(pausedStreaks).forEach(streakType => {
+                   // If streak was paused yesterday, keep counting
+                   if (pausedStreaks[streakType].paused) {
+                       // Don't reset the counter, let it keep counting
+                       // This allows multiple consecutive paused days
+                   } else {
+                       // If not paused, reset counter to 0
+                       pausedStreaks[streakType].days = 0;
+                   }
+               });
+               
+               localStorage.setItem('lastPauseReset', today);
+               localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
+               updatePauseDisplay();
+           }
+       }
+       
+       function calculateStreaksWithPause(dates, allData) {
+           const streaks = calculateStreaks(dates, allData);
+           
+           // Apply pause to specific streaks
+           if (pausedStreaks.steps.paused) {
+               streaks.steps = Math.max(streaks.steps, pausedStreaks.steps.days + 1);
+           }
+           
+           if (pausedStreaks.training.paused) {
+               streaks.training = Math.max(streaks.training, pausedStreaks.training.days + 1);
+           }
+           
+           if (pausedStreaks.coldShower.paused) {
+               streaks.coldShower = Math.max(streaks.coldShower, pausedStreaks.coldShower.days + 1);
+           }
+           
+           return streaks;
+       }
+   
        function displayCurrentDate() {
            const today = new Date();
            const options = { 
@@ -684,6 +911,9 @@
                day: 'numeric' 
            };
            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+           
+           // Clear old data for new day
+           clearOldData();
        }
        
        function displayDailyQuote() {
@@ -722,7 +952,7 @@
            const dates = Object.keys(allData).sort();
            const streakTracker = document.getElementById('streakTracker');
            
-           const streaks = calculateStreaks(dates, allData);
+           const streaks = calculateStreaksWithPause(dates, allData);
            
            let html = '';
            Object.keys(streaks).forEach(key => {
@@ -735,8 +965,15 @@
                // Determine color based on streak length
                let streakColor = '#666';
                let flameIcon = '';
+               let pausedIndicator = '';
                
-               if (streak >= 7) {
+               // Check if this streak is paused
+               if ((key === 'steps' && pausedStreaks.steps.paused) ||
+                   (key === 'training' && pausedStreaks.training.paused) ||
+                   (key === 'coldShower' && pausedStreaks.coldShower.paused)) {
+                   pausedIndicator = ' ⏸️';
+                   streakColor = '#6c757d'; // Gray color for paused streaks
+               } else if (streak >= 7) {
                    streakColor = '#4CAF50';
                    flameIcon = '🔥';
                } else if (streak >= 3) {
@@ -751,7 +988,7 @@
                    <div class="consistency-item">
                        <span>${displayName}</span>
                        <div style="color: ${streakColor}; font-weight: bold; font-size: 1.1rem;">
-                           ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}
+                           ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}${pausedIndicator}
                        </div>
                    </div>
                `;
@@ -1500,6 +1737,7 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9af8e80117f65a7e',t:'MTc2NjAwMDU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
+
 
 
 
