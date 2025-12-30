@@ -301,7 +301,7 @@
             border-top: 2px solid #e0e0e0;
         }
         
-        .pause-section {
+        .sick-section {
             background: rgba(255,255,255,0.95);
             border-radius: 15px;
             padding: 20px;
@@ -309,14 +309,14 @@
             margin-top: 10px;
         }
         
-        .pause-title {
+        .sick-title {
             font-size: 1.3rem;
             margin-bottom: 15px;
             color: #333;
             text-align: center;
         }
         
-        .pause-toggle {
+        .sick-toggle {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -328,38 +328,38 @@
             transition: all 0.3s ease;
         }
         
-        .pause-toggle:hover {
+        .sick-toggle:hover {
             background: #e9ecef;
         }
         
-        .pause-toggle.active {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
+        .sick-toggle.active {
+            background: #d1ecf1;
+            border: 2px solid #0dcaf0;
         }
         
-        .pause-checkbox {
+        .sick-checkbox {
             width: 24px;
             height: 24px;
             cursor: pointer;
         }
         
-        .pause-label {
+        .sick-label {
             flex-grow: 1;
             margin-left: 10px;
             font-weight: 600;
             color: #333;
         }
         
-        .pause-days {
+        .sick-indicator {
             font-size: 0.9rem;
-            color: #666;
+            color: #0dcaf0;
             background: white;
             padding: 5px 10px;
             border-radius: 15px;
             font-weight: bold;
         }
         
-        .pause-note {
+        .sick-note {
             font-size: 0.8rem;
             color: #666;
             text-align: center;
@@ -368,6 +368,64 @@
             border-top: 1px solid #eee;
         }
 
+        .rest-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        
+        .rest-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .rest-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .rest-toggle:hover {
+            background: #e9ecef;
+        }
+        
+        .rest-toggle.active {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+        
+        .rest-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        
+        .rest-label {
+            flex-grow: 1;
+            margin-left: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .rest-indicator {
+            font-size: 0.9rem;
+            color: #ffc107;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
         .reset-section {
             background: rgba(255,255,255,0.95);
             border-radius: 15px;
@@ -807,6 +865,74 @@
             color: #666;
         }
         
+        .training-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .training-toggle:hover {
+            background: #5a6fd8;
+        }
+        
+        .training-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .training-toggle.collapsed i {
+            transform: rotate(-90deg);
+        }
+        
+        .training-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .training-content.collapsed {
+            max-height: 0;
+        }
+        
+        .overall-consistency {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .overall-consistency-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        
+        .overall-consistency-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .consistency-percentage {
+            font-size: 0.9rem;
+            color: #888;
+            margin-left: 5px;
+        }
+        
+        .habit-consistency {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -824,98 +950,6 @@
                 position: static;
                 max-height: none;
             }
-        }
-        
-        /* New style for overall consistency card in sidebar */
-        .consistency-overall-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .consistency-percentage {
-            font-size: 3rem;
-            font-weight: bold;
-            text-align: center;
-            margin: 10px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .consistency-days {
-            text-align: center;
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        /* Rest day button */
-        .rest-day-btn {
-            width: 100%;
-            padding: 12px;
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-        
-        .rest-day-btn.active {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-        }
-        
-        .rest-day-status {
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        /* Chart type selector */
-        .chart-type-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .chart-type-btn {
-            padding: 6px 12px;
-            border: 2px solid #667eea;
-            border-radius: 15px;
-            background: white;
-            color: #667eea;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-        
-        .chart-type-btn.active {
-            background: #667eea;
-            color: white;
-        }
-        
-        /* Habit break warning */
-        .habit-break-warning {
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(255, 193, 7, 0.2);
-            border-radius: 8px;
-            border: 1px solid #ffc107;
-        }
-        
-        .habit-break-title {
-            color: #ffc107;
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
         }
     </style>
     <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
@@ -945,7 +979,7 @@
                         </div>
                         <div class="sleep-details">
                             <div class="sleep-detail-item">
-                                <label for="sleepQuality">Sleep Score (1-100)</label>
+                                <label for="sleepQuality">Quality (1-100)</label>
                                 <input type="number" id="sleepQuality" min="1" max="100" placeholder="Rate 1-100">
                             </div>
                             
@@ -985,236 +1019,235 @@
                     <div class="input-group training-expanded">
                         <label>💪 Training Sessions</label>
                         
-                        <!-- REST DAY BUTTON -->
-                        <button id="restDayBtn" class="rest-day-btn" onclick="toggleRestDay()">
-                            🛌 Rest Day (Pause Training Streaks)
-                        </button>
-                        <div id="restDayStatus" class="rest-day-status">
-                            ✅ Training streaks paused for today
+                        <div class="training-toggle" onclick="toggleTrainingDetails()">
+                            <span>Training Details</span>
+                            <i>▼</i>
                         </div>
                         
-                        <div class="training-checkboxes">
-                            <!-- Gym Session 1 -->
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="hadGym">
-                                <label for="hadGym">🏋️ Gym Session 1</label>
-                            </div>
-                            
-                            <div id="gymDetails" class="training-details" style="display: none;">
-                                <div style="margin-bottom: 10px;">
-                                    <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gymCore">
-                                            <label for="gymCore" style="font-size: 0.9rem;">Core</label>
+                        <div class="training-content" id="trainingContent">
+                            <div class="training-checkboxes">
+                                <!-- Gym Session 1 -->
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="hadGym">
+                                    <label for="hadGym">🏋️ Gym Session 1</label>
+                                </div>
+                                
+                                <div id="gymDetails" class="training-details" style="display: none;">
+                                    <div style="margin-bottom: 10px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gymCore">
+                                                <label for="gymCore" style="font-size: 0.9rem;">Core</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gymLegs">
+                                                <label for="gymLegs" style="font-size: 0.9rem;">Legs</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gymUpper">
+                                                <label for="gymUpper" style="font-size: 0.9rem;">Upper</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gymFull">
+                                                <label for="gymFull" style="font-size: 0.9rem;">Full Body</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gymCardio">
+                                                <label for="gymCardio" style="font-size: 0.9rem;">Cardio</label>
+                                            </div>
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gymLegs">
-                                            <label for="gymLegs" style="font-size: 0.9rem;">Legs</label>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div>
+                                            <label for="gymDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
+                                            <input type="number" id="gymDuration" placeholder="Minutes" min="0">
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gymUpper">
-                                            <label for="gymUpper" style="font-size: 0.9rem;">Upper</label>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gymFull">
-                                            <label for="gymFull" style="font-size: 0.9rem;">Full Body</label>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gymCardio">
-                                            <label for="gymCardio" style="font-size: 0.9rem;">Cardio</label>
+                                        <div>
+                                            <label for="gymIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
+                                            <input type="number" id="gymIntensity" min="1" max="10" placeholder="1-10">
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                    <div>
-                                        <label for="gymDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                                        <input type="number" id="gymDuration" placeholder="Minutes" min="0">
-                                    </div>
-                                    <div>
-                                        <label for="gymIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                                        <input type="number" id="gymIntensity" min="1" max="10" placeholder="1-10">
-                                    </div>
+                                <!-- Gym Session 2 -->
+                                <div class="checkbox-group" style="margin-top: 15px;">
+                                    <input type="checkbox" id="hadGym2">
+                                    <label for="hadGym2">🏋️ Gym Session 2</label>
                                 </div>
-                            </div>
-                            
-                            <!-- Gym Session 2 -->
-                            <div class="checkbox-group" style="margin-top: 15px;">
-                                <input type="checkbox" id="hadGym2">
-                                <label for="hadGym2">🏋️ Gym Session 2</label>
-                            </div>
-                            
-                            <div id="gymDetails2" class="training-details" style="display: none;">
-                                <div style="margin-bottom: 10px;">
-                                    <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gym2Core">
-                                            <label for="gym2Core" style="font-size: 0.9rem;">Core</label>
+                                
+                                <div id="gymDetails2" class="training-details" style="display: none;">
+                                    <div style="margin-bottom: 10px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gym2Core">
+                                                <label for="gym2Core" style="font-size: 0.9rem;">Core</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gym2Legs">
+                                                <label for="gym2Legs" style="font-size: 0.9rem;">Legs</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gym2Upper">
+                                                <label for="gym2Upper" style="font-size: 0.9rem;">Upper</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gym2Full">
+                                                <label for="gym2Full" style="font-size: 0.9rem;">Full Body</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="gym2Cardio">
+                                                <label for="gym2Cardio" style="font-size: 0.9rem;">Cardio</label>
+                                            </div>
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gym2Legs">
-                                            <label for="gym2Legs" style="font-size: 0.9rem;">Legs</label>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div>
+                                            <label for="gym2Duration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
+                                            <input type="number" id="gym2Duration" placeholder="Minutes" min="0">
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gym2Upper">
-                                            <label for="gym2Upper" style="font-size: 0.9rem;">Upper</label>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gym2Full">
-                                            <label for="gym2Full" style="font-size: 0.9rem;">Full Body</label>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="gym2Cardio">
-                                            <label for="gym2Cardio" style="font-size: 0.9rem;">Cardio</label>
+                                        <div>
+                                            <label for="gym2Intensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
+                                            <input type="number" id="gym2Intensity" min="1" max="10" placeholder="1-10">
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                    <div>
-                                        <label for="gym2Duration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                                        <input type="number" id="gym2Duration" placeholder="Minutes" min="0">
-                                    </div>
-                                    <div>
-                                        <label for="gym2Intensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                                        <input type="number" id="gym2Intensity" min="1" max="10" placeholder="1-10">
-                                    </div>
+                                <!-- Home Workout -->
+                                <div class="checkbox-group" style="margin-top: 15px;">
+                                    <input type="checkbox" id="hadHome">
+                                    <label for="hadHome">🏠 Home Workout</label>
                                 </div>
-                            </div>
-                            
-                            <!-- Home Workout -->
-                            <div class="checkbox-group" style="margin-top: 15px;">
-                                <input type="checkbox" id="hadHome">
-                                <label for="hadHome">🏠 Home Workout</label>
-                            </div>
-                            
-                            <div id="homeDetails" class="training-details" style="display: none;">
-                                <div style="margin-bottom: 10px;">
-                                    <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Type:</label>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="homeBodyweight">
-                                            <label for="homeBodyweight" style="font-size: 0.9rem;">Bodyweight</label>
+                                
+                                <div id="homeDetails" class="training-details" style="display: none;">
+                                    <div style="margin-bottom: 10px;">
+                                        <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Type:</label>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="homeBodyweight">
+                                                <label for="homeBodyweight" style="font-size: 0.9rem;">Bodyweight</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="homeYoga">
+                                                <label for="homeYoga" style="font-size: 0.9rem;">Yoga/Stretch</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="homeHIIT">
+                                                <label for="homeHIIT" style="font-size: 0.9rem;">HIIT</label>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <input type="checkbox" id="homeOther">
+                                                <label for="homeOther" style="font-size: 0.9rem;">Other</label>
+                                            </div>
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="homeYoga">
-                                            <label for="homeYoga" style="font-size: 0.9rem;">Yoga/Stretch</label>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div>
+                                            <label for="homeDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
+                                            <input type="number" id="homeDuration" placeholder="Minutes" min="0">
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="homeHIIT">
-                                            <label for="homeHIIT" style="font-size: 0.9rem;">HIIT</label>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
-                                            <input type="checkbox" id="homeOther">
-                                            <label for="homeOther" style="font-size: 0.9rem;">Other</label>
+                                        <div>
+                                            <label for="homeIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
+                                            <input type="number" id="homeIntensity" min="1" max="10" placeholder="1-10">
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                    <div>
-                                        <label for="homeDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                                        <input type="number" id="homeDuration" placeholder="Minutes" min="0">
+                                <!-- Running Session 1 -->
+                                <div class="checkbox-group" style="margin-top: 15px;">
+                                    <input type="checkbox" id="hadRun">
+                                    <label for="hadRun">🏃 Running Session 1</label>
+                                </div>
+                                
+                                <div id="runDetails" class="run-details" style="display: none;">
+                                    <div class="run-detail-item">
+                                        <label for="runType">Run Type</label>
+                                        <select id="runType">
+                                            <option value="">Select type</option>
+                                            <option value="interval">Interval Training</option>
+                                            <option value="free">Free Run</option>
+                                            <option value="race">Race</option>
+                                            <option value="tempo">Tempo Run</option>
+                                            <option value="long">Long Distance</option>
+                                            <option value="recovery">Recovery Run</option>
+                                            <option value="hill">Hill Training</option>
+                                        </select>
                                     </div>
-                                    <div>
-                                        <label for="homeIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                                        <input type="number" id="homeIntensity" min="1" max="10" placeholder="1-10">
+                                    <div class="run-detail-item">
+                                        <label for="runDistance">Distance (km)</label>
+                                        <input type="number" id="runDistance" step="0.1" placeholder="Enter distance">
+                                    </div>
+                                    <div class="run-detail-item">
+                                        <label for="runDuration">Duration (min)</label>
+                                        <input type="number" id="runDuration" placeholder="Minutes">
+                                    </div>
+                                    <div class="run-detail-item">
+                                        <label for="runIntensity">Intensity (1-10)</label>
+                                        <input type="number" id="runIntensity" min="1" max="10" placeholder="1-10">
+                                    </div>
+                                </div>
+                                
+                                <!-- Running Session 2 -->
+                                <div class="checkbox-group" style="margin-top: 15px;">
+                                    <input type="checkbox" id="hadRun2">
+                                    <label for="hadRun2">🏃 Running Session 2</label>
+                                </div>
+                                
+                                <div id="runDetails2" class="run-details" style="display: none;">
+                                    <div class="run-detail-item">
+                                        <label for="runType2">Run Type</label>
+                                        <select id="runType2">
+                                            <option value="">Select type</option>
+                                            <option value="interval">Interval Training</option>
+                                            <option value="free">Free Run</option>
+                                            <option value="race">Race</option>
+                                            <option value="tempo">Tempo Run</option>
+                                            <option value="long">Long Distance</option>
+                                            <option value="recovery">Recovery Run</option>
+                                            <option value="hill">Hill Training</option>
+                                        </select>
+                                    </div>
+                                    <div class="run-detail-item">
+                                        <label for="runDistance2">Distance (km)</label>
+                                        <input type="number" id="runDistance2" step="0.1" placeholder="Enter distance">
+                                    </div>
+                                    <div class="run-detail-item">
+                                        <label for="runDuration2">Duration (min)</label>
+                                        <input type="number" id="runDuration2" placeholder="Minutes">
+                                    </div>
+                                    <div class="run-detail-item">
+                                        <label for="runIntensity2">Intensity (1-10)</label>
+                                        <input type="number" id="runIntensity2" min="1" max="10" placeholder="1-10">
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Running Session 1 -->
-                            <div class="checkbox-group" style="margin-top: 15px;">
-                                <input type="checkbox" id="hadRun">
-                                <label for="hadRun">🏃 Running Session 1</label>
-                            </div>
-                            
-                            <div id="runDetails" class="run-details" style="display: none;">
-                                <div class="run-detail-item">
-                                    <label for="runType">Run Type</label>
-                                    <select id="runType">
-                                        <option value="">Select type</option>
-                                        <option value="interval">Interval Training</option>
-                                        <option value="free">Free Run</option>
-                                        <option value="race">Race</option>
-                                        <option value="tempo">Tempo Run</option>
-                                        <option value="long">Long Distance</option>
-                                        <option value="recovery">Recovery Run</option>
-                                        <option value="hill">Hill Training</option>
-                                    </select>
+                            <!-- Bodyweight Goals -->
+                            <div class="bodyweight-goals">
+                                <div class="bodyweight-title">🏋️ Bodyweight Goals</div>
+                                <div class="bodyweight-inputs">
+                                    <div class="bodyweight-item">
+                                        <label for="pushUps">Push-ups Count</label>
+                                        <input type="number" id="pushUps" placeholder="Enter push-ups count" min="0">
+                                    </div>
+                                    <div class="bodyweight-item">
+                                        <label for="pullUps">Pull-ups Count</label>
+                                        <input type="number" id="pullUps" placeholder="Enter pull-ups count" min="0">
+                                    </div>
                                 </div>
-                                <div class="run-detail-item">
-                                    <label for="runDistance">Distance (km)</label>
-                                    <input type="number" id="runDistance" step="0.1" placeholder="Enter distance">
-                                </div>
-                                <div class="run-detail-item">
-                                    <label for="runDuration">Duration (min)</label>
-                                    <input type="number" id="runDuration" placeholder="Minutes">
-                                </div>
-                                <div class="run-detail-item">
-                                    <label for="runIntensity">Intensity (1-10)</label>
-                                    <input type="number" id="runIntensity" min="1" max="10" placeholder="1-10">
-                                </div>
-                            </div>
-                            
-                            <!-- Running Session 2 -->
-                            <div class="checkbox-group" style="margin-top: 15px;">
-                                <input type="checkbox" id="hadRun2">
-                                <label for="hadRun2">🏃 Running Session 2</label>
-                            </div>
-                            
-                            <div id="runDetails2" class="run-details" style="display: none;">
-                                <div class="run-detail-item">
-                                    <label for="runType2">Run Type</label>
-                                    <select id="runType2">
-                                        <option value="">Select type</option>
-                                        <option value="interval">Interval Training</option>
-                                        <option value="free">Free Run</option>
-                                        <option value="race">Race</option>
-                                        <option value="tempo">Tempo Run</option>
-                                        <option value="long">Long Distance</option>
-                                        <option value="recovery">Recovery Run</option>
-                                        <option value="hill">Hill Training</option>
-                                    </select>
-                                </div>
-                                <div class="run-detail-item">
-                                    <label for="runDistance2">Distance (km)</label>
-                                    <input type="number" id="runDistance2" step="0.1" placeholder="Enter distance">
-                                </div>
-                                <div class="run-detail-item">
-                                    <label for="runDuration2">Duration (min)</label>
-                                    <input type="number" id="runDuration2" placeholder="Minutes">
-                                </div>
-                                <div class="run-detail-item">
-                                    <label for="runIntensity2">Intensity (1-10)</label>
-                                    <input type="number" id="runIntensity2" min="1" max="10" placeholder="1-10">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Bodyweight Goals -->
-                        <div class="bodyweight-goals">
-                            <div class="bodyweight-title">🏋️ Bodyweight Goals</div>
-                            <div class="bodyweight-inputs">
-                                <div class="bodyweight-item">
-                                    <label for="pushUps">Push-ups Count</label>
-                                    <input type="number" id="pushUps" placeholder="Enter push-ups count" min="0">
-                                </div>
-                                <div class="bodyweight-item">
-                                    <label for="pullUps">Pull-ups Count</label>
-                                    <input type="number" id="pullUps" placeholder="Enter pull-ups count" min="0">
-                                </div>
-                            </div>
-                            <div class="bodyweight-goal-display">
-                                <div class="bodyweight-goal">
-                                    <div class="bodyweight-goal-value" id="pushUpsGoal">0/50</div>
-                                    <div class="bodyweight-goal-label">Push-ups Goal</div>
-                                </div>
-                                <div class="bodyweight-goal">
-                                    <div class="bodyweight-goal-value" id="pullUpsGoal">0/20</div>
-                                    <div class="bodyweight-goal-label">Pull-ups Goal</div>
+                                <div class="bodyweight-goal-display">
+                                    <div class="bodyweight-goal">
+                                        <div class="bodyweight-goal-value" id="pushUpsGoal">0/50</div>
+                                        <div class="bodyweight-goal-label">Push-ups Goal</div>
+                                    </div>
+                                    <div class="bodyweight-goal">
+                                        <div class="bodyweight-goal-value" id="pullUpsGoal">0/20</div>
+                                        <div class="bodyweight-goal-label">Pull-ups Goal</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1243,11 +1276,6 @@
                         <button class="period-btn" onclick="changePeriod('weekly')">Weekly</button>
                         <button class="period-btn" onclick="changePeriod('monthly')">Monthly</button>
                     </div>
-                    <!-- New Chart Type Selector -->
-                    <div class="chart-type-selector" id="chartTypeSelector" style="display: none;">
-                        <button class="chart-type-btn active" onclick="changeChartType('line')">Line Chart</button>
-                        <button class="chart-type-btn" onclick="changeChartType('pie')">Pie Chart</button>
-                    </div>
                     <div class="chart-title" id="chartTitle">Stretching Sessions - Last 7 Days</div>
                     <div class="chart-wrapper">
                         <canvas id="mainChart"></canvas>
@@ -1257,15 +1285,10 @@
             
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Overall Consistency Card (ADDED AT TOP OF SIDEBAR) -->
-                <div class="consistency-overall-card">
-                    <div class="consistency-title" style="color: white;">📊 Overall Consistency</div>
-                    <div class="consistency-percentage" id="overallConsistency">0%</div>
-                    <div class="consistency-days" id="consistencyDays">0/0 days completed</div>
-                    <div id="habitBreakWarning" class="habit-break-warning" style="display: none;">
-                        <div class="habit-break-title">⚠️ Streak Breaks Detected</div>
-                        <div id="habitBreakList" style="font-size: 0.8rem;"></div>
-                    </div>
+                <div class="overall-consistency">
+                    <div class="overall-consistency-label">Overall Consistency</div>
+                    <div class="overall-consistency-value" id="overallConsistency">0%</div>
+                    <div style="font-size: 0.9rem; color: #666;">Your commitment level</div>
                 </div>
                 
                 <div class="points-card">
@@ -1284,50 +1307,42 @@
                         <!-- Points breakdown will be added here by JavaScript -->
                     </div>
                 </div>
-                <div class="pause-section">
-                    <div class="pause-title">⏸️ Pause Streaks</div>
-                    <div class="pause-toggle" onclick="togglePause('steps')">
-                        <input type="checkbox" class="pause-checkbox" id="pauseSteps">
-                        <span class="pause-label">Steps Taken</span>
-                        <span class="pause-days" id="pauseStepsDays">0 days</span>
+                
+                <div class="sick-section">
+                    <div class="sick-title">🤒 Sick Day</div>
+                    <div class="sick-toggle" onclick="toggleSick()">
+                        <input type="checkbox" class="sick-checkbox" id="sickToggle">
+                        <span class="sick-label">I'm sick today</span>
+                        <span class="sick-indicator" id="sickIndicator">OFF</span>
                     </div>
-                    <div class="pause-toggle" onclick="togglePause('training')">
-                        <input type="checkbox" class="pause-checkbox" id="pauseTraining">
-                        <span class="pause-label">Training Sessions</span>
-                        <span class="pause-days" id="pauseTrainingDays">0 days</span>
-                    </div>
-                    <div class="pause-toggle" onclick="togglePause('coldShower')">
-                        <input type="checkbox" class="pause-checkbox" id="pauseColdShower">
-                        <span class="pause-label">Cold Showers</span>
-                        <span class="pause-days" id="pauseColdShowerDays">0 days</span>
-                    </div>
-                    <!-- NEW: Pause for bodyweight training -->
-                    <div class="pause-toggle" onclick="togglePause('pushUps')">
-                        <input type="checkbox" class="pause-checkbox" id="pausePushUps">
-                        <span class="pause-label">Push-ups</span>
-                        <span class="pause-days" id="pausePushUpsDays">0 days</span>
-                    </div>
-                    <div class="pause-toggle" onclick="togglePause('pullUps')">
-                        <input type="checkbox" class="pause-checkbox" id="pausePullUps">
-                        <span class="pause-label">Pull-ups</span>
-                        <span class="pause-days" id="pausePullUpsDays">0 days</span>
-                    </div>
-                    <div class="pause-note">Toggle on to freeze streak when sick/resting</div>
-                    <div class="reset-section">
-                        <div class="reset-title">⚠️ Reset All Data</div>
-                        <button class="reset-btn" onclick="showResetConfirm()">🗑️ Hard Reset All Data</button>
-                        <div class="reset-confirm" id="resetConfirm">
-                            <div style="color: #856404; margin-bottom: 10px; font-weight: 600;">
-                                ⚠️ Are you sure? This will delete ALL data permanently!
-                            </div>
-                            <div class="reset-confirm-buttons">
-                                <button class="reset-confirm-btn reset-confirm-yes" onclick="hardReset()">Yes, Delete Everything</button>
-                                <button class="reset-confirm-btn reset-confirm-no" onclick="hideResetConfirm()">Cancel</button>
-                            </div>
-                        </div>
-                        <div class="reset-note">This will clear all input fields and delete all saved data</div>
-                    </div>
+                    <div class="sick-note">Pauses streaks for: Steps, Push-ups, Pull-ups, Training. No penalties for missed goals.</div>
                 </div>
+                
+                <div class="rest-section">
+                    <div class="rest-title">🛌 Rest Day</div>
+                    <div class="rest-toggle" onclick="toggleRest()">
+                        <input type="checkbox" class="rest-checkbox" id="restToggle">
+                        <span class="rest-label">Rest day (running only)</span>
+                        <span class="rest-indicator" id="restIndicator">OFF</span>
+                    </div>
+                    <div class="sick-note">Pauses only running-related streaks. Does not affect gym or bodyweight.</div>
+                </div>
+                
+                <div class="reset-section">
+                    <div class="reset-title">⚠️ Reset All Data</div>
+                    <button class="reset-btn" onclick="showResetConfirm()">🗑️ Hard Reset All Data</button>
+                    <div class="reset-confirm" id="resetConfirm">
+                        <div style="color: #856404; margin-bottom: 10px; font-weight: 600;">
+                            ⚠️ Are you sure? This will delete ALL data permanently!
+                        </div>
+                        <div class="reset-confirm-buttons">
+                            <button class="reset-confirm-btn reset-confirm-yes" onclick="hardReset()">Yes, Delete Everything</button>
+                            <button class="reset-confirm-btn reset-confirm-no" onclick="hideResetConfirm()">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="reset-note">This will clear all input fields and delete all saved data</div>
+                </div>
+                
                 <div class="quote-card">
                     <div class="quote-text" id="dailyQuote"></div>
                     <div class="quote-author" id="quoteAuthor"></div>
@@ -1347,7 +1362,11 @@
                     <div id="streakTracker"></div>
                 </div>
                 <div class="consistency-card">
-                    <div class="consistency-title">📊 Total Statistics</div>
+                    <div class="consistency-title">📊 Habit Consistency</div>
+                    <div id="habitConsistency"></div>
+                </div>
+                <div class="consistency-card">
+                    <div class="consistency-title">📈 Total Statistics</div>
                     <div id="totalStats"></div>
                 </div>
             </div>
@@ -1355,8 +1374,6 @@
     </div>
     
     <script>
-        // ==================== UPDATED CONFIGURATION ====================
-        
         // Motivational quotes
         const quotes = [
             { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -1373,96 +1390,85 @@
         
         // Goals for consistency tracking
         const goals = {
-            steps: 10000,
-            water: 2,
-            pages: 20,
             stretching: 2,
+            steps: 10000,
             sleep: 8,
+            water: 2,
             screenTime: 2,
-            training: 1,
+            pages: 20,
+            training: 2,
             pushUps: 50,
             pullUps: 20
         };
         
-        // Pause/Freeze functionality storage
-        let pausedStreaks = JSON.parse(localStorage.getItem('pausedStreaks')) || {
-            steps: { paused: false, days: 0 },
-            training: { paused: false, days: 0 },
-            coldShower: { paused: false, days: 0 },
-            pushUps: { paused: false, days: 0 },
-            pullUps: { paused: false, days: 0 }
+        // Sick/Rest day storage
+        let sickRestDays = JSON.parse(localStorage.getItem('sickRestDays')) || {
+            sick: { active: false, history: [] },
+            rest: { active: false, history: [] }
         };
         
-        // Rest day tracking
-        let isRestDay = JSON.parse(localStorage.getItem('isRestDay')) || false;
-        const todayStr = new Date().toISOString().split('T')[0];
-        
-        // Points System Configuration - UPDATED BASED ON YOUR REQUEST
-        const pointsConfig = {
-            // Base points for completing habits
-            stretching: 10,
-            steps: 15,
-            sleep: 25, // Only given when BOTH conditions met
-            water: 10,
-            screenTime: 15,
-            pages: 10,
-            training: {
-                base: 20,
-                bonus_1h15: 10, // Bonus for training > 1h15
-                bonus_intense: 15, // Bonus for intensity > 7
-                per_session: 5 // Additional per session after first
-            },
-            coldShower: 20,
-            lustControl: 30,
-            pushUps: 15,
-            pullUps: 15,
-            bodyweightBonus: 10, // Bonus for completing both push-ups and pull-ups
-            
-            // Points deductions
-            deductions: {
-                sleepScoreLow: -15, // Score <= 60
-                sleepShort: -20, // < 7h
-                sleepWrongRange: -10, // < 8h or > 9.5h (even with good score)
-                stretching: -10,
-                steps: -15,
-                water: -10,
-                screenTime: -10,
-                pages: -10,
-                pushUps: -10,
-                pullUps: -10,
-                training: -20,
-                streakBreak: -30, // For breaking streak > 3 days
-                lust: -50
-            },
-            
-            // Bonuses for exceeding goals
-            exceedBonuses: {
-                steps: 0.005, // 0.5 points per 100 extra steps
-                water: 5,
-                pages: 0.5,
-                stretching: 3,
-                pushUps: 1,
-                pullUps: 1
-            },
-            
-            // Streak multipliers
-            streakMultipliers: {
-                3: 1.2,
-                7: 1.5,
-                14: 2.0,
-                30: 3.0
-            },
-            
-            // Daily completion bonus
-            dailyCompletionBonus: 50
-        };
+        // Inactivity tracking
+        let inactivityTracker = JSON.parse(localStorage.getItem('inactivityTracker')) || {};
         
         let currentChart = null;
         let currentView = 'stretching';
         let currentPeriod = 'daily';
-        let chartType = 'line'; // 'line' or 'pie'
         
-        // ==================== INITIALIZATION ====================
+        // Points System Configuration - Balanced and fair
+        const pointsConfig = {
+            // Base points for completing goals
+            stretching: 15,
+            steps: 20,
+            sleep: 25,
+            water: 15,
+            screenTime: 15,
+            pages: 15,
+            training: 30,
+            coldShower: 20,
+            lustControl: 25,
+            pushUps: 15,
+            pullUps: 15,
+            
+            // Deductions for missing goals (only when not sick/rest)
+            stretchingDeduction: -10,
+            stepsDeduction: -15,
+            waterDeduction: -10,
+            screenTimeDeduction: -15,
+            pagesDeduction: -10,
+            pushUpsDeduction: -10,
+            pullUpsDeduction: -10,
+            trainingDeduction: -20,
+            
+            // Sleep strict rules
+            sleepQualityBonus: 25,      // Only if both conditions met
+            sleepDurationDeduction: -15, // < 7 hours
+            sleepQualityDeduction: -10,  // ≤ 60 quality
+            
+            // Bodyweight bonus multiplier
+            bodyweightBothBonus: 1.5,   // Multiplier when both push-ups and pull-ups completed
+            
+            // Training bonuses
+            durationBonus: 10,          // > 75 minutes
+            intensityBonus: 10,         // > 7 intensity
+            
+            // Steps overachievement
+            stepsMultiplierPer1500: 0.2, // 20% bonus per extra 1500 steps
+            maxStepsMultipliers: 3,      // Diminishing returns after 3 multipliers
+            
+            // Streak multipliers (only for positive points)
+            streakMultipliers: {
+                3: 1.2,   // Small multiplier
+                7: 1.5,   // Medium multiplier
+                14: 2.0   // Large multiplier
+            },
+            
+            // Inactivity penalty (after 3 consecutive days)
+            inactivityPenalty: -15,
+            
+            dailyCompletionBonus: 50
+        };
+        
+        // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             displayCurrentDate();
             displayDailyQuote();
@@ -1471,15 +1477,11 @@
             updateStreakTracker();
             updateTotalStats();
             updatePointsDisplay();
+            updateHabitConsistency();
             initializeChart();
-            updateOverallConsistency();
             
-            // Initialize pause system
-            updatePauseDisplay();
-            resetPauseCounters();
-            
-            // Initialize rest day
-            updateRestDayDisplay();
+            // Initialize sick/rest toggles
+            updateSickRestDisplay();
             
             // Training session toggle listeners
             document.getElementById('hadGym').addEventListener('change', function() {
@@ -1570,7 +1572,6 @@
                 document.getElementById(id).addEventListener('input', function() {
                     updateConsistencyTracker();
                     updatePointsDisplay();
-                    updateOverallConsistency();
                 });
             });
             
@@ -1581,7 +1582,6 @@
                     updateSleepAnalysis();
                     updateConsistencyTracker();
                     updatePointsDisplay();
-                    updateOverallConsistency();
                 });
             });
             
@@ -1592,7 +1592,6 @@
                     if (id === 'napped') updateSleepAnalysis();
                     updateConsistencyTracker();
                     updatePointsDisplay();
-                    updateOverallConsistency();
                 });
             });
             
@@ -1661,7 +1660,6 @@
             updateConsistencyTracker();
             updateSleepAnalysis();
             updateBodyweightGoals();
-            updateOverallConsistency();
         }
         
         function displayDailyQuote() {
@@ -1670,6 +1668,20 @@
             const quoteIndex = dayOfYear % quotes.length;
             document.getElementById('dailyQuote').textContent = `"${quotes[quoteIndex].text}"`;
             document.getElementById('quoteAuthor').textContent = `— ${quotes[quoteIndex].author}`;
+        }
+        
+        function toggleTrainingDetails() {
+            const content = document.getElementById('trainingContent');
+            const toggle = document.querySelector('.training-toggle');
+            const isCollapsed = content.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+            }
         }
         
         function updateCheckboxStyles() {
@@ -1691,54 +1703,74 @@
             document.getElementById('pullUpsGoal').textContent = `${pullUps}/${goals.pullUps}`;
         }
         
-        function toggleRestDay() {
-            isRestDay = !isRestDay;
-            localStorage.setItem('isRestDay', JSON.stringify(isRestDay));
+        function toggleSick() {
+            const isActive = sickRestDays.sick.active;
+            sickRestDays.sick.active = !isActive;
             
-            const restDayBtn = document.getElementById('restDayBtn');
-            const restDayStatus = document.getElementById('restDayStatus');
-            
-            if (isRestDay) {
-                restDayBtn.classList.add('active');
-                restDayBtn.textContent = '✅ Rest Day Active';
-                restDayStatus.style.display = 'block';
-                localStorage.setItem('lastRestDay', todayStr);
-                
-                // Auto-pause training streaks on rest day
-                pausedStreaks.training.paused = true;
-                pausedStreaks.pushUps.paused = true;
-                pausedStreaks.pullUps.paused = true;
-                localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
-            } else {
-                restDayBtn.classList.remove('active');
-                restDayBtn.textContent = '🛌 Rest Day (Pause Training Streaks)';
-                restDayStatus.style.display = 'none';
-                
-                // Unpause if not rest day
-                pausedStreaks.training.paused = false;
-                pausedStreaks.pushUps.paused = false;
-                pausedStreaks.pullUps.paused = false;
-                localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
+            if (sickRestDays.sick.active) {
+                sickRestDays.sick.history.push(new Date().toISOString().split('T')[0]);
             }
             
-            updatePauseDisplay();
-            updatePointsDisplay();
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            updateSickRestDisplay();
             updateConsistencyTracker();
+            updatePointsDisplay();
+            updateStreakTracker();
         }
         
-        function updateRestDayDisplay() {
-            const restDayBtn = document.getElementById('restDayBtn');
-            const restDayStatus = document.getElementById('restDayStatus');
+        function toggleRest() {
+            const isActive = sickRestDays.rest.active;
+            sickRestDays.rest.active = !isActive;
             
-            if (isRestDay) {
-                restDayBtn.classList.add('active');
-                restDayBtn.textContent = '✅ Rest Day Active';
-                restDayStatus.style.display = 'block';
-            } else {
-                restDayBtn.classList.remove('active');
-                restDayBtn.textContent = '🛌 Rest Day (Pause Training Streaks)';
-                restDayStatus.style.display = 'none';
+            if (sickRestDays.rest.active) {
+                sickRestDays.rest.history.push(new Date().toISOString().split('T')[0]);
             }
+            
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            updateSickRestDisplay();
+            updateConsistencyTracker();
+            updatePointsDisplay();
+            updateStreakTracker();
+        }
+        
+        function updateSickRestDisplay() {
+            const sickToggle = document.getElementById('sickToggle');
+            const sickIndicator = document.getElementById('sickIndicator');
+            const sickElement = document.querySelector('.sick-toggle');
+            
+            const restToggle = document.getElementById('restToggle');
+            const restIndicator = document.getElementById('restIndicator');
+            const restElement = document.querySelector('.rest-toggle');
+            
+            // Update sick toggle
+            sickToggle.checked = sickRestDays.sick.active;
+            sickIndicator.textContent = sickRestDays.sick.active ? 'ACTIVE' : 'OFF';
+            sickElement.classList.toggle('active', sickRestDays.sick.active);
+            
+            // Update rest toggle
+            restToggle.checked = sickRestDays.rest.active;
+            restIndicator.textContent = sickRestDays.rest.active ? 'ACTIVE' : 'OFF';
+            restElement.classList.toggle('active', sickRestDays.rest.active);
+        }
+        
+        function isGoalPaused(goalKey) {
+            if (sickRestDays.sick.active) {
+                // When sick: pause steps, push-ups, pull-ups, training
+                return ['steps', 'pushUps', 'pullUps', 'training'].includes(goalKey);
+            }
+            
+            if (sickRestDays.rest.active) {
+                // When rest day: pause only running-related streaks
+                return goalKey === 'training' && !isGymOrBodyweightToday();
+            }
+            
+            return false;
+        }
+        
+        function isGymOrBodyweightToday() {
+            const currentData = getCurrentInputs();
+            return currentData.hadGym || currentData.hadGym2 || currentData.hadHome || 
+                   (currentData.pushUps >= goals.pushUps) || (currentData.pullUps >= goals.pullUps);
         }
         
         // ==================== INPUT DATA FUNCTIONS ====================
@@ -1776,12 +1808,12 @@
             
             return {
                 // Basic inputs
-                stretching: document.getElementById('stretching').value,
-                steps: document.getElementById('steps').value,
-                sleep: totalSleepHours.toFixed(2),
+                stretching: parseInt(document.getElementById('stretching').value) || 0,
+                steps: parseInt(document.getElementById('steps').value) || 0,
+                sleep: totalSleepHours,
                 sleepHours: sleepHours,
                 sleepMinutes: sleepMinutes,
-                sleepQuality: document.getElementById('sleepQuality').value,
+                sleepQuality: parseInt(document.getElementById('sleepQuality').value) || 0,
                 remSleep: totalRemMinutes,
                 remHours: remHours,
                 remMinutes: remMinutes,
@@ -1792,9 +1824,9 @@
                 lightHours: lightHours,
                 lightMinutes: lightMinutes,
                 napped: document.getElementById('napped').checked,
-                water: document.getElementById('water').value,
-                screenTime: document.getElementById('screenTime').value,
-                pages: document.getElementById('pages').value,
+                water: parseFloat(document.getElementById('water').value) || 0,
+                screenTime: parseFloat(document.getElementById('screenTime').value) || 0,
+                pages: parseInt(document.getElementById('pages').value) || 0,
                 coldShower: document.getElementById('coldShower').checked,
                 lust: document.getElementById('lust').checked,
                 
@@ -1811,949 +1843,34 @@
                 
                 // Gym 1
                 gymTypes: getSelectedTypes('gym', ['Core', 'Legs', 'Upper', 'Full', 'Cardio']),
-                gymDuration: document.getElementById('gymDuration').value,
-                gymIntensity: document.getElementById('gymIntensity').value,
+                gymDuration: parseInt(document.getElementById('gymDuration').value) || 0,
+                gymIntensity: parseInt(document.getElementById('gymIntensity').value) || 0,
                 
                 // Gym 2
                 gym2Types: getSelectedTypes('gym2', ['Core', 'Legs', 'Upper', 'Full', 'Cardio']),
-                gym2Duration: document.getElementById('gym2Duration').value,
-                gym2Intensity: document.getElementById('gym2Intensity').value,
+                gym2Duration: parseInt(document.getElementById('gym2Duration').value) || 0,
+                gym2Intensity: parseInt(document.getElementById('gym2Intensity').value) || 0,
                 
                 // Home
                 homeTypes: getSelectedTypes('home', ['Bodyweight', 'Yoga', 'HIIT', 'Other']),
-                homeDuration: document.getElementById('homeDuration').value,
-                homeIntensity: document.getElementById('homeIntensity').value,
+                homeDuration: parseInt(document.getElementById('homeDuration').value) || 0,
+                homeIntensity: parseInt(document.getElementById('homeIntensity').value) || 0,
                 
                 // Run 1
                 runType: document.getElementById('runType').value,
-                runDistance: document.getElementById('runDistance').value,
-                runDuration: document.getElementById('runDuration').value,
-                runIntensity: document.getElementById('runIntensity').value,
+                runDistance: parseFloat(document.getElementById('runDistance').value) || 0,
+                runDuration: parseInt(document.getElementById('runDuration').value) || 0,
+                runIntensity: parseInt(document.getElementById('runIntensity').value) || 0,
                 
                 // Run 2
                 runType2: document.getElementById('runType2').value,
-                runDistance2: document.getElementById('runDistance2').value,
-                runDuration2: document.getElementById('runDuration2').value,
-                runIntensity2: document.getElementById('runIntensity2').value,
-                
-                // Rest day
-                isRestDay: isRestDay
+                runDistance2: parseFloat(document.getElementById('runDistance2').value) || 0,
+                runDuration2: parseInt(document.getElementById('runDuration2').value) || 0,
+                runIntensity2: parseInt(document.getElementById('runIntensity2').value) || 0
             };
         }
         
-        // ==================== OVERALL CONSISTENCY ====================
-        function updateOverallConsistency() {
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const dates = Object.keys(allData).sort();
-            
-            if (dates.length === 0) {
-                document.getElementById('overallConsistency').textContent = '0%';
-                document.getElementById('consistencyDays').textContent = '0/0 days completed';
-                document.getElementById('habitBreakWarning').style.display = 'none';
-                return;
-            }
-            
-            let completedDays = 0;
-            
-            dates.forEach(date => {
-                const dayData = allData[date];
-                let dayCompleted = true;
-                
-                // Check each habit for this day
-                Object.keys(goals).forEach(habit => {
-                    if (!isHabitCompleted(habit, dayData)) {
-                        dayCompleted = false;
-                    }
-                });
-                
-                // Check cold shower and lust control
-                if (dayData && !dayData.coldShower) dayCompleted = false;
-                if (dayData && dayData.lust) dayCompleted = false;
-                
-                if (dayCompleted) completedDays++;
-            });
-            
-            const consistency = Math.round((completedDays / dates.length) * 100);
-            document.getElementById('overallConsistency').textContent = `${consistency}%`;
-            document.getElementById('consistencyDays').textContent = `${completedDays}/${dates.length} days completed`;
-            
-            // Check for streak breaks > 3 days
-            const streakBreaks = checkStreakBreaks(allData, dates);
-            if (streakBreaks.length > 0) {
-                let html = '';
-                streakBreaks.forEach(breakInfo => {
-                    html += `
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
-                            <span>${breakInfo.habit}:</span>
-                            <span style="color: #ffc107;">${breakInfo.days} days</span>
-                        </div>
-                    `;
-                });
-                document.getElementById('habitBreakList').innerHTML = html;
-                document.getElementById('habitBreakWarning').style.display = 'block';
-            } else {
-                document.getElementById('habitBreakWarning').style.display = 'none';
-            }
-        }
-        
-        function isHabitCompleted(habit, dayData) {
-            if (!dayData) return false;
-            
-            switch(habit) {
-                case 'training':
-                    let trainingSessions = 0;
-                    if (dayData.hadGym) trainingSessions++;
-                    if (dayData.hadRun) trainingSessions++;
-                    return trainingSessions >= goals.training;
-                    
-                case 'pushUps':
-                    return (parseInt(dayData.pushUps) || 0) >= goals.pushUps;
-                    
-                case 'pullUps':
-                    return (parseInt(dayData.pullUps) || 0) >= goals.pullUps;
-                    
-                case 'screenTime':
-                    return (parseFloat(dayData.screenTime) || 0) <= goals.screenTime;
-                    
-                default:
-                    return (parseFloat(dayData[habit]) || 0) >= goals[habit];
-            }
-        }
-        
-        function checkStreakBreaks(allData, dates) {
-            const breaks = [];
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            
-            Object.keys(goals).forEach(habit => {
-                let missedDays = 0;
-                let checkingDate = new Date(today);
-                
-                // Check last 7 days for breaks
-                for (let i = 0; i < 7; i++) {
-                    const dateStr = checkingDate.toISOString().split('T')[0];
-                    const dayData = allData[dateStr];
-                    
-                    if (dayData) {
-                        if (!isHabitCompleted(habit, dayData)) {
-                            missedDays++;
-                        } else {
-                            break; // Streak restored
-                        }
-                    } else {
-                        missedDays++;
-                    }
-                    
-                    checkingDate.setDate(checkingDate.getDate() - 1);
-                }
-                
-                if (missedDays > 3) {
-                    // Check if streak was paused
-                    const paused = (habit === 'steps' && pausedStreaks.steps.paused) ||
-                                  (habit === 'training' && pausedStreaks.training.paused) ||
-                                  (habit === 'pushUps' && pausedStreaks.pushUps.paused) ||
-                                  (habit === 'pullUps' && pausedStreaks.pullUps.paused);
-                    
-                    if (!paused) {
-                        breaks.push({
-                            habit: getHabitDisplayName(habit),
-                            days: missedDays
-                        });
-                    }
-                }
-            });
-            
-            return breaks;
-        }
-        
-        function getHabitDisplayName(habit) {
-            const names = {
-                stretching: 'Stretching',
-                steps: 'Steps',
-                sleep: 'Sleep',
-                water: 'Water',
-                screenTime: 'Screen Time',
-                pages: 'Reading',
-                training: 'Training',
-                pushUps: 'Push-ups',
-                pullUps: 'Pull-ups',
-                coldShower: 'Cold Shower',
-                lustControl: 'Lust Control'
-            };
-            return names[habit] || habit;
-        }
-        
-        // ==================== UPDATED POINTS CALCULATION ====================
-        function calculateTodayPoints() {
-            const currentData = getCurrentInputs();
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const dates = Object.keys(allData).sort();
-            const streaks = calculateStreaksWithPause(dates, allData);
-            
-            let totalPoints = 0;
-            let pointsBreakdown = [];
-            let completedGoals = 0;
-            const totalGoals = Object.keys(goals).length + 2; // +2 for cold shower and lust control
-            
-            // Calculate points for each goal
-            Object.keys(goals).forEach(key => {
-                let points = 0;
-                let multiplier = 1;
-                let description = '';
-                let emoji = '';
-                let deduction = 0;
-                
-                // Streak multiplier
-                const streak = streaks[key] || 0;
-                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
-                    if (streak >= parseInt(days)) {
-                        multiplier = mult;
-                        break;
-                    }
-                }
-                
-                if (key === 'training') {
-                    // Check if it's a rest day
-                    if (isRestDay && !pausedStreaks.training.paused) {
-                        points = 0;
-                        description = 'Training (Rest Day)';
-                        emoji = '🛌';
-                    } else {
-                        let trainingSessions = 0;
-                        if (currentData.hadGym) trainingSessions++;
-                        if (currentData.hadGym2) trainingSessions++;
-                        if (currentData.hadHome) trainingSessions++;
-                        if (currentData.hadRun) trainingSessions++;
-                        if (currentData.hadRun2) trainingSessions++;
-                        
-                        if (trainingSessions >= goals.training) {
-                            points = pointsConfig.training.base * multiplier;
-                            description = `Training (${trainingSessions} sessions)`;
-                            emoji = '💪';
-                            completedGoals++;
-                            
-                            // Bonus for > 1h15
-                            const totalDuration = (parseInt(currentData.gymDuration) || 0) + 
-                                                 (parseInt(currentData.gym2Duration) || 0) +
-                                                 (parseInt(currentData.homeDuration) || 0) +
-                                                 (parseInt(currentData.runDuration) || 0) +
-                                                 (parseInt(currentData.runDuration2) || 0);
-                            
-                            if (totalDuration > 75) { // 1h15 = 75min
-                                const bonus = pointsConfig.training.bonus_1h15;
-                                points += bonus;
-                                description += ` (+${bonus} for >1h15)`;
-                            }
-                            
-                            // Bonus for high intensity
-                            const maxIntensity = Math.max(
-                                parseInt(currentData.gymIntensity) || 0,
-                                parseInt(currentData.gym2Intensity) || 0,
-                                parseInt(currentData.homeIntensity) || 0,
-                                parseInt(currentData.runIntensity) || 0,
-                                parseInt(currentData.runIntensity2) || 0
-                            );
-                            
-                            if (maxIntensity > 7) {
-                                const bonus = pointsConfig.training.bonus_intense;
-                                points += bonus;
-                                description += ` (+${bonus} for intensity >7)`;
-                            }
-                            
-                            // Bonus for additional sessions
-                            if (trainingSessions > 1) {
-                                const extraSessions = trainingSessions - 1;
-                                const bonus = extraSessions * pointsConfig.training.per_session;
-                                points += bonus;
-                                description += ` (+${bonus} for ${extraSessions} extra session${extraSessions > 1 ? 's' : ''})`;
-                            }
-                        } else if (!pausedStreaks.training.paused) {
-                            // Deduction for missing training when not paused
-                            deduction = pointsConfig.deductions.training;
-                            points += deduction;
-                            description = `Training (${trainingSessions}/${goals.training})`;
-                            emoji = '❌';
-                        }
-                    }
-                } else if (key === 'sleep') {
-                    const sleepHours = parseFloat(currentData.sleep) || 0;
-                    const sleepScore = parseInt(currentData.sleepQuality) || 0;
-                    
-                    // Check both conditions: score > 80 AND hours between 8-9.5
-                    if (sleepScore > 80 && sleepHours >= 8 && sleepHours <= 9.5) {
-                        points = pointsConfig.sleep * multiplier;
-                        description = `Sleep (${sleepHours}h, score: ${sleepScore})`;
-                        emoji = '😊';
-                        completedGoals++;
-                    } else {
-                        // Check for deductions
-                        if (sleepScore <= 60) {
-                            deduction += pointsConfig.deductions.sleepScoreLow;
-                            description = `Sleep score low (${sleepScore})`;
-                        }
-                        if (sleepHours < 7) {
-                            deduction += pointsConfig.deductions.sleepShort;
-                            description += description ? ', hours short' : `Sleep hours short (${sleepHours}h)`;
-                        }
-                        if ((sleepHours < 8 || sleepHours > 9.5) && sleepScore > 80) {
-                            deduction += pointsConfig.deductions.sleepWrongRange;
-                            description = `Sleep outside ideal range (${sleepHours}h)`;
-                        }
-                        
-                        if (deduction < 0) {
-                            points += deduction;
-                            emoji = '😟';
-                        }
-                    }
-                } else if (key === 'pushUps' || key === 'pullUps') {
-                    const current = parseInt(currentData[key]) || 0;
-                    const goal = goals[key];
-                    
-                    if (current >= goal) {
-                        points = pointsConfig[key] * multiplier;
-                        description = key === 'pushUps' ? 'Push-ups' : 'Pull-ups';
-                        emoji = key === 'pushUps' ? '💪' : '🤸';
-                        completedGoals++;
-                        
-                        // Bonus for exceeding
-                        if (current > goal) {
-                            const exceeded = current - goal;
-                            const bonus = exceeded * pointsConfig.exceedBonuses[key];
-                            points += bonus;
-                            description += ` (+${bonus.toFixed(1)} bonus)`;
-                        }
-                    } else if (!pausedStreaks[key].paused) {
-                        // Deduction for missing bodyweight goal
-                        deduction = pointsConfig.deductions[key];
-                        points += deduction;
-                        description = key === 'pushUps' ? 'Push-ups' : 'Pull-ups';
-                        emoji = '❌';
-                    }
-                } else {
-                    const current = parseFloat(currentData[key]) || 0;
-                    const goal = goals[key];
-                    const metGoal = key === 'screenTime' ? current <= goal : current >= goal;
-                    const isPaused = (key === 'steps' && pausedStreaks.steps.paused);
-                    
-                    if (metGoal) {
-                        points = pointsConfig[key] * multiplier;
-                        description = getHabitDisplayName(key);
-                        emoji = getEmojiForActivity(key);
-                        completedGoals++;
-                        
-                        // Bonus for exceeding (except screen time)
-                        if (key !== 'screenTime' && current > goal) {
-                            const exceeded = current - goal;
-                            let bonus = 0;
-                            
-                            if (key === 'steps') bonus = Math.floor(exceeded * pointsConfig.exceedBonuses.steps);
-                            else if (key === 'water') bonus = Math.floor(exceeded * pointsConfig.exceedBonuses.water);
-                            else if (key === 'pages') bonus = Math.floor(exceeded * pointsConfig.exceedBonuses.pages);
-                            else if (key === 'stretching') bonus = Math.floor(exceeded * pointsConfig.exceedBonuses.stretching);
-                            
-                            if (bonus > 0) {
-                                points += bonus;
-                                description += ` (+${bonus} bonus)`;
-                            }
-                        }
-                    } else if (!isPaused) {
-                        // Deduction for missing goal when not paused
-                        deduction = pointsConfig.deductions[key];
-                        points += deduction;
-                        description = getHabitDisplayName(key);
-                        emoji = '❌';
-                    }
-                }
-                
-                // Check for streak breaks > 3 days (additional penalty)
-                if (streak === 0 && !pausedStreaks[key]?.paused) {
-                    const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-                    const dates = Object.keys(allData).sort();
-                    const lastEntry = dates[dates.length - 1];
-                    
-                    if (lastEntry) {
-                        const lastDate = new Date(lastEntry);
-                        const today = new Date();
-                        const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
-                        
-                        if (daysSince > 3) {
-                            const breakPenalty = pointsConfig.deductions.streakBreak;
-                            points += breakPenalty;
-                            if (deduction === 0) {
-                                description += ` (${daysSince} day streak break)`;
-                                emoji = '⚠️';
-                            }
-                        }
-                    }
-                }
-                
-                if (points !== 0) {
-                    totalPoints += points;
-                    const isNegative = points < 0;
-                    pointsBreakdown.push({ 
-                        emoji, 
-                        description, 
-                        points: Math.round(points), 
-                        multiplier: multiplier > 1 ? `x${multiplier}` : '',
-                        isNegative 
-                    });
-                }
-            });
-            
-            // Cold shower points
-            if (currentData.coldShower) {
-                const streak = streaks.coldShower || 0;
-                let multiplier = 1;
-                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
-                    if (streak >= parseInt(days)) {
-                        multiplier = mult;
-                        break;
-                    }
-                }
-                const points = pointsConfig.coldShower * multiplier;
-                totalPoints += points;
-                completedGoals++;
-                pointsBreakdown.push({ emoji: '🚿', description: 'Cold Shower', points: Math.round(points), multiplier: multiplier > 1 ? `x${multiplier}` : '' });
-            }
-            
-            // Bodyweight bonus (for completing both)
-            const pushUpsDone = (parseInt(currentData.pushUps) || 0) >= goals.pushUps;
-            const pullUpsDone = (parseInt(currentData.pullUps) || 0) >= goals.pullUps;
-            if (pushUpsDone && pullUpsDone) {
-                const points = pointsConfig.bodyweightBonus;
-                totalPoints += points;
-                pointsBreakdown.push({ emoji: '🏆', description: 'Bodyweight Combo Bonus', points: points, multiplier: 'BONUS' });
-            }
-            
-            // Lust control points/deductions
-            if (!currentData.lust) {
-                const streak = streaks.lustControl || 0;
-                let multiplier = 1;
-                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
-                    if (streak >= parseInt(days)) {
-                        multiplier = mult;
-                        break;
-                    }
-                }
-                const points = pointsConfig.lustControl * multiplier;
-                totalPoints += points;
-                completedGoals++;
-                pointsBreakdown.push({ emoji: '🚫', description: 'Lust Control', points: Math.round(points), multiplier: multiplier > 1 ? `x${multiplier}` : '' });
-            } else {
-                // Deduct points for lust
-                const deduction = pointsConfig.deductions.lust;
-                totalPoints += deduction;
-                pointsBreakdown.push({ emoji: '⚠️', description: 'Lust (Deduction)', points: deduction, multiplier: '', isNegative: true });
-            }
-            
-            // Daily bonus
-            if (completedGoals === totalGoals) {
-                totalPoints += pointsConfig.dailyCompletionBonus;
-                pointsBreakdown.push({ emoji: '🏆', description: 'All Goals Completed!', points: pointsConfig.dailyCompletionBonus, multiplier: 'BONUS' });
-            }
-            
-            return { total: Math.round(totalPoints), breakdown: pointsBreakdown, completedGoals, totalGoals };
-        }
-        
-        function getEmojiForActivity(activity) {
-            const emojis = { stretching: '🧘', steps: '👟', sleep: '😴', water: '💧', screenTime: '📱', pages: '📚', training: '💪' };
-            return emojis[activity] || '⭐';
-        }
-        
-        // ==================== FIXED STREAK CALCULATION ====================
-        function calculateStreaks(dates, allData) {
-            const streaks = { 
-                stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
-                training: 0, coldShower: 0, lustControl: 0, pushUps: 0, pullUps: 0 
-            };
-            if (dates.length === 0) return streaks;
-            
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            
-            function goalMet(date, goalKey, dayData) {
-                if (!dayData) return false;
-                
-                if (goalKey === 'coldShower') return dayData.coldShower === true;
-                if (goalKey === 'lustControl') return dayData.lust !== true;
-                if (goalKey === 'training') {
-                    let sessions = 0;
-                    if (dayData.hadGym === true) sessions++;
-                    if (dayData.hadRun === true) sessions++;
-                    return sessions >= goals.training;
-                }
-                if (goalKey === 'pushUps' || goalKey === 'pullUps') {
-                    const value = parseInt(dayData[goalKey]) || 0;
-                    const goal = goals[goalKey];
-                    return value >= goal;
-                }
-                
-                const value = parseFloat(dayData[goalKey]) || 0;
-                const goal = goals[goalKey];
-                return goalKey === 'screenTime' ? value <= goal : value >= goal;
-            }
-            
-            Object.keys(streaks).forEach(goalKey => {
-                let streak = 0;
-                let checkingDate = new Date(today);
-                
-                for (let i = 0; i < 365; i++) {
-                    const dateStr = checkingDate.toISOString().split('T')[0];
-                    const dayData = allData[dateStr];
-                    
-                    if (dayData && goalMet(dateStr, goalKey, dayData)) {
-                        streak++;
-                    } else {
-                        break;
-                    }
-                    
-                    checkingDate.setDate(checkingDate.getDate() - 1);
-                }
-                
-                streaks[goalKey] = streak;
-            });
-            
-            return streaks;
-        }
-        
-        function calculateStreaksWithPause(dates, allData) {
-            const streaks = calculateStreaks(dates, allData);
-            
-            // Apply pause days
-            if (pausedStreaks.steps.paused) streaks.steps = Math.max(streaks.steps, pausedStreaks.steps.days + 1);
-            if (pausedStreaks.training.paused) streaks.training = Math.max(streaks.training, pausedStreaks.training.days + 1);
-            if (pausedStreaks.coldShower.paused) streaks.coldShower = Math.max(streaks.coldShower, pausedStreaks.coldShower.days + 1);
-            if (pausedStreaks.pushUps.paused) streaks.pushUps = Math.max(streaks.pushUps, pausedStreaks.pushUps.days + 1);
-            if (pausedStreaks.pullUps.paused) streaks.pullUps = Math.max(streaks.pullUps, pausedStreaks.pullUps.days + 1);
-            
-            return streaks;
-        }
-        
-        // ==================== UPDATED PAUSE SYSTEM ====================
-        function togglePause(streakType) {
-            const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
-            const toggleElement = checkbox.parentElement;
-            
-            pausedStreaks[streakType].paused = !pausedStreaks[streakType].paused;
-            checkbox.checked = pausedStreaks[streakType].paused;
-            toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
-            
-            if (pausedStreaks[streakType].paused) {
-                pausedStreaks[streakType].days++;
-                updatePauseDisplay();
-            }
-            
-            localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
-            updateStreakTracker();
-            updatePointsDisplay();
-        }
-        
-        function updatePauseDisplay() {
-            Object.keys(pausedStreaks).forEach(streakType => {
-                const daysElement = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}Days`);
-                if (daysElement) {
-                    daysElement.textContent = `${pausedStreaks[streakType].days} day${pausedStreaks[streakType].days !== 1 ? 's' : ''}`;
-                }
-                
-                const checkbox = document.getElementById(`pause${streakType.charAt(0).toUpperCase() + streakType.slice(1)}`);
-                if (checkbox) {
-                    const toggleElement = checkbox.parentElement;
-                    checkbox.checked = pausedStreaks[streakType].paused;
-                    if (toggleElement) {
-                        toggleElement.classList.toggle('active', pausedStreaks[streakType].paused);
-                    }
-                }
-            });
-        }
-        
-        // ==================== SAVE & LOAD DATA ====================
-        function saveData() {
-            const today = new Date().toISOString().split('T')[0];
-            const data = getCurrentInputs();
-            
-            let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            allData[today] = data;
-            localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
-            
-            // Save points
-            const pointsData = calculateTodayPoints();
-            let pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0, days: {} };
-            if (!pointsHistory.days[today]) {
-                pointsHistory.total += pointsData.total;
-                pointsHistory.days[today] = { points: pointsData.total, breakdown: pointsData.breakdown };
-                localStorage.setItem('lifeTrackerPoints', JSON.stringify(pointsHistory));
-            }
-            
-            // Success message
-            const btn = document.querySelector('.save-btn');
-            btn.textContent = '✅ Saved Successfully!';
-            btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-            setTimeout(() => {
-                btn.textContent = '💾 Save Today\'s Data';
-                btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-            }, 2000);
-            
-            updateChart();
-            updateStreakTracker();
-            updateTotalStats();
-            updatePointsDisplay();
-            updateOverallConsistency();
-        }
-        
-        // ==================== FIXED CHART FUNCTIONS ====================
-        function showChart(type) {
-            currentView = type;
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Show/hide chart type selector
-            const chartTypeSelector = document.getElementById('chartTypeSelector');
-            if (type === 'consistency') {
-                chartTypeSelector.style.display = 'flex';
-                chartType = 'pie'; // Default to pie for consistency
-            } else {
-                chartTypeSelector.style.display = 'none';
-                chartType = 'line'; // Default to line for other charts
-            }
-            
-            updateChart();
-        }
-        
-        function changeChartType(type) {
-            chartType = type;
-            document.querySelectorAll('.chart-type-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateChart();
-        }
-        
-        function getChartData(dates, allData) {
-            if (currentView === 'consistency') {
-                if (chartType === 'pie') {
-                    return getConsistencyPieChartData(dates, allData);
-                } else {
-                    return getConsistencyLineChartData(dates, allData);
-                }
-            } else {
-                return getSingleMetricChartData(dates, allData, currentView);
-            }
-        }
-        
-        function getConsistencyPieChartData(dates, allData) {
-            const habitCompletion = {};
-            let totalDays = dates.length;
-            
-            // Initialize habit counts
-            Object.keys(goals).forEach(habit => {
-                habitCompletion[habit] = 0;
-            });
-            habitCompletion['coldShower'] = 0;
-            habitCompletion['lustControl'] = 0;
-            
-            // Count completed days for each habit
-            dates.forEach(date => {
-                const dayData = allData[date];
-                
-                Object.keys(goals).forEach(habit => {
-                    if (isHabitCompleted(habit, dayData)) {
-                        habitCompletion[habit]++;
-                    }
-                });
-                
-                if (dayData && dayData.coldShower) habitCompletion['coldShower']++;
-                if (dayData && !dayData.lust) habitCompletion['lustControl']++;
-            });
-            
-            // Calculate percentages
-            const labels = [];
-            const data = [];
-            const backgroundColors = [];
-            const borderColors = [];
-            
-            const colors = {
-                stretching: '#667eea',
-                steps: '#4CAF50',
-                sleep: '#2196F3',
-                water: '#00BCD4',
-                screenTime: '#FF9800',
-                pages: '#9C27B0',
-                training: '#f44336',
-                pushUps: '#FF5722',
-                pullUps: '#795548',
-                coldShower: '#009688',
-                lustControl: '#9C27B0'
-            };
-            
-            Object.keys(habitCompletion).forEach(habit => {
-                const percentage = Math.round((habitCompletion[habit] / totalDays) * 100);
-                if (percentage > 0) {
-                    labels.push(`${getHabitDisplayName(habit)} (${percentage}%)`);
-                    data.push(percentage);
-                    backgroundColors.push(colors[habit] || '#607D8B');
-                    borderColors.push('#ffffff');
-                }
-            });
-            
-            return {
-                labels,
-                datasets: [{
-                    data,
-                    backgroundColor: backgroundColors,
-                    borderColor: borderColors,
-                    borderWidth: 2,
-                    hoverOffset: 15
-                }]
-            };
-        }
-        
-        function getConsistencyLineChartData(dates, allData) {
-            const now = new Date();
-            let filteredDates = [];
-            let consistencyData = [];
-            
-            if (currentPeriod === 'daily') {
-                for (let i = 6; i >= 0; i--) {
-                    const date = new Date(now);
-                    date.setDate(date.getDate() - i);
-                    const dateStr = date.toISOString().split('T')[0];
-                    filteredDates.push(dateStr);
-                    
-                    const dayData = allData[dateStr];
-                    if (!dayData) {
-                        consistencyData.push(0);
-                    } else {
-                        let completedHabits = 0;
-                        let totalHabits = Object.keys(goals).length + 2;
-                        
-                        Object.keys(goals).forEach(habit => {
-                            if (isHabitCompleted(habit, dayData)) {
-                                completedHabits++;
-                            }
-                        });
-                        
-                        if (dayData.coldShower) completedHabits++;
-                        if (!dayData.lust) completedHabits++;
-                        
-                        consistencyData.push(Math.round((completedHabits / totalHabits) * 100));
-                    }
-                }
-            }
-            
-            return {
-                labels: filteredDates,
-                datasets: [{
-                    label: 'Consistency %',
-                    data: consistencyData,
-                    borderColor: '#764ba2',
-                    backgroundColor: '#764ba220',
-                    tension: 0.4,
-                    fill: true
-                }]
-            };
-        }
-        
-        function getSingleMetricChartData(labels, allData, metric) {
-            const now = new Date();
-            let filteredDates = [];
-            let data = [];
-            
-            if (currentPeriod === 'daily') {
-                for (let i = 6; i >= 0; i--) {
-                    const date = new Date(now);
-                    date.setDate(date.getDate() - i);
-                    const dateStr = date.toISOString().split('T')[0];
-                    filteredDates.push(dateStr);
-                    
-                    const dayData = allData[dateStr];
-                    if (metric === 'training') {
-                        if (dayData) {
-                            let sessions = 0;
-                            if (dayData.hadGym === true) sessions++;
-                            if (dayData.hadRun === true) sessions++;
-                            data.push(sessions);
-                        } else {
-                            data.push(0);
-                        }
-                    } else if (metric === 'sleep') {
-                        data.push(dayData ? (parseFloat(dayData.sleep) || 0) : 0);
-                    } else {
-                        data.push(dayData ? (parseFloat(dayData[metric]) || 0) : 0);
-                    }
-                }
-            } else if (currentPeriod === 'weekly') {
-                // Weekly aggregation
-                for (let i = 3; i >= 0; i--) {
-                    const weekStart = new Date(now);
-                    weekStart.setDate(weekStart.getDate() - (i * 7));
-                    const weekEnd = new Date(weekStart);
-                    weekEnd.setDate(weekEnd.getDate() + 6);
-                    
-                    let weekTotal = 0;
-                    let daysInWeek = 0;
-                    
-                    for (let d = 0; d < 7; d++) {
-                        const currentDate = new Date(weekStart);
-                        currentDate.setDate(currentDate.getDate() + d);
-                        const dateStr = currentDate.toISOString().split('T')[0];
-                        const dayData = allData[dateStr];
-                        
-                        if (dayData) {
-                            if (metric === 'training') {
-                                let sessions = 0;
-                                if (dayData.hadGym === true) sessions++;
-                                if (dayData.hadRun === true) sessions++;
-                                weekTotal += sessions;
-                            } else if (metric === 'sleep') {
-                                weekTotal += parseFloat(dayData.sleep) || 0;
-                            } else {
-                                weekTotal += parseFloat(dayData[metric]) || 0;
-                            }
-                            daysInWeek++;
-                        }
-                    }
-                    
-                    const weekAvg = daysInWeek > 0 ? weekTotal / daysInWeek : 0;
-                    filteredDates.push(`Week ${i+1}`);
-                    data.push(Math.round(weekAvg * 10) / 10);
-                }
-            }
-            
-            const colors = {
-                stretching: '#667eea',
-                steps: '#4CAF50',
-                sleep: '#2196F3',
-                water: '#00BCD4',
-                screenTime: '#FF9800',
-                pages: '#9C27B0',
-                training: '#f44336',
-                consistency: '#764ba2'
-            };
-            
-            return {
-                labels: filteredDates,
-                datasets: [{
-                    label: metric.charAt(0).toUpperCase() + metric.slice(1),
-                    data,
-                    borderColor: colors[metric] || '#667eea',
-                    backgroundColor: (colors[metric] || '#667eea') + '20',
-                    tension: 0.4,
-                    fill: true
-                }]
-            };
-        }
-        
-        // ==================== RESET FUNCTIONS ====================
-        function showResetConfirm() {
-            document.getElementById('resetConfirm').style.display = 'block';
-        }
-        
-        function hideResetConfirm() {
-            document.getElementById('resetConfirm').style.display = 'none';
-        }
-        
-        function hardReset() {
-            localStorage.removeItem('lifeTrackerData');
-            localStorage.removeItem('pausedStreaks');
-            localStorage.removeItem('lastPauseReset');
-            localStorage.removeItem('lifeTrackerPoints');
-            localStorage.removeItem('isRestDay');
-            localStorage.removeItem('lastRestDay');
-            
-            // Reset all variables
-            pausedStreaks = {
-                steps: { paused: false, days: 0 },
-                training: { paused: false, days: 0 },
-                coldShower: { paused: false, days: 0 },
-                pushUps: { paused: false, days: 0 },
-                pullUps: { paused: false, days: 0 }
-            };
-            isRestDay = false;
-            
-            // Clear all inputs
-            document.querySelectorAll('input, select').forEach(el => {
-                if (el.type === 'checkbox' || el.type === 'radio') {
-                    el.checked = false;
-                } else {
-                    el.value = '';
-                }
-            });
-            
-            // Hide details
-            ['gymDetails', 'gymDetails2', 'homeDetails', 'runDetails', 'runDetails2'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
-            });
-            
-            hideResetConfirm();
-            
-            // Update UI
-            updateCheckboxStyles();
-            updateConsistencyTracker();
-            updateSleepAnalysis();
-            updateBodyweightGoals();
-            updateStreakTracker();
-            updateTotalStats();
-            updatePauseDisplay();
-            updatePointsDisplay();
-            updateChart();
-            updateOverallConsistency();
-            updateRestDayDisplay();
-            
-            // Success message
-            const resetBtn = document.querySelector('.reset-btn');
-            resetBtn.textContent = '✅ All Data Cleared!';
-            resetBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-            setTimeout(() => {
-                resetBtn.textContent = '🗑️ Hard Reset All Data';
-                resetBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-            }, 3000);
-        }
-        
-        // ==================== FIXED STREAK TRACKER ====================
-        function updateStreakTracker() {
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const dates = Object.keys(allData).sort();
-            const streaks = calculateStreaksWithPause(dates, allData);
-            
-            let html = '';
-            Object.keys(streaks).forEach(key => {
-                const streak = streaks[key];
-                let displayName = getHabitDisplayName(key);
-                
-                let streakColor = '#666';
-                let flameIcon = '';
-                let pausedIndicator = '';
-                
-                if ((key === 'steps' && pausedStreaks.steps.paused) ||
-                    (key === 'training' && pausedStreaks.training.paused) ||
-                    (key === 'coldShower' && pausedStreaks.coldShower.paused) ||
-                    (key === 'pushUps' && pausedStreaks.pushUps.paused) ||
-                    (key === 'pullUps' && pausedStreaks.pullUps.paused)) {
-                    pausedIndicator = ' ⏸️';
-                    streakColor = '#6c757d';
-                } else if (streak >= 7) {
-                    streakColor = '#4CAF50';
-                    flameIcon = '🔥';
-                } else if (streak >= 3) {
-                    streakColor = '#FF9800';
-                    flameIcon = '🔥';
-                } else if (streak > 0) {
-                    streakColor = '#667eea';
-                    flameIcon = '✨';
-                }
-                
-                html += `
-                    <div class="consistency-item">
-                        <span>${displayName}</span>
-                        <div style="color: ${streakColor}; font-weight: bold; font-size: 1.1rem;">
-                            ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}${pausedIndicator}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('streakTracker').innerHTML = html;
-        }
-        
-        // ==================== OTHER ORIGINAL FUNCTIONS ====================
+        // ==================== CONSISTENCY TRACKER ====================
         function updateConsistencyTracker() {
             const tracker = document.getElementById('consistencyTracker');
             const currentData = getCurrentInputs();
@@ -2762,6 +1879,9 @@
             
             // Regular metrics
             Object.keys(goals).forEach(key => {
+                const isPaused = isGoalPaused(key);
+                let current, goal, isGood;
+                
                 if (key === 'training') {
                     let trainingSessions = 0;
                     if (currentData.hadGym) trainingSessions++;
@@ -2770,47 +1890,35 @@
                     if (currentData.hadRun) trainingSessions++;
                     if (currentData.hadRun2) trainingSessions++;
                     
-                    const isGood = trainingSessions >= goals.training;
-                    const status = isGood ? 'good' : 'bad';
-                    const icon = isGood ? '✓' : '✗';
-                    
-                    html += `
-                        <div class="consistency-item">
-                            <span>Training (${trainingSessions}/${goals.training})</span>
-                            <div class="consistency-status status-${status}">${icon}</div>
-                        </div>
-                    `;
+                    current = trainingSessions;
+                    goal = goals.training;
+                    isGood = trainingSessions >= goal || isPaused;
                 } else if (key === 'pushUps' || key === 'pullUps') {
-                    const current = parseInt(currentData[key]) || 0;
-                    const goal = goals[key];
-                    const isGood = current >= goal;
-                    const status = isGood ? 'good' : 'bad';
-                    const icon = isGood ? '✓' : '✗';
-                    
-                    const displayName = key === 'pushUps' ? 'Push-ups' : 'Pull-ups';
-                    
-                    html += `
-                        <div class="consistency-item">
-                            <span>${displayName} (${current}/${goal})</span>
-                            <div class="consistency-status status-${status}">${icon}</div>
-                        </div>
-                    `;
+                    current = parseInt(currentData[key]) || 0;
+                    goal = goals[key];
+                    isGood = current >= goal || isPaused;
                 } else {
-                    const current = parseFloat(currentData[key]) || 0;
-                    const goal = goals[key];
-                    const isGood = key === 'screenTime' ? current <= goal : current >= goal;
-                    const status = isGood ? 'good' : 'bad';
-                    const icon = isGood ? '✓' : '✗';
-                    
-                    let displayName = getHabitDisplayName(key);
-                    
-                    html += `
-                        <div class="consistency-item">
-                            <span>${displayName}</span>
-                            <div class="consistency-status status-${status}">${icon}</div>
-                        </div>
-                    `;
+                    current = parseFloat(currentData[key]) || 0;
+                    goal = goals[key];
+                    isGood = key === 'screenTime' ? current <= goal : current >= goal;
                 }
+                
+                const status = isGood ? 'good' : 'bad';
+                const icon = isGood ? '✓' : '✗';
+                
+                let displayName = key.charAt(0).toUpperCase() + key.slice(1);
+                if (key === 'screenTime') displayName = 'Screen Time';
+                if (key === 'pushUps') displayName = 'Push-ups';
+                if (key === 'pullUps') displayName = 'Pull-ups';
+                
+                const pausedText = isPaused ? ' (Paused)' : '';
+                
+                html += `
+                    <div class="consistency-item">
+                        <span>${displayName}${pausedText}</span>
+                        <div class="consistency-status status-${status}">${icon}</div>
+                    </div>
+                `;
             });
             
             // Cold shower
@@ -2832,6 +1940,7 @@
             tracker.innerHTML = html;
         }
         
+        // ==================== SLEEP ANALYSIS ====================
         function updateSleepAnalysis() {
             const currentData = getCurrentInputs();
             const sleepAnalysis = document.getElementById('sleepAnalysis');
@@ -2938,62 +2047,370 @@
             sleepAnalysis.innerHTML = html;
         }
         
-        function updateTotalStats() {
+        // ==================== SAVE & LOAD DATA ====================
+        function saveData() {
+            const today = new Date().toISOString().split('T')[0];
+            const data = getCurrentInputs();
+            
+            let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            allData[today] = data;
+            localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
+            
+            // Save sick/rest status
+            sickRestDays.sick.active = false; // Reset after saving
+            sickRestDays.rest.active = false;
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            
+            // Save points
+            const pointsData = calculateTodayPoints();
+            let pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0, days: {} };
+            if (!pointsHistory.days[today]) {
+                pointsHistory.total += pointsData.total;
+                pointsHistory.days[today] = { points: pointsData.total, breakdown: pointsData.breakdown };
+                localStorage.setItem('lifeTrackerPoints', JSON.stringify(pointsHistory));
+            }
+            
+            // Update inactivity tracker
+            updateInactivityTracker(today, data);
+            
+            // Success message
+            const btn = document.querySelector('.save-btn');
+            btn.textContent = '✅ Saved Successfully!';
+            btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            setTimeout(() => {
+                btn.textContent = '💾 Save Today\'s Data';
+                btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            }, 2000);
+            
+            updateChart();
+            updateStreakTracker();
+            updateTotalStats();
+            updatePointsDisplay();
+            updateHabitConsistency();
+            updateSickRestDisplay();
+        }
+        
+        function loadTodaysData() {
+            const today = new Date().toISOString().split('T')[0];
             const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const totalStatsElement = document.getElementById('totalStats');
+            const todaysData = allData[today];
             
-            const totals = { 
-                stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
-                gymSessions: 0, runs: 0, totalRunDistance: 0, coldShowers: 0, naps: 0,
-                pushUps: 0, pullUps: 0
-            };
-            let totalDays = 0;
+            if (!todaysData) return;
             
-            Object.keys(allData).forEach(date => {
-                const dayData = allData[date];
-                totalDays++;
-                
-                totals.stretching += parseFloat(dayData.stretching) || 0;
-                totals.steps += parseFloat(dayData.steps) || 0;
-                totals.sleep += parseFloat(dayData.sleep) || 0;
-                totals.water += parseFloat(dayData.water) || 0;
-                totals.screenTime += parseFloat(dayData.screenTime) || 0;
-                totals.pages += parseFloat(dayData.pages) || 0;
-                totals.pushUps += parseInt(dayData.pushUps) || 0;
-                totals.pullUps += parseInt(dayData.pullUps) || 0;
-                
-                if (dayData.hadGym === true) totals.gymSessions++;
-                if (dayData.hadRun === true) {
-                    totals.runs++;
-                    totals.totalRunDistance += parseFloat(dayData.runDistance) || 0;
+            // Load basic fields
+            Object.keys(todaysData).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = todaysData[key];
+                    } else {
+                        element.value = todaysData[key] || '';
+                    }
                 }
-                
-                if (dayData.coldShower === true) totals.coldShowers++;
-                if (dayData.napped === true) totals.naps++;
             });
             
-            const formatNumber = (num) => {
-                if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-                if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-                return Math.round(num * 10) / 10;
-            };
+            // Show/hide training details based on checkboxes
+            if (todaysData.hadGym) document.getElementById('gymDetails').style.display = 'block';
+            if (todaysData.hadGym2) document.getElementById('gymDetails2').style.display = 'block';
+            if (todaysData.hadHome) document.getElementById('homeDetails').style.display = 'block';
+            if (todaysData.hadRun) document.getElementById('runDetails').style.display = 'grid';
+            if (todaysData.hadRun2) document.getElementById('runDetails2').style.display = 'grid';
             
-            totalStatsElement.innerHTML = `
-                <div class="consistency-item"><span>🧘 Total Stretching</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.stretching)}</div></div>
-                <div class="consistency-item"><span>👟 Total Steps</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.steps)}</div></div>
-                <div class="consistency-item"><span>😴 Total Sleep</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.sleep)}h</div></div>
-                <div class="consistency-item"><span>💧 Total Water</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.water)}L</div></div>
-                <div class="consistency-item"><span>📱 Total Screen Time</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.screenTime)}h</div></div>
-                <div class="consistency-item"><span>📚 Total Pages</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pages)}</div></div>
-                <div class="consistency-item"><span>💪 Total Push-ups</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pushUps)}</div></div>
-                <div class="consistency-item"><span>🤸 Total Pull-ups</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pullUps)}</div></div>
-                <div class="consistency-item"><span>🏋️ Gym Sessions</span><div style="font-weight: bold; color: #667eea;">${totals.gymSessions}</div></div>
-                <div class="consistency-item"><span>🏃 Total Runs</span><div style="font-weight: bold; color: #667eea;">${totals.runs}</div></div>
-                <div class="consistency-item"><span>📏 Total Distance</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.totalRunDistance)}km</div></div>
-                <div class="consistency-item"><span>🚿 Cold Showers</span><div style="font-weight: bold; color: #4CAF50;">${totals.coldShowers}</div></div>
-                <div class="consistency-item"><span>😴 Naps Taken</span><div style="font-weight: bold; color: #667eea;">${totals.naps}</div></div>
-                <div class="consistency-item"><span>📅 Days Tracked</span><div style="font-weight: bold; color: #764ba2;">${totalDays}</div></div>
-            `;
+            updateCheckboxStyles();
+            updateConsistencyTracker();
+            updateSleepAnalysis();
+            updateBodyweightGoals();
+        }
+        
+        // ==================== INACTIVITY TRACKER ====================
+        function updateInactivityTracker(today, data) {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            
+            Object.keys(goals).forEach(goalKey => {
+                if (!inactivityTracker[goalKey]) {
+                    inactivityTracker[goalKey] = { lastCompleted: null, consecutiveMissed: 0 };
+                }
+                
+                const tracker = inactivityTracker[goalKey];
+                const goalMet = isGoalMetForDay(data, goalKey);
+                
+                if (goalMet) {
+                    tracker.lastCompleted = today;
+                    tracker.consecutiveMissed = 0;
+                } else {
+                    tracker.consecutiveMissed++;
+                }
+            });
+            
+            localStorage.setItem('inactivityTracker', JSON.stringify(inactivityTracker));
+        }
+        
+        function isGoalMetForDay(data, goalKey) {
+            if (goalKey === 'coldShower') return data.coldShower === true;
+            if (goalKey === 'lustControl') return data.lust !== true;
+            if (goalKey === 'training') {
+                let sessions = 0;
+                if (data.hadGym === true) sessions++;
+                if (data.hadRun === true) sessions++;
+                return sessions >= goals.training;
+            }
+            if (goalKey === 'pushUps' || goalKey === 'pullUps') {
+                const value = parseInt(data[goalKey]) || 0;
+                const goal = goals[goalKey];
+                return value >= goal;
+            }
+            
+            const value = parseFloat(data[goalKey]) || 0;
+            const goal = goals[goalKey];
+            return goalKey === 'screenTime' ? value <= goal : value >= goal;
+        }
+        
+        // ==================== POINTS SYSTEM ====================
+        function calculateTodayPoints() {
+            const currentData = getCurrentInputs();
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            const streaks = calculateStreaksWithPause(dates, allData);
+            
+            let totalPoints = 0;
+            let pointsBreakdown = [];
+            let completedGoals = 0;
+            const totalGoals = Object.keys(goals).length + 2; // +2 for cold shower and lust control
+            
+            // Calculate points for each goal
+            Object.keys(goals).forEach(goalKey => {
+                const isPaused = isGoalPaused(goalKey);
+                let points = 0;
+                let multiplier = 1;
+                let description = '';
+                let emoji = '';
+                
+                // Streak multiplier (only for positive points)
+                const streak = streaks[goalKey] || 0;
+                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
+                    if (streak >= parseInt(days)) {
+                        multiplier = mult;
+                        break;
+                    }
+                }
+                
+                if (goalKey === 'training') {
+                    let trainingSessions = 0;
+                    if (currentData.hadGym) trainingSessions++;
+                    if (currentData.hadGym2) trainingSessions++;
+                    if (currentData.hadHome) trainingSessions++;
+                    if (currentData.hadRun) trainingSessions++;
+                    if (currentData.hadRun2) trainingSessions++;
+                    
+                    const goalMet = trainingSessions >= goals.training;
+                    
+                    if (goalMet && !isPaused) {
+                        points = pointsConfig.training * multiplier;
+                        description = `Training (${trainingSessions} sessions)`;
+                        emoji = '💪';
+                        completedGoals++;
+                        
+                        // Training bonuses
+                        let bonusPoints = 0;
+                        const totalDuration = currentData.gymDuration + currentData.gym2Duration + 
+                                            currentData.homeDuration + currentData.runDuration + 
+                                            currentData.runDuration2;
+                        const maxIntensity = Math.max(
+                            currentData.gymIntensity || 0,
+                            currentData.gym2Intensity || 0,
+                            currentData.homeIntensity || 0,
+                            currentData.runIntensity || 0,
+                            currentData.runIntensity2 || 0
+                        );
+                        
+                        if (totalDuration > 75) {
+                            bonusPoints += pointsConfig.durationBonus;
+                            description += ` +${pointsConfig.durationBonus}dur`;
+                        }
+                        
+                        if (maxIntensity > 7) {
+                            bonusPoints += pointsConfig.intensityBonus;
+                            description += ` +${pointsConfig.intensityBonus}int`;
+                        }
+                        
+                        points += bonusPoints;
+                    } else if (!goalMet && !isPaused) {
+                        // Deduction for missed training
+                        points = pointsConfig.trainingDeduction;
+                        description = `Training (Missed)`;
+                        emoji = '❌';
+                    }
+                } else if (goalKey === 'pushUps' || goalKey === 'pullUps') {
+                    const current = parseInt(currentData[goalKey]) || 0;
+                    const goal = goals[goalKey];
+                    const goalMet = current >= goal;
+                    
+                    if (goalMet && !isPaused) {
+                        points = pointsConfig[goalKey] * multiplier;
+                        description = goalKey === 'pushUps' ? 'Push-ups' : 'Pull-ups';
+                        emoji = goalKey === 'pushUps' ? '💪' : '🤸';
+                        completedGoals++;
+                    } else if (!goalMet && !isPaused) {
+                        // Deduction for missed bodyweight
+                        points = pointsConfig[`${goalKey}Deduction`];
+                        description = goalKey === 'pushUps' ? 'Push-ups (Missed)' : 'Pull-ups (Missed)';
+                        emoji = '❌';
+                    }
+                } else if (goalKey === 'sleep') {
+                    // Strict sleep rules
+                    const sleepQuality = currentData.sleepQuality;
+                    const sleepDuration = currentData.sleep;
+                    
+                    let sleepPoints = 0;
+                    description = 'Sleep';
+                    emoji = '😴';
+                    
+                    // Check if BOTH conditions are met
+                    if (sleepQuality > 80 && sleepDuration >= 8.0 && sleepDuration <= 9.5) {
+                        sleepPoints = pointsConfig.sleepQualityBonus * multiplier;
+                        description += ' (Quality & Duration)';
+                        completedGoals++;
+                    } 
+                    // Deductions
+                    else if (sleepQuality <= 60) {
+                        sleepPoints = pointsConfig.sleepQualityDeduction;
+                        description += ' (Low Quality)';
+                    } else if (sleepDuration < 7) {
+                        sleepPoints = pointsConfig.sleepDurationDeduction;
+                        description += ' (Short Sleep)';
+                    }
+                    // If only one condition met → 0 points (already handled by sleepPoints = 0)
+                    
+                    points = sleepPoints;
+                    
+                } else {
+                    const current = parseFloat(currentData[goalKey]) || 0;
+                    const goal = goals[goalKey];
+                    const goalMet = goalKey === 'screenTime' ? current <= goal : current >= goal;
+                    
+                    if (goalMet) {
+                        points = pointsConfig[goalKey] * multiplier;
+                        description = goalKey.charAt(0).toUpperCase() + goalKey.slice(1);
+                        if (goalKey === 'screenTime') description = 'Screen Time';
+                        emoji = getEmojiForActivity(goalKey);
+                        completedGoals++;
+                        
+                        // Special bonuses
+                        if (goalKey === 'steps' && current > goal) {
+                            const extraSteps = current - goal;
+                            const extraMultipliers = Math.min(
+                                Math.floor(extraSteps / 1500),
+                                pointsConfig.maxStepsMultipliers
+                            );
+                            const bonus = Math.round(pointsConfig.steps * pointsConfig.stepsMultiplierPer1500 * extraMultipliers);
+                            if (bonus > 0) {
+                                points += bonus;
+                                description += ` +${bonus} bonus`;
+                            }
+                        }
+                    } else {
+                        // Deduction for missed goal (except when paused for sick/rest)
+                        if (!isPaused) {
+                            points = pointsConfig[`${goalKey}Deduction`];
+                            description = `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} (Missed)`;
+                            if (goalKey === 'screenTime') description = 'Screen Time (Exceeded)';
+                            emoji = '❌';
+                        }
+                    }
+                }
+                
+                if (points !== 0) {
+                    totalPoints += points;
+                    const isNegative = points < 0;
+                    pointsBreakdown.push({ 
+                        emoji, 
+                        description, 
+                        points: Math.round(points), 
+                        multiplier: multiplier > 1 && !isNegative ? `x${multiplier}` : '',
+                        isNegative 
+                    });
+                }
+            });
+            
+            // Cold shower points
+            if (currentData.coldShower) {
+                const streak = streaks.coldShower || 0;
+                let multiplier = 1;
+                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
+                    if (streak >= parseInt(days)) {
+                        multiplier = mult;
+                        break;
+                    }
+                }
+                const points = pointsConfig.coldShower * multiplier;
+                totalPoints += points;
+                completedGoals++;
+                pointsBreakdown.push({ emoji: '🚿', description: 'Cold Shower', points: Math.round(points), multiplier: multiplier > 1 ? `x${multiplier}` : '', isNegative: false });
+            }
+            
+            // Lust control points (positive if NOT lusting)
+            if (!currentData.lust) {
+                const streak = streaks.lustControl || 0;
+                let multiplier = 1;
+                for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
+                    if (streak >= parseInt(days)) {
+                        multiplier = mult;
+                        break;
+                    }
+                }
+                const points = pointsConfig.lustControl * multiplier;
+                totalPoints += points;
+                completedGoals++;
+                pointsBreakdown.push({ emoji: '🚫', description: 'Lust Control', points: Math.round(points), multiplier: multiplier > 1 ? `x${multiplier}` : '', isNegative: false });
+            } else {
+                // Deduct points for lust
+                const deduction = pointsConfig.lustControl * -1;
+                totalPoints += deduction;
+                pointsBreakdown.push({ emoji: '⚠️', description: 'Lust (Deduction)', points: deduction, multiplier: '', isNegative: true });
+            }
+            
+            // Bodyweight both bonus
+            const pushUpsMet = (currentData.pushUps >= goals.pushUps) && !isGoalPaused('pushUps');
+            const pullUpsMet = (currentData.pullUps >= goals.pullUps) && !isGoalPaused('pullUps');
+            if (pushUpsMet && pullUpsMet) {
+                // Calculate base bodyweight points
+                const basePushUpsPoints = pointsConfig.pushUps;
+                const basePullUpsPoints = pointsConfig.pullUps;
+                const bonus = Math.round((basePushUpsPoints + basePullUpsPoints) * (pointsConfig.bodyweightBothBonus - 1));
+                
+                totalPoints += bonus;
+                pointsBreakdown.push({ emoji: '🏆', description: 'Bodyweight Both Bonus', points: bonus, multiplier: `x${pointsConfig.bodyweightBothBonus}`, isNegative: false });
+            }
+            
+            // Inactivity penalties
+            Object.keys(inactivityTracker).forEach(goalKey => {
+                const tracker = inactivityTracker[goalKey];
+                if (tracker.consecutiveMissed >= 3 && !isGoalPaused(goalKey)) {
+                    const penalty = pointsConfig.inactivityPenalty;
+                    totalPoints += penalty;
+                    pointsBreakdown.push({ 
+                        emoji: '⏰', 
+                        description: `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} Inactivity`, 
+                        points: penalty, 
+                        multiplier: '', 
+                        isNegative: true 
+                    });
+                }
+            });
+            
+            // Daily completion bonus
+            if (completedGoals === totalGoals) {
+                totalPoints += pointsConfig.dailyCompletionBonus;
+                pointsBreakdown.push({ emoji: '🏆', description: 'All Goals Completed!', points: pointsConfig.dailyCompletionBonus, multiplier: 'BONUS', isNegative: false });
+            }
+            
+            return { total: Math.round(totalPoints), breakdown: pointsBreakdown, completedGoals, totalGoals };
+        }
+        
+        function getEmojiForActivity(activity) {
+            const emojis = { stretching: '🧘', steps: '👟', sleep: '😴', water: '💧', screenTime: '📱', pages: '📚', training: '💪' };
+            return emojis[activity] || '⭐';
         }
         
         function updatePointsDisplay() {
@@ -3057,6 +2474,269 @@
             levelText.textContent = `Level ${level} (${pointsInCurrentLevel}/${pointsForNextLevel})`;
         }
         
+        // ==================== STREAK CALCULATION ====================
+        function calculateStreaks(dates, allData) {
+            const streaks = { 
+                stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
+                training: 0, coldShower: 0, lustControl: 0, pushUps: 0, pullUps: 0 
+            };
+            if (dates.length === 0) return streaks;
+            
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            
+            function goalMet(date, goalKey) {
+                const dayData = allData[date];
+                if (!dayData) return false;
+                
+                if (goalKey === 'coldShower') return dayData.coldShower === true;
+                if (goalKey === 'lustControl') return dayData.lust !== true;
+                if (goalKey === 'training') {
+                    let sessions = 0;
+                    if (dayData.hadGym === true) sessions++;
+                    if (dayData.hadRun === true) sessions++;
+                    return sessions >= goals.training;
+                }
+                if (goalKey === 'pushUps' || goalKey === 'pullUps') {
+                    const value = parseInt(dayData[goalKey]) || 0;
+                    const goal = goals[goalKey];
+                    return value >= goal;
+                }
+                
+                const value = parseFloat(dayData[goalKey]) || 0;
+                const goal = goals[goalKey];
+                return goalKey === 'screenTime' ? value <= goal : value >= goal;
+            }
+            
+            Object.keys(streaks).forEach(goalKey => {
+                let streak = 0;
+                let checkingDate = new Date(today);
+                
+                for (let i = 0; i < 365; i++) {
+                    const dateStr = checkingDate.toISOString().split('T')[0];
+                    const dayData = allData[dateStr];
+                    
+                    if (dayData && goalMet(dateStr, goalKey)) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                    
+                    checkingDate.setDate(checkingDate.getDate() - 1);
+                }
+                
+                streaks[goalKey] = streak;
+            });
+            
+            return streaks;
+        }
+        
+        function calculateStreaksWithPause(dates, allData) {
+            const streaks = calculateStreaks(dates, allData);
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Apply sick/rest pauses
+            if (sickRestDays.sick.active) {
+                streaks.steps = Math.max(streaks.steps, 1);
+                streaks.pushUps = Math.max(streaks.pushUps, 1);
+                streaks.pullUps = Math.max(streaks.pullUps, 1);
+                streaks.training = Math.max(streaks.training, 1);
+            }
+            
+            if (sickRestDays.rest.active) {
+                // Only affect training if it's running-only day
+                if (!isGymOrBodyweightToday()) {
+                    streaks.training = Math.max(streaks.training, 1);
+                }
+            }
+            
+            return streaks;
+        }
+        
+        function updateStreakTracker() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            const streaks = calculateStreaksWithPause(dates, allData);
+            
+            let html = '';
+            Object.keys(streaks).forEach(key => {
+                const streak = streaks[key];
+                let displayName = key.charAt(0).toUpperCase() + key.slice(1);
+                if (key === 'screenTime') displayName = 'Screen Time';
+                if (key === 'coldShower') displayName = 'Cold Shower';
+                if (key === 'lustControl') displayName = 'Lust Control';
+                if (key === 'pushUps') displayName = 'Push-ups';
+                if (key === 'pullUps') displayName = 'Pull-ups';
+                
+                let streakColor = '#666';
+                let flameIcon = '';
+                let pausedIndicator = '';
+                
+                const isPaused = isGoalPaused(key);
+                
+                if (isPaused) {
+                    pausedIndicator = ' ⏸️';
+                    streakColor = '#6c757d';
+                } else if (streak >= 7) {
+                    streakColor = '#4CAF50';
+                    flameIcon = '🔥';
+                } else if (streak >= 3) {
+                    streakColor = '#FF9800';
+                    flameIcon = '🔥';
+                } else if (streak > 0) {
+                    streakColor = '#667eea';
+                    flameIcon = '✨';
+                }
+                
+                html += `
+                    <div class="consistency-item">
+                        <span>${displayName}</span>
+                        <div style="color: ${streakColor}; font-weight: bold; font-size: 1.1rem;">
+                            ${streak} day${streak !== 1 ? 's' : ''} ${flameIcon}${pausedIndicator}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('streakTracker').innerHTML = html;
+        }
+        
+        // ==================== HABIT CONSISTENCY ====================
+        function calculateHabitConsistency() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const dates = Object.keys(allData).sort();
+            const totalDays = dates.length;
+            
+            const consistency = {};
+            Object.keys(goals).forEach(goalKey => {
+                let completedDays = 0;
+                
+                dates.forEach(date => {
+                    const dayData = allData[date];
+                    if (dayData && isGoalMetForDay(dayData, goalKey)) {
+                        completedDays++;
+                    }
+                });
+                
+                consistency[goalKey] = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
+            });
+            
+            // Overall consistency (average of all habits)
+            const values = Object.values(consistency);
+            const overall = values.length > 0 ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : 0;
+            
+            return { overall, habits: consistency };
+        }
+        
+        function updateHabitConsistency() {
+            const consistency = calculateHabitConsistency();
+            const habitConsistencyElement = document.getElementById('habitConsistency');
+            
+            // Update overall consistency at top
+            document.getElementById('overallConsistency').textContent = `${consistency.overall}%`;
+            
+            let html = '';
+            Object.keys(consistency.habits).forEach(key => {
+                const value = consistency.habits[key];
+                let displayName = key.charAt(0).toUpperCase() + key.slice(1);
+                if (key === 'screenTime') displayName = 'Screen Time';
+                if (key === 'pushUps') displayName = 'Push-ups';
+                if (key === 'pullUps') displayName = 'Pull-ups';
+                
+                html += `
+                    <div class="consistency-item">
+                        <span>${displayName}</span>
+                        <div style="font-weight: bold; color: ${getConsistencyColor(value)};">
+                            ${value}%
+                        </div>
+                    </div>
+                `;
+            });
+            
+            habitConsistencyElement.innerHTML = html;
+        }
+        
+        function getConsistencyColor(value) {
+            if (value >= 90) return '#4CAF50';
+            if (value >= 70) return '#FF9800';
+            if (value >= 50) return '#FFC107';
+            return '#f44336';
+        }
+        
+        // ==================== TOTAL STATISTICS ====================
+        function updateTotalStats() {
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const totalStatsElement = document.getElementById('totalStats');
+            
+            const totals = { 
+                stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
+                gymSessions: 0, runs: 0, totalRunDistance: 0, coldShowers: 0, naps: 0,
+                pushUps: 0, pullUps: 0
+            };
+            let totalDays = 0;
+            
+            Object.keys(allData).forEach(date => {
+                const dayData = allData[date];
+                totalDays++;
+                
+                totals.stretching += parseFloat(dayData.stretching) || 0;
+                totals.steps += parseFloat(dayData.steps) || 0;
+                totals.sleep += parseFloat(dayData.sleep) || 0;
+                totals.water += parseFloat(dayData.water) || 0;
+                totals.screenTime += parseFloat(dayData.screenTime) || 0;
+                totals.pages += parseFloat(dayData.pages) || 0;
+                totals.pushUps += parseInt(dayData.pushUps) || 0;
+                totals.pullUps += parseInt(dayData.pullUps) || 0;
+                
+                if (dayData.hadGym === true) totals.gymSessions++;
+                if (dayData.hadRun === true) {
+                    totals.runs++;
+                    totals.totalRunDistance += parseFloat(dayData.runDistance) || 0;
+                }
+                
+                if (dayData.coldShower === true) totals.coldShowers++;
+                if (dayData.napped === true) totals.naps++;
+            });
+            
+            const formatNumber = (num) => {
+                if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                return Math.round(num * 10) / 10;
+            };
+            
+            totalStatsElement.innerHTML = `
+                <div class="consistency-item"><span>🧘 Total Stretching</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.stretching)}</div></div>
+                <div class="consistency-item"><span>👟 Total Steps</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.steps)}</div></div>
+                <div class="consistency-item"><span>😴 Total Sleep</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.sleep)}h</div></div>
+                <div class="consistency-item"><span>💧 Total Water</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.water)}L</div></div>
+                <div class="consistency-item"><span>📱 Total Screen Time</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.screenTime)}h</div></div>
+                <div class="consistency-item"><span>📚 Total Pages</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pages)}</div></div>
+                <div class="consistency-item"><span>💪 Total Push-ups</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pushUps)}</div></div>
+                <div class="consistency-item"><span>🤸 Total Pull-ups</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pullUps)}</div></div>
+                <div class="consistency-item"><span>🏋️ Gym Sessions</span><div style="font-weight: bold; color: #667eea;">${totals.gymSessions}</div></div>
+                <div class="consistency-item"><span>🏃 Total Runs</span><div style="font-weight: bold; color: #667eea;">${totals.runs}</div></div>
+                <div class="consistency-item"><span>📏 Total Distance</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.totalRunDistance)}km</div></div>
+                <div class="consistency-item"><span>🚿 Cold Showers</span><div style="font-weight: bold; color: #4CAF50;">${totals.coldShowers}</div></div>
+                <div class="consistency-item"><span>😴 Naps Taken</span><div style="font-weight: bold; color: #667eea;">${totals.naps}</div></div>
+                <div class="consistency-item"><span>📅 Days Tracked</span><div style="font-weight: bold; color: #764ba2;">${totalDays}</div></div>
+            `;
+        }
+        
+        // ==================== CHART FUNCTIONS ====================
+        function showChart(type) {
+            currentView = type;
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateChart();
+        }
+        
+        function changePeriod(period) {
+            currentPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateChart();
+        }
+        
         function initializeChart() {
             const ctx = document.getElementById('mainChart').getContext('2d');
             currentChart = new Chart(ctx, {
@@ -3066,17 +2746,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: { y: { beginAtZero: true } },
-                    plugins: { 
-                        legend: { 
-                            display: true, 
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        } 
-                    }
+                    plugins: { legend: { display: true, position: 'top' } }
                 }
             });
             updateChart();
@@ -3088,63 +2758,9 @@
             const chartData = getChartData(dates, allData);
             
             if (currentChart) {
-                currentChart.destroy();
+                currentChart.data = chartData;
+                currentChart.update();
             }
-            
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            
-            // Determine chart type based on view and selection
-            let type = 'line';
-            let options = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { 
-                        display: true, 
-                        position: 'top',
-                        labels: {
-                            font: {
-                                size: 12
-                            }
-                        }
-                    } 
-                }
-            };
-            
-            if (currentView === 'consistency' && chartType === 'pie') {
-                type = 'pie';
-                options = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'right',
-                            labels: {
-                                font: {
-                                    size: 11
-                                },
-                                padding: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    return `${label}: ${value}% of days`;
-                                }
-                            }
-                        }
-                    }
-                };
-            }
-            
-            currentChart = new Chart(ctx, {
-                type: type,
-                data: chartData,
-                options: options
-            });
             
             const titles = {
                 stretching: 'Stretching Sessions',
@@ -3154,73 +2770,181 @@
                 screenTime: 'Screen Time (Hours)',
                 pages: 'Pages Read',
                 training: 'Training Sessions',
-                consistency: 'Habit Consistency'
+                consistency: 'Overall Consistency'
             };
             
             const periodText = currentPeriod === 'daily' ? 'Last 7 Days' : 
                               currentPeriod === 'weekly' ? 'Last 4 Weeks' : 'Last 6 Months';
             
-            if (currentView === 'consistency' && chartType === 'pie') {
-                document.getElementById('chartTitle').textContent = `Habit Consistency - Overall`;
+            document.getElementById('chartTitle').textContent = `${titles[currentView] || currentView} - ${periodText}`;
+        }
+        
+        function getChartData(dates, allData) {
+            const now = new Date();
+            let filteredDates = [];
+            
+            if (currentPeriod === 'daily') {
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    filteredDates.push(date.toISOString().split('T')[0]);
+                }
+            } else if (currentPeriod === 'weekly') {
+                for (let i = 3; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - (i * 7));
+                    filteredDates.push(`Week of ${date.toLocaleDateString()}`);
+                }
             } else {
-                document.getElementById('chartTitle').textContent = `${titles[currentView] || currentView} - ${periodText}`;
+                for (let i = 5; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setMonth(date.getMonth() - i);
+                    filteredDates.push(date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }));
+                }
+            }
+            
+            if (currentView === 'consistency') {
+                return getConsistencyChartData(filteredDates, allData);
+            } else {
+                return getSingleMetricChartData(filteredDates, allData, currentView);
             }
         }
         
-        function changePeriod(period) {
-            currentPeriod = period;
-            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateChart();
+        function getSingleMetricChartData(labels, allData, metric) {
+            const data = labels.map(label => {
+                if (currentPeriod === 'daily') {
+                    const dayData = allData[label];
+                    if (metric === 'training') {
+                        if (dayData) {
+                            let sessions = 0;
+                            if (dayData.hadGym === true) sessions++;
+                            if (dayData.hadRun === true) sessions++;
+                            return sessions;
+                        }
+                        return 0;
+                    }
+                    return dayData ? (parseFloat(dayData[metric]) || 0) : 0;
+                }
+                return 0;
+            });
+            
+            const colors = {
+                stretching: '#667eea',
+                steps: '#4CAF50',
+                sleep: '#2196F3',
+                water: '#00BCD4',
+                screenTime: '#FF9800',
+                pages: '#9C27B0',
+                training: '#f44336'
+            };
+            
+            return {
+                labels,
+                datasets: [{
+                    label: metric.charAt(0).toUpperCase() + metric.slice(1),
+                    data,
+                    borderColor: colors[metric] || '#667eea',
+                    backgroundColor: (colors[metric] || '#667eea') + '20',
+                    tension: 0.4,
+                    fill: true
+                }]
+            };
         }
         
-        function loadTodaysData() {
-            const today = new Date().toISOString().split('T')[0];
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const todaysData = allData[today];
-            
-            if (!todaysData) return;
-            
-            // Load basic fields
-            Object.keys(todaysData).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    if (element.type === 'checkbox') {
-                        element.checked = todaysData[key];
-                    } else {
-                        element.value = todaysData[key] || '';
+        function getConsistencyChartData(labels, allData) {
+            const consistencyData = labels.map(label => {
+                if (currentPeriod === 'daily') {
+                    const dayData = allData[label];
+                    if (dayData) {
+                        // Calculate daily consistency
+                        let completed = 0;
+                        let total = Object.keys(goals).length + 2; // +2 for cold shower and lust control
+                        
+                        Object.keys(goals).forEach(key => {
+                            if (isGoalMetForDay(dayData, key)) completed++;
+                        });
+                        
+                        if (dayData.coldShower) completed++;
+                        if (!dayData.lust) completed++;
+                        
+                        return Math.round((completed / total) * 100);
                     }
+                }
+                return 0;
+            });
+            
+            return {
+                labels,
+                datasets: [{
+                    label: 'Consistency %',
+                    data: consistencyData,
+                    borderColor: '#4CAF50',
+                    backgroundColor: '#4CAF5020',
+                    tension: 0.4,
+                    fill: true
+                }]
+            };
+        }
+        
+        // ==================== RESET FUNCTIONS ====================
+        function showResetConfirm() {
+            document.getElementById('resetConfirm').style.display = 'block';
+        }
+        
+        function hideResetConfirm() {
+            document.getElementById('resetConfirm').style.display = 'none';
+        }
+        
+        function hardReset() {
+            localStorage.removeItem('lifeTrackerData');
+            localStorage.removeItem('sickRestDays');
+            localStorage.removeItem('inactivityTracker');
+            localStorage.removeItem('lifeTrackerPoints');
+            
+            // Clear all inputs
+            document.querySelectorAll('input, select').forEach(el => {
+                if (el.type === 'checkbox' || el.type === 'radio') {
+                    el.checked = false;
+                } else {
+                    el.value = '';
                 }
             });
             
-            // Show/hide training details based on checkboxes
-            if (todaysData.hadGym) document.getElementById('gymDetails').style.display = 'block';
-            if (todaysData.hadGym2) document.getElementById('gymDetails2').style.display = 'block';
-            if (todaysData.hadHome) document.getElementById('homeDetails').style.display = 'block';
-            if (todaysData.hadRun) document.getElementById('runDetails').style.display = 'grid';
-            if (todaysData.hadRun2) document.getElementById('runDetails2').style.display = 'grid';
+            // Hide details
+            ['gymDetails', 'gymDetails2', 'homeDetails', 'runDetails', 'runDetails2'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
             
+            // Reset sick/rest
+            sickRestDays = { sick: { active: false, history: [] }, rest: { active: false, history: [] } };
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            
+            // Reset inactivity tracker
+            inactivityTracker = {};
+            localStorage.setItem('inactivityTracker', JSON.stringify(inactivityTracker));
+            
+            hideResetConfirm();
+            
+            // Update UI
             updateCheckboxStyles();
             updateConsistencyTracker();
             updateSleepAnalysis();
             updateBodyweightGoals();
-        }
-        
-        function resetPauseCounters() {
-            const today = new Date().toISOString().split('T')[0];
-            const lastReset = localStorage.getItem('lastPauseReset') || '';
+            updateStreakTracker();
+            updateTotalStats();
+            updateSickRestDisplay();
+            updatePointsDisplay();
+            updateHabitConsistency();
+            updateChart();
             
-            if (today !== lastReset) {
-                Object.keys(pausedStreaks).forEach(streakType => {
-                    if (!pausedStreaks[streakType].paused) {
-                        pausedStreaks[streakType].days = 0;
-                    }
-                });
-                
-                localStorage.setItem('lastPauseReset', today);
-                localStorage.setItem('pausedStreaks', JSON.stringify(pausedStreaks));
-                updatePauseDisplay();
-            }
+            // Success message
+            const resetBtn = document.querySelector('.reset-btn');
+            resetBtn.textContent = '✅ All Data Cleared!';
+            resetBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            setTimeout(() => {
+                resetBtn.textContent = '🗑️ Hard Reset All Data';
+                resetBtn.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+            }, 3000);
         }
     </script>
 </body>
