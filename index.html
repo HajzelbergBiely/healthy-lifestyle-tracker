@@ -933,6 +933,21 @@
             margin-top: 2px;
         }
         
+        .seasonal-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        .seasonal-inactive {
+            background: #6c757d;
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -1089,7 +1104,7 @@
                                                 <input type="checkbox" id="gym2Legs">
                                                 <label for="gym2Legs" style="font-size: 0.9rem;">Legs</label>
                                             </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                            <div style="display: flex; align-items center; gap: 5px;">
                                                 <input type="checkbox" id="gym2Upper">
                                                 <label for="gym2Upper" style="font-size: 0.9rem;">Upper</label>
                                             </div>
@@ -1252,8 +1267,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-group" id="coldShowerGroup"><label>🚿 Cold Shower</label>
-                        <div class="checkbox-group"><input type="checkbox" id="coldShower"> <label for="coldShower">Took cold shower today</label></div>
+                    <div class="input-group" id="coldShowerGroup">
+                        <label for="coldShower">🚿 Cold Shower <span id="seasonalBadge" class="seasonal-badge seasonal-inactive">Winter</span></label>
+                        <div class="checkbox-group"><input type="checkbox" id="coldShower" disabled> <label for="coldShower" id="coldShowerLabel">Seasonal (Apr-Sep only)</label></div>
                     </div>
                     <div class="input-group" id="lustGroup"><label>🚫 Lust Control</label>
                         <div class="checkbox-group"><input type="checkbox" id="lust"> <label for="lust">Broke lust control (check if failed)</label></div>
@@ -1401,6 +1417,13 @@
             pullUps: 20
         };
         
+        // Check if it's cold shower season (April to September)
+        function isColdShowerSeason() {
+            const today = new Date();
+            const month = today.getMonth() + 1; // January is 0
+            return month >= 4 && month <= 9; // April (4) to September (9)
+        }
+        
         // Sick/Rest day storage
         let sickRestDays = JSON.parse(localStorage.getItem('sickRestDays')) || {
             sick: { active: false, history: [] },
@@ -1414,58 +1437,59 @@
         let currentView = 'stretching';
         let currentPeriod = 'daily';
         
-        // Points System Configuration - Balanced and fair
+        // IMPROVED Points System - More Rewarding, Focus on Streak Maintenance
         const pointsConfig = {
-            // Base points for completing goals
-            stretching: 15,
-            steps: 20,
-            sleep: 25,
-            water: 15,
-            screenTime: 15,
-            pages: 15,
-            training: 30,
-            coldShower: 20,
-            lustControl: 25,
-            pushUps: 15,
-            pullUps: 15,
+            // Base points for completing goals (INCREASED for more reward)
+            stretching: 25,
+            steps: 30,
+            sleep: 40,
+            water: 20,
+            screenTime: 20,
+            pages: 25,
+            training: 40,
+            coldShower: 30,
+            lustControl: 35,
+            pushUps: 25,
+            pullUps: 25,
             
-            // Deductions for missing goals (only when not sick/rest)
-            stretchingDeduction: -10,
-            stepsDeduction: -15,
-            waterDeduction: -10,
-            screenTimeDeduction: -15,
-            pagesDeduction: -10,
-            pushUpsDeduction: -10,
-            pullUpsDeduction: -10,
-            trainingDeduction: -20,
+            // REMOVED: Daily missed goal deductions (too harsh)
+            // KEPT: Only streak-related penalties
             
-            // Sleep strict rules
-            sleepQualityBonus: 25,      // Only if both conditions met
-            sleepDurationDeduction: -15, // < 7 hours
-            sleepQualityDeduction: -10,  // ≤ 60 quality
+            // Sleep strict rules (more generous)
+            sleepQualityBonus: 35,      // Only if both conditions met
+            sleepDurationDeduction: -10, // < 7 hours (reduced from -15)
+            sleepQualityDeduction: -5,  // ≤ 60 quality (reduced from -10)
             
-            // Bodyweight bonus multiplier
-            bodyweightBothBonus: 1.5,   // Multiplier when both push-ups and pull-ups completed
+            // Bodyweight bonus multiplier (INCREASED)
+            bodyweightBothBonus: 2.0,   // 2x multiplier when both completed
             
-            // Training bonuses
-            durationBonus: 10,          // > 75 minutes
-            intensityBonus: 10,         // > 7 intensity
+            // Training bonuses (INCREASED)
+            durationBonus: 15,          // > 75 minutes
+            intensityBonus: 15,         // > 7 intensity
             
-            // Steps overachievement
-            stepsMultiplierPer1500: 0.2, // 20% bonus per extra 1500 steps
-            maxStepsMultipliers: 3,      // Diminishing returns after 3 multipliers
+            // Steps overachievement (ENHANCED)
+            stepsMultiplierPer1500: 0.25, // 25% bonus per extra 1500 steps (up from 20%)
+            maxStepsMultipliers: 4,      // More multipliers allowed
             
-            // Streak multipliers (only for positive points)
+            // Streak multipliers (ENHANCED for more reward)
             streakMultipliers: {
-                3: 1.2,   // Small multiplier
-                7: 1.5,   // Medium multiplier
-                14: 2.0   // Large multiplier
+                3: 1.3,   // Small multiplier
+                7: 1.7,   // Medium multiplier
+                14: 2.3,   // Large multiplier
+                30: 3.0   // Epic multiplier for 30 days
             },
             
-            // Inactivity penalty (after 3 consecutive days)
-            inactivityPenalty: -15,
+            // Streak break penalty (MAIN PUNISHMENT - keeping this)
+            streakBreakPenalty: -50,    // Significant penalty for breaking a streak
             
-            dailyCompletionBonus: 50
+            // Daily completion bonus (INCREASED)
+            dailyCompletionBonus: 75,
+            
+            // Weekly streak bonus (NEW)
+            weeklyStreakBonus: 100,     // Bonus for 7+ day streak on any habit
+            
+            // Monthly challenge bonus (NEW)
+            monthlyChallengeBonus: 200  // Bonus for 30+ day streak
         };
         
         // Initialize the app
@@ -1479,6 +1503,7 @@
             updatePointsDisplay();
             updateHabitConsistency();
             initializeChart();
+            updateColdShowerSeason();
             
             // Initialize sick/rest toggles
             updateSickRestDisplay();
@@ -1600,6 +1625,29 @@
             updateBodyweightGoals();
         });
         
+        function updateColdShowerSeason() {
+            const isSeason = isColdShowerSeason();
+            const coldShowerCheckbox = document.getElementById('coldShower');
+            const coldShowerLabel = document.getElementById('coldShowerLabel');
+            const seasonalBadge = document.getElementById('seasonalBadge');
+            
+            if (isSeason) {
+                coldShowerCheckbox.disabled = false;
+                coldShowerLabel.textContent = 'Took cold shower today';
+                seasonalBadge.textContent = 'Summer';
+                seasonalBadge.classList.remove('seasonal-inactive');
+                seasonalBadge.classList.add('seasonal-active');
+            } else {
+                coldShowerCheckbox.disabled = true;
+                coldShowerCheckbox.checked = false;
+                coldShowerLabel.textContent = 'Seasonal (Apr-Sep only)';
+                seasonalBadge.textContent = 'Winter';
+                seasonalBadge.classList.remove('seasonal-active');
+                seasonalBadge.classList.add('seasonal-inactive');
+            }
+            updateCheckboxStyles();
+        }
+        
         // ==================== BASIC FUNCTIONS ====================
         function displayCurrentDate() {
             const today = new Date();
@@ -1690,7 +1738,7 @@
             const coldShowerChecked = document.getElementById('coldShower').checked;
             const lustChecked = document.getElementById('lust').checked;
             
-            coldShowerGroup.classList.toggle('cold-shower-checked', coldShowerChecked);
+            coldShowerGroup.classList.toggle('cold-shower-checked', coldShowerChecked && isColdShowerSeason());
             lustGroup.classList.toggle('lust-checked', lustChecked);
             updateConsistencyTracker();
         }
@@ -1806,6 +1854,10 @@
                 return selected;
             };
             
+            // Check cold shower season
+            const coldShowerCheckbox = document.getElementById('coldShower');
+            const coldShowerActive = isColdShowerSeason() ? coldShowerCheckbox.checked : false;
+            
             return {
                 // Basic inputs
                 stretching: parseInt(document.getElementById('stretching').value) || 0,
@@ -1827,7 +1879,7 @@
                 water: parseFloat(document.getElementById('water').value) || 0,
                 screenTime: parseFloat(document.getElementById('screenTime').value) || 0,
                 pages: parseInt(document.getElementById('pages').value) || 0,
-                coldShower: document.getElementById('coldShower').checked,
+                coldShower: coldShowerActive,
                 lust: document.getElementById('lust').checked,
                 
                 // Bodyweight goals
@@ -1921,13 +1973,16 @@
                 `;
             });
             
-            // Cold shower
-            html += `
-                <div class="consistency-item">
-                    <span>Cold Shower</span>
-                    <div class="consistency-status status-${currentData.coldShower ? 'good' : 'bad'}">${currentData.coldShower ? '✓' : '✗'}</div>
-                </div>
-            `;
+            // Cold shower (only in season)
+            const coldShowerSeason = isColdShowerSeason();
+            if (coldShowerSeason) {
+                html += `
+                    <div class="consistency-item">
+                        <span>Cold Shower</span>
+                        <div class="consistency-status status-${currentData.coldShower ? 'good' : 'bad'}">${currentData.coldShower ? '✓' : '✗'}</div>
+                    </div>
+                `;
+            }
             
             // Lust control (inverted)
             html += `
@@ -2147,7 +2202,7 @@
         }
         
         function isGoalMetForDay(data, goalKey) {
-            if (goalKey === 'coldShower') return data.coldShower === true;
+            if (goalKey === 'coldShower') return data.coldShower === true && isColdShowerSeason();
             if (goalKey === 'lustControl') return data.lust !== true;
             if (goalKey === 'training') {
                 let sessions = 0;
@@ -2166,12 +2221,13 @@
             return goalKey === 'screenTime' ? value <= goal : value >= goal;
         }
         
-        // ==================== POINTS SYSTEM ====================
+        // ==================== IMPROVED POINTS SYSTEM ====================
         function calculateTodayPoints() {
             const currentData = getCurrentInputs();
             const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
             const dates = Object.keys(allData).sort();
             const streaks = calculateStreaksWithPause(dates, allData);
+            const previousStreaks = calculatePreviousStreaks(dates, allData);
             
             let totalPoints = 0;
             let pointsBreakdown = [];
@@ -2185,9 +2241,37 @@
                 let multiplier = 1;
                 let description = '';
                 let emoji = '';
+                let streakBonusApplied = false;
+                
+                // Current streak
+                const streak = streaks[goalKey] || 0;
+                
+                // Previous streak (for checking if broken)
+                const previousStreak = previousStreaks[goalKey] || 0;
+                
+                // Check if streak was broken
+                const streakWasBroken = previousStreak > 0 && streak === 0 && !isPaused;
+                
+                // Apply streak break penalty if applicable
+                if (streakWasBroken) {
+                    points += pointsConfig.streakBreakPenalty;
+                    description = `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} Streak Broken`;
+                    if (goalKey === 'screenTime') description = 'Screen Time Streak Broken';
+                    if (goalKey === 'pushUps') description = 'Push-ups Streak Broken';
+                    if (goalKey === 'pullUps') description = 'Pull-ups Streak Broken';
+                    emoji = '💔';
+                    
+                    totalPoints += points;
+                    pointsBreakdown.push({ 
+                        emoji, 
+                        description, 
+                        points: points, 
+                        multiplier: '', 
+                        isNegative: true 
+                    });
+                }
                 
                 // Streak multiplier (only for positive points)
-                const streak = streaks[goalKey] || 0;
                 for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
                     if (streak >= parseInt(days)) {
                         multiplier = mult;
@@ -2210,6 +2294,7 @@
                         description = `Training (${trainingSessions} sessions)`;
                         emoji = '💪';
                         completedGoals++;
+                        streakBonusApplied = true;
                         
                         // Training bonuses
                         let bonusPoints = 0;
@@ -2235,12 +2320,8 @@
                         }
                         
                         points += bonusPoints;
-                    } else if (!goalMet && !isPaused) {
-                        // Deduction for missed training
-                        points = pointsConfig.trainingDeduction;
-                        description = `Training (Missed)`;
-                        emoji = '❌';
                     }
+                    // REMOVED: No deduction for missed training (only streak break penalty)
                 } else if (goalKey === 'pushUps' || goalKey === 'pullUps') {
                     const current = parseInt(currentData[goalKey]) || 0;
                     const goal = goals[goalKey];
@@ -2251,12 +2332,9 @@
                         description = goalKey === 'pushUps' ? 'Push-ups' : 'Pull-ups';
                         emoji = goalKey === 'pushUps' ? '💪' : '🤸';
                         completedGoals++;
-                    } else if (!goalMet && !isPaused) {
-                        // Deduction for missed bodyweight
-                        points = pointsConfig[`${goalKey}Deduction`];
-                        description = goalKey === 'pushUps' ? 'Push-ups (Missed)' : 'Pull-ups (Missed)';
-                        emoji = '❌';
+                        streakBonusApplied = true;
                     }
+                    // REMOVED: No deduction for missed bodyweight (only streak break penalty)
                 } else if (goalKey === 'sleep') {
                     // Strict sleep rules
                     const sleepQuality = currentData.sleepQuality;
@@ -2271,8 +2349,9 @@
                         sleepPoints = pointsConfig.sleepQualityBonus * multiplier;
                         description += ' (Quality & Duration)';
                         completedGoals++;
+                        streakBonusApplied = true;
                     } 
-                    // Deductions
+                    // Deductions (reduced severity)
                     else if (sleepQuality <= 60) {
                         sleepPoints = pointsConfig.sleepQualityDeduction;
                         description += ' (Low Quality)';
@@ -2293,8 +2372,10 @@
                         points = pointsConfig[goalKey] * multiplier;
                         description = goalKey.charAt(0).toUpperCase() + goalKey.slice(1);
                         if (goalKey === 'screenTime') description = 'Screen Time';
+                        if (goalKey === 'sleep') description = 'Sleep Hours';
                         emoji = getEmojiForActivity(goalKey);
                         completedGoals++;
+                        streakBonusApplied = true;
                         
                         // Special bonuses
                         if (goalKey === 'steps' && current > goal) {
@@ -2309,32 +2390,51 @@
                                 description += ` +${bonus} bonus`;
                             }
                         }
-                    } else {
-                        // Deduction for missed goal (except when paused for sick/rest)
-                        if (!isPaused) {
-                            points = pointsConfig[`${goalKey}Deduction`];
-                            description = `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} (Missed)`;
-                            if (goalKey === 'screenTime') description = 'Screen Time (Exceeded)';
-                            emoji = '❌';
-                        }
                     }
+                    // REMOVED: No deduction for missed daily goals (only streak break penalty)
                 }
                 
-                if (points !== 0) {
+                if (points !== 0 && !streakWasBroken) {
                     totalPoints += points;
                     const isNegative = points < 0;
                     pointsBreakdown.push({ 
                         emoji, 
                         description, 
                         points: Math.round(points), 
-                        multiplier: multiplier > 1 && !isNegative ? `x${multiplier}` : '',
+                        multiplier: multiplier > 1 && streakBonusApplied ? `x${multiplier}` : '',
                         isNegative 
+                    });
+                }
+                
+                // Weekly streak bonus
+                if (streak >= 7 && streakBonusApplied) {
+                    const weeklyBonus = pointsConfig.weeklyStreakBonus;
+                    totalPoints += weeklyBonus;
+                    pointsBreakdown.push({ 
+                        emoji: '🏆', 
+                        description: `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} 7-Day Streak`, 
+                        points: weeklyBonus, 
+                        multiplier: 'WEEKLY', 
+                        isNegative: false 
+                    });
+                }
+                
+                // Monthly challenge bonus
+                if (streak >= 30 && streakBonusApplied) {
+                    const monthlyBonus = pointsConfig.monthlyChallengeBonus;
+                    totalPoints += monthlyBonus;
+                    pointsBreakdown.push({ 
+                        emoji: '🌟', 
+                        description: `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} 30-Day Streak`, 
+                        points: monthlyBonus, 
+                        multiplier: 'MONTHLY', 
+                        isNegative: false 
                     });
                 }
             });
             
-            // Cold shower points
-            if (currentData.coldShower) {
+            // Cold shower points (seasonal only)
+            if (currentData.coldShower && isColdShowerSeason()) {
                 const streak = streaks.coldShower || 0;
                 let multiplier = 1;
                 for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
@@ -2383,29 +2483,70 @@
                 pointsBreakdown.push({ emoji: '🏆', description: 'Bodyweight Both Bonus', points: bonus, multiplier: `x${pointsConfig.bodyweightBothBonus}`, isNegative: false });
             }
             
-            // Inactivity penalties
-            Object.keys(inactivityTracker).forEach(goalKey => {
-                const tracker = inactivityTracker[goalKey];
-                if (tracker.consecutiveMissed >= 3 && !isGoalPaused(goalKey)) {
-                    const penalty = pointsConfig.inactivityPenalty;
-                    totalPoints += penalty;
-                    pointsBreakdown.push({ 
-                        emoji: '⏰', 
-                        description: `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} Inactivity`, 
-                        points: penalty, 
-                        multiplier: '', 
-                        isNegative: true 
-                    });
-                }
-            });
-            
             // Daily completion bonus
             if (completedGoals === totalGoals) {
                 totalPoints += pointsConfig.dailyCompletionBonus;
-                pointsBreakdown.push({ emoji: '🏆', description: 'All Goals Completed!', points: pointsConfig.dailyCompletionBonus, multiplier: 'BONUS', isNegative: false });
+                pointsBreakdown.push({ emoji: '🎯', description: 'All Goals Completed!', points: pointsConfig.dailyCompletionBonus, multiplier: 'DAILY', isNegative: false });
             }
             
             return { total: Math.round(totalPoints), breakdown: pointsBreakdown, completedGoals, totalGoals };
+        }
+        
+        function calculatePreviousStreaks(dates, allData) {
+            const streaks = { 
+                stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
+                training: 0, coldShower: 0, lustControl: 0, pushUps: 0, pullUps: 0 
+            };
+            if (dates.length === 0) return streaks;
+            
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().split('T')[0];
+            
+            function goalMet(date, goalKey) {
+                const dayData = allData[date];
+                if (!dayData) return false;
+                
+                if (goalKey === 'coldShower') return dayData.coldShower === true && isColdShowerSeason();
+                if (goalKey === 'lustControl') return dayData.lust !== true;
+                if (goalKey === 'training') {
+                    let sessions = 0;
+                    if (dayData.hadGym === true) sessions++;
+                    if (dayData.hadRun === true) sessions++;
+                    return sessions >= goals.training;
+                }
+                if (goalKey === 'pushUps' || goalKey === 'pullUps') {
+                    const value = parseInt(dayData[goalKey]) || 0;
+                    const goal = goals[goalKey];
+                    return value >= goal;
+                }
+                
+                const value = parseFloat(dayData[goalKey]) || 0;
+                const goal = goals[goalKey];
+                return goalKey === 'screenTime' ? value <= goal : value >= goal;
+            }
+            
+            Object.keys(streaks).forEach(goalKey => {
+                let streak = 0;
+                let checkingDate = new Date(yesterday);
+                
+                for (let i = 0; i < 365; i++) {
+                    const dateStr = checkingDate.toISOString().split('T')[0];
+                    const dayData = allData[dateStr];
+                    
+                    if (dayData && goalMet(dateStr, goalKey)) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                    
+                    checkingDate.setDate(checkingDate.getDate() - 1);
+                }
+                
+                streaks[goalKey] = streak;
+            });
+            
+            return streaks;
         }
         
         function getEmojiForActivity(activity) {
@@ -2489,7 +2630,7 @@
                 const dayData = allData[date];
                 if (!dayData) return false;
                 
-                if (goalKey === 'coldShower') return dayData.coldShower === true;
+                if (goalKey === 'coldShower') return dayData.coldShower === true && isColdShowerSeason();
                 if (goalKey === 'lustControl') return dayData.lust !== true;
                 if (goalKey === 'training') {
                     let sessions = 0;
@@ -2694,7 +2835,7 @@
                     totals.totalRunDistance += parseFloat(dayData.runDistance) || 0;
                 }
                 
-                if (dayData.coldShower === true) totals.coldShowers++;
+                if (dayData.coldShower === true && isColdShowerSeason()) totals.coldShowers++;
                 if (dayData.napped === true) totals.naps++;
             });
             
@@ -2864,7 +3005,7 @@
                             if (isGoalMetForDay(dayData, key)) completed++;
                         });
                         
-                        if (dayData.coldShower) completed++;
+                        if (dayData.coldShower && isColdShowerSeason()) completed++;
                         if (!dayData.lust) completed++;
                         
                         return Math.round((completed / total) * 100);
