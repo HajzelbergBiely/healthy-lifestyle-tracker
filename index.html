@@ -6,6 +6,7 @@
     <title>LifeTracker Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ALL ORIGINAL CSS STYLES REMAIN EXACTLY THE SAME */
         * {
             margin: 0;
             padding: 0;
@@ -66,55 +67,885 @@
             overflow-y: auto;
         }
         
-        /* ... [Keep all your existing CSS styles] ... */
-        /* Adding only the new styles for brevity */
+        .quote-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
         
-        .add-training-btn {
+        .quote-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .quote-author {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .consistency-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .consistency-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .consistency-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .consistency-item:last-child {
+            border-bottom: none;
+        }
+        
+        .consistency-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .status-good {
+            background: #4CAF50;
+        }
+        
+        .status-bad {
+            background: #f44336;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .input-group input {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .sleep-expanded, .training-expanded {
+            grid-column: span 2;
+        }
+        
+        .sleep-details, .training-checkboxes, .run-details, .bodyweight-details {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .sleep-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .sleep-score {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #667eea;
+        }
+        
+        .hour-minute-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+        
+        .hour-minute-group input {
+            text-align: center;
+            padding: 8px;
+        }
+        
+        .sleep-time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .sleep-time-inputs > div {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sleep-time-inputs label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .sleep-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .sleep-metric {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .sleep-metric-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .sleep-metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .sleep-stage-bar {
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+            background: #e0e0e0;
+        }
+        
+        .sleep-stage-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .sleep-detail-item, .run-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sleep-detail-item label, .run-detail-item label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .sleep-detail-item input, .run-detail-item input, .run-detail-item select {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        
+        .run-detail-item select {
+            cursor: pointer;
+            background: white;
+        }
+        
+        .training-checkboxes {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .run-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .sick-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        
+        .sick-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .sick-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .sick-toggle:hover {
+            background: #e9ecef;
+        }
+        
+        .sick-toggle.active {
+            background: #d1ecf1;
+            border: 2px solid #0dcaf0;
+        }
+        
+        .sick-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        
+        .sick-label {
+            flex-grow: 1;
+            margin-left: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .sick-indicator {
+            font-size: 0.9rem;
+            color: #0dcaf0;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .sick-note {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .rest-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        
+        .rest-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .rest-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .rest-toggle:hover {
+            background: #e9ecef;
+        }
+        
+        .rest-toggle.active {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+        }
+        
+        .rest-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        
+        .rest-label {
+            flex-grow: 1;
+            margin-left: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .rest-indicator {
+            font-size: 0.9rem;
+            color: #ffc107;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .reset-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        
+        .reset-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f44336, #d32f2f);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+        }
+        
+        .reset-confirm {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            border: 1px solid #ffc107;
+        }
+        
+        .reset-confirm-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .reset-confirm-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-confirm-yes {
+            background: #f44336;
+            color: white;
+        }
+        
+        .reset-confirm-yes:hover {
+            background: #d32f2f;
+        }
+        
+        .reset-confirm-no {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .reset-confirm-no:hover {
+            background: #545b62;
+        }
+        
+        .reset-note {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .points-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .points-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .points-title {
+            font-size: 1.3rem;
+            color: #333;
+        }
+        
+        .points-total {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+        }
+        
+        .points-breakdown {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        
+        .points-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .points-item:last-child {
+            border-bottom: none;
+        }
+        
+        .points-activity {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
         }
         
-        .add-training-btn:hover {
+        .points-emoji {
+            font-size: 1.2rem;
+        }
+        
+        .points-value {
+            font-weight: bold;
+            color: #FF9800;
+        }
+        
+        .points-multiplier {
+            font-size: 0.8rem;
+            color: #4CAF50;
+            margin-left: 5px;
+        }
+        
+        .points-negative {
+            color: #f44336;
+        }
+        
+        .points-today {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #FFD700;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .level-indicator {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .level-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        
+        .level-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .level-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+        }
+        
+        .cold-shower-checked {
+            background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+            color: white;
+        }
+        
+        .lust-checked {
+            background: linear-gradient(135deg, #f44336, #d32f2f) !important;
+            color: white;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.active {
+            background: #764ba2;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 480px; 
+            position: relative;
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .chart-wrapper {
+            position: absolute;
+            top: 70px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+        }
+        
+        .period-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .period-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .period-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .save-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
         }
+
+        .training-details {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
         
-        .training-item {
+        .training-details input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+        
+        .run-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .run-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-detail-item label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .run-detail-item input,
+        .run-detail-item select {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        
+        .run-detail-item select {
+            cursor: pointer;
+            background: white;
+        }
+        
+        .bodyweight-goals {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .bodyweight-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .bodyweight-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .bodyweight-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bodyweight-item label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .bodyweight-item input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .bodyweight-goal-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .bodyweight-goal {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .bodyweight-goal-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .bodyweight-goal-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .training-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .training-toggle:hover {
+            background: #5a6fd8;
+        }
+        
+        .training-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .training-toggle.collapsed i {
+            transform: rotate(-90deg);
+        }
+        
+        .training-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .training-content.collapsed {
+            max-height: 0;
+        }
+        
+        .overall-consistency {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .overall-consistency-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        
+        .overall-consistency-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .consistency-percentage {
+            font-size: 0.9rem;
+            color: #888;
+            margin-left: 5px;
+        }
+        
+        .habit-consistency {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        
+        /* NEW STYLES ONLY FOR ADDED FEATURES */
+        .training-session-item {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
             border-left: 4px solid #667eea;
-            position: relative;
         }
         
-        .training-item-header {
+        .training-session-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
         
-        .training-type {
+        .training-session-type {
             font-weight: 600;
             color: #667eea;
-            font-size: 1.1rem;
         }
         
-        .remove-training {
+        .remove-training-btn {
             background: #f44336;
             color: white;
             border: none;
@@ -125,66 +956,49 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
         
-        .remove-training:hover {
-            background: #d32f2f;
-        }
-        
-        .training-details-grid {
+        .training-fields-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+            margin-bottom: 10px;
         }
         
-        .training-input-group {
+        .training-field {
             display: flex;
             flex-direction: column;
         }
         
-        .training-input-group label {
+        .training-field label {
             font-size: 0.85rem;
             color: #666;
             margin-bottom: 3px;
         }
         
-        .training-input-group input,
-        .training-input-group select {
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.9rem;
-        }
-        
-        .training-checkboxes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .training-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .training-checkbox input {
-            width: 18px;
-            height: 18px;
-        }
-        
-        .training-checkbox label {
-            font-size: 0.85rem;
-            color: #333;
+        .add-training-btn {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .add-training-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
         }
         
         .hygiene-options {
             display: flex;
             gap: 10px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         
         .hygiene-option {
@@ -199,7 +1013,7 @@
         .hygiene-option label {
             display: block;
             padding: 8px;
-            background: #f8f9fa;
+            background: white;
             border: 2px solid #ddd;
             border-radius: 6px;
             cursor: pointer;
@@ -213,65 +1027,61 @@
             border-color: #667eea;
         }
         
-        .healthy-eating-toggle {
+        .new-goal-checkbox {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 2px solid transparent;
+            padding: 8px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-top: 10px;
             transition: all 0.3s ease;
         }
         
-        .healthy-eating-toggle:hover {
-            border-color: #4CAF50;
+        .new-goal-checkbox:hover {
+            border-color: #667eea;
         }
         
-        .healthy-eating-toggle input {
-            width: 20px;
-            height: 20px;
+        .new-goal-checkbox input {
+            width: 18px;
+            height: 18px;
             cursor: pointer;
         }
         
-        .healthy-eating-toggle label {
+        .new-goal-checkbox label {
             flex: 1;
             margin: 0;
             cursor: pointer;
-            font-weight: 600;
-            color: #333;
+            font-weight: 500;
         }
         
-        .bed-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+            
+            .sleep-expanded, .training-expanded {
+                grid-column: span 1;
+            }
+            
+            .sleep-details {
+                grid-template-columns: 1fr;
+            }
         }
-        
-        .bed-toggle:hover {
-            border-color: #FF9800;
-        }
-        
-        .bed-toggle input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        
-        .bed-toggle label {
-            flex: 1;
-            margin: 0;
-            cursor: pointer;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        /* ... [Rest of your existing CSS] ... */
     </style>
     <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
 </head>
@@ -338,25 +1148,25 @@
                     <div class="input-group"><label for="screenTime">📱 Screen Time (Hours)</label> <input type="number" id="screenTime" step="0.5" placeholder="Enter hours"></div>
                     <div class="input-group"><label for="pages">📚 Pages Read</label> <input type="number" id="pages" placeholder="Enter pages"></div>
                     
-                    <!-- New: Healthy Eating -->
+                    <!-- NEW: Healthy Eating -->
                     <div class="input-group">
                         <label>🥗 Healthy Eating</label>
-                        <div class="healthy-eating-toggle">
+                        <div class="new-goal-checkbox">
                             <input type="checkbox" id="healthyEating">
                             <label for="healthyEating">Ate healthy today</label>
                         </div>
                     </div>
                     
-                    <!-- New: Make Bed -->
+                    <!-- NEW: Make Bed -->
                     <div class="input-group">
                         <label>🛏️ Make Bed</label>
-                        <div class="bed-toggle">
+                        <div class="new-goal-checkbox">
                             <input type="checkbox" id="makeBed">
                             <label for="makeBed">Made my bed today</label>
                         </div>
                     </div>
                     
-                    <!-- New: Hygiene -->
+                    <!-- NEW: Hygiene -->
                     <div class="input-group">
                         <label>🧼 Daily Hygiene</label>
                         <div class="hygiene-options">
@@ -376,7 +1186,7 @@
                     </div>
                     
                     <div class="input-group training-expanded">
-                        <label>💪 Training Sessions</label>
+                        <label>💪 Training Sessions (Goal: 1 per day)</label>
                         
                         <div class="training-toggle" onclick="toggleTrainingDetails()">
                             <span>Training Details</span>
@@ -384,11 +1194,11 @@
                         </div>
                         
                         <div class="training-content" id="trainingContent">
-                            <!-- Training items will be added here dynamically -->
-                            <div id="trainingItemsContainer"></div>
+                            <!-- Dynamic training sessions will be added here -->
+                            <div id="trainingSessionsContainer"></div>
                             
-                            <button class="add-training-btn" onclick="addTraining()">
-                                <span>+</span> Add Training Session
+                            <button class="add-training-btn" onclick="addTrainingSession()">
+                                + Add Training Session
                             </button>
                             
                             <!-- Bodyweight Goals -->
@@ -426,7 +1236,7 @@
                 </div>
                 <button class="save-btn" onclick="saveData()">💾 Save Today's Data</button>
                 
-                <!-- Add new chart buttons -->
+                <!-- Updated Chart Navigation -->
                 <div class="nav-buttons">
                     <button class="nav-btn active" onclick="showChart('stretching')">🧘 Stretching</button>
                     <button class="nav-btn" onclick="showChart('steps')">👟 Steps</button>
@@ -435,8 +1245,8 @@
                     <button class="nav-btn" onclick="showChart('screenTime')">📱 Screen Time</button>
                     <button class="nav-btn" onclick="showChart('pages')">📚 Reading</button>
                     <button class="nav-btn" onclick="showChart('training')">💪 Training</button>
-                    <button class="nav-btn" onclick="showChart('healthyEating')">🥗 Healthy Eating</button>
-                    <button class="nav-btn" onclick="showChart('makeBed')">🛏️ Make Bed</button>
+                    <button class="nav-btn" onclick="showChart('healthyEating')">🥗 Healthy</button>
+                    <button class="nav-btn" onclick="showChart('makeBed')">🛏️ Bed</button>
                     <button class="nav-btn" onclick="showChart('hygiene')">🧼 Hygiene</button>
                     <button class="nav-btn" onclick="showChart('consistency')">📊 Consistency</button>
                 </div>
@@ -454,7 +1264,7 @@
                 </div>
             </div>
             
-            <!-- Sidebar -->
+            <!-- Sidebar (unchanged) -->
             <div class="sidebar">
                 <div class="overall-consistency">
                     <div class="overall-consistency-label">Overall Consistency</div>
@@ -567,28 +1377,20 @@
             water: 2,
             screenTime: 2,
             pages: 20,
-            training: 1, // Changed to 1 per day
+            training: 1, // CHANGED: Now only 1 training per day required
             pushUps: 50,
             pullUps: 20,
-            healthyEating: 1, // New: 1 = ate healthy
-            makeBed: 1, // New: 1 = made bed
-            hygiene: 2 // New: goal is 2 times per day
+            healthyEating: 1, // NEW: 1 = ate healthy
+            makeBed: 1, // NEW: 1 = made bed
+            hygiene: 2 // NEW: goal is 2 times per day
         };
         
-        // Training types configuration
-        const trainingTypes = {
-            'gym': {
-                label: '🏋️ Gym Session',
-                workoutTypes: ['Core', 'Legs', 'Upper', 'Full Body', 'Cardio']
-            },
-            'home': {
-                label: '🏠 Home Workout',
-                workoutTypes: ['Bodyweight', 'Yoga/Stretch', 'HIIT', 'Other']
-            },
-            'run': {
-                label: '🏃 Running Session',
-                workoutTypes: ['Interval Training', 'Free Run', 'Race', 'Tempo Run', 'Long Distance', 'Recovery Run', 'Hill Training']
-            }
+        // Training types
+        const trainingTypes = ['gym', 'home', 'run'];
+        const trainingLabels = {
+            'gym': '🏋️ Gym Session',
+            'home': '🏠 Home Workout',
+            'run': '🏃 Running Session'
         };
         
         // Sick/Rest day storage
@@ -605,7 +1407,7 @@
         let currentPeriod = 'daily';
         let trainingSessionCounter = 0;
         
-        // Updated Points System Configuration with new goals
+        // Updated Points System Configuration
         const pointsConfig = {
             // Base points for completing goals
             stretching: 15,
@@ -619,11 +1421,11 @@
             lustControl: 40,
             pushUps: 15,
             pullUps: 15,
-            healthyEating: 25, // New
-            makeBed: 15, // New
-            hygiene: 20, // New
+            healthyEating: 25, // NEW
+            makeBed: 15, // NEW
+            hygiene: 20, // NEW
             
-            // Deductions for missing goals (only when not sick/rest)
+            // Deductions for missing goals
             stretchingDeduction: -20,
             stepsDeduction: -25,
             waterDeduction: -15,
@@ -632,43 +1434,42 @@
             pushUpsDeduction: -20,
             pullUpsDeduction: -20,
             trainingDeduction: -20,
-            healthyEatingDeduction: -20, // New
-            makeBedDeduction: -15, // New
-            hygieneDeduction: -15, // New (for 0 times)
-            hygienePartialDeduction: -10, // New (for 1 time when goal is 2)
+            healthyEatingDeduction: -20, // NEW
+            makeBedDeduction: -15, // NEW
+            hygieneDeduction: -15, // NEW (for 0 times)
+            hygienePartialDeduction: -10, // NEW (for 1 time when goal is 2)
             
             // Sleep strict rules
-            sleepQualityBonus: 25,      // Only if both conditions met
-            sleepDurationDeduction: -15, // < 7 hours
-            sleepQualityDeduction: -20,  // ≤ 60 quality
+            sleepQualityBonus: 25,
+            sleepDurationDeduction: -15,
+            sleepQualityDeduction: -20,
             
             // Bodyweight bonus multiplier
-            bodyweightBothBonus: 1.7,   // Multiplier when both push-ups and pull-ups completed
+            bodyweightBothBonus: 1.7,
             
             // Training bonuses
-            durationBonus: 20,          // > 75 minutes per session
-            intensityBonus: 25,         // > 7 intensity per session
-            extraTrainingBonus: 15,     // Bonus for each extra training beyond the first
+            durationBonus: 20,
+            intensityBonus: 25,
+            extraTrainingBonus: 15, // Bonus for each extra training beyond the first
             
             // Steps overachievement
-            stepsMultiplierPer1500: 0.4, // 40% bonus per extra 1500 steps
-            maxStepsMultipliers: 100,      // Diminishing returns after 3 multipliers
+            stepsMultiplierPer1500: 0.4,
+            maxStepsMultipliers: 100,
             
-            // Streak multipliers (only for positive points)
+            // Streak multipliers
             streakMultipliers: {
-                3: 1.3,   // Small multiplier
-                7: 1.5,   // Medium multiplier
-                14: 2.0   // Large multiplier
+                3: 1.3,
+                7: 1.5,
+                14: 2.0
             },
             
-            // Inactivity penalty (after 3 consecutive days)
+            // Inactivity penalty
             inactivityPenalty: -35,
             
-            // Consistency multipliers
-            weeklyConsistencyBonus: 50, // Bonus for 7+ days of perfect tracking
-            monthlyConsistencyBonus: 150, // Bonus for 30+ days of perfect tracking
+            // Consistency bonuses
+            weeklyConsistencyBonus: 50,
             
-            dailyCompletionBonus: 75 // Increased from 50
+            dailyCompletionBonus: 75
         };
         
         // Initialize the app
@@ -686,8 +1487,11 @@
             // Initialize sick/rest toggles
             updateSickRestDisplay();
             
-            // Initialize with one training session
-            addTraining();
+            // Add initial training session if none exist
+            const container = document.getElementById('trainingSessionsContainer');
+            if (container.children.length === 0) {
+                addTrainingSession();
+            }
             
             // Bodyweight inputs listeners
             document.getElementById('pushUps').addEventListener('input', function() {
@@ -743,140 +1547,125 @@
             updateBodyweightGoals();
         });
         
-        // ==================== TRAINING MANAGEMENT ====================
-        function addTraining(type = 'gym') {
+        // ==================== TRAINING SESSIONS ====================
+        function addTrainingSession(type = 'gym') {
             trainingSessionCounter++;
-            const container = document.getElementById('trainingItemsContainer');
+            const container = document.getElementById('trainingSessionsContainer');
             
-            const trainingItem = document.createElement('div');
-            trainingItem.className = 'training-item';
-            trainingItem.id = `training-${trainingSessionCounter}`;
+            const sessionDiv = document.createElement('div');
+            sessionDiv.className = 'training-session-item';
+            sessionDiv.id = `training-session-${trainingSessionCounter}`;
             
-            const typeData = trainingTypes[type] || trainingTypes.gym;
-            
-            trainingItem.innerHTML = `
-                <div class="training-item-header">
-                    <div class="training-type">${typeData.label} ${trainingSessionCounter}</div>
-                    <button class="remove-training" onclick="removeTraining(${trainingSessionCounter})">×</button>
+            sessionDiv.innerHTML = `
+                <div class="training-session-header">
+                    <div class="training-session-type">${trainingLabels[type]} ${trainingSessionCounter}</div>
+                    <button class="remove-training-btn" onclick="removeTrainingSession(${trainingSessionCounter})">×</button>
                 </div>
-                <div class="training-details-grid">
-                    <div class="training-input-group">
-                        <label for="trainingType-${trainingSessionCounter}">Type</label>
-                        <select id="trainingType-${trainingSessionCounter}" onchange="updateTrainingType(${trainingSessionCounter})">
+                <div class="training-fields-grid">
+                    <div class="training-field">
+                        <label for="sessionType-${trainingSessionCounter}">Type</label>
+                        <select id="sessionType-${trainingSessionCounter}" onchange="updateSessionType(${trainingSessionCounter})">
                             <option value="gym" ${type === 'gym' ? 'selected' : ''}>Gym</option>
                             <option value="home" ${type === 'home' ? 'selected' : ''}>Home Workout</option>
                             <option value="run" ${type === 'run' ? 'selected' : ''}>Running</option>
                         </select>
                     </div>
-                    <div class="training-input-group">
-                        <label for="trainingDuration-${trainingSessionCounter}">Duration (min)</label>
-                        <input type="number" id="trainingDuration-${trainingSessionCounter}" placeholder="Minutes" min="0" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                    <div class="training-field">
+                        <label for="sessionDuration-${trainingSessionCounter}">Duration (min)</label>
+                        <input type="number" id="sessionDuration-${trainingSessionCounter}" placeholder="Minutes" min="0" oninput="updateTrainingStats()">
                     </div>
-                    <div class="training-input-group">
-                        <label for="trainingIntensity-${trainingSessionCounter}">Intensity (1-10)</label>
-                        <input type="number" id="trainingIntensity-${trainingSessionCounter}" min="1" max="10" placeholder="1-10" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                    <div class="training-field">
+                        <label for="sessionIntensity-${trainingSessionCounter}">Intensity (1-10)</label>
+                        <input type="number" id="sessionIntensity-${trainingSessionCounter}" min="1" max="10" placeholder="1-10" oninput="updateTrainingStats()">
                     </div>
                     ${type === 'run' ? `
-                    <div class="training-input-group">
-                        <label for="trainingDistance-${trainingSessionCounter}">Distance (km)</label>
-                        <input type="number" id="trainingDistance-${trainingSessionCounter}" step="0.1" placeholder="Distance" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                    <div class="training-field">
+                        <label for="sessionDistance-${trainingSessionCounter}">Distance (km)</label>
+                        <input type="number" id="sessionDistance-${trainingSessionCounter}" step="0.1" placeholder="Distance" oninput="updateTrainingStats()">
                     </div>
                     ` : ''}
                 </div>
-                <div class="training-checkboxes" id="trainingCheckboxes-${trainingSessionCounter}">
-                    ${typeData.workoutTypes.map(workoutType => `
-                        <div class="training-checkbox">
-                            <input type="checkbox" id="${type}-${workoutType.replace(/\s+/g, '')}-${trainingSessionCounter}" onchange="updatePointsDisplay()">
-                            <label for="${type}-${workoutType.replace(/\s+/g, '')}-${trainingSessionCounter}">${workoutType}</label>
-                        </div>
-                    `).join('')}
+                <div style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                    ${type === 'gym' ? '🏋️ Gym session' : type === 'home' ? '🏠 Home workout' : '🏃 Running session'}
                 </div>
             `;
             
-            container.appendChild(trainingItem);
-            updateConsistencyTracker();
-            updatePointsDisplay();
+            container.appendChild(sessionDiv);
+            updateTrainingStats();
         }
         
-        function removeTraining(id) {
-            const trainingItem = document.getElementById(`training-${id}`);
-            if (trainingItem) {
-                trainingItem.remove();
-                updateConsistencyTracker();
-                updatePointsDisplay();
+        function removeTrainingSession(id) {
+            const session = document.getElementById(`training-session-${id}`);
+            if (session) {
+                session.remove();
+                updateTrainingStats();
             }
         }
         
-        function updateTrainingType(id) {
-            const select = document.getElementById(`trainingType-${id}`);
+        function updateSessionType(id) {
+            const select = document.getElementById(`sessionType-${id}`);
             const type = select.value;
-            const typeData = trainingTypes[type] || trainingTypes.gym;
-            const checkboxesContainer = document.getElementById(`trainingCheckboxes-${id}`);
+            const sessionDiv = document.getElementById(`training-session-${id}`);
             
-            checkboxesContainer.innerHTML = typeData.workoutTypes.map(workoutType => `
-                <div class="training-checkbox">
-                    <input type="checkbox" id="${type}-${workoutType.replace(/\s+/g, '')}-${id}" onchange="updatePointsDisplay()">
-                    <label for="${type}-${workoutType.replace(/\s+/g, '')}-${id}">${workoutType}</label>
-                </div>
-            `).join('');
+            // Update label
+            const typeLabel = sessionDiv.querySelector('.training-session-type');
+            typeLabel.textContent = `${trainingLabels[type]} ${id}`;
             
-            // Update distance field visibility
-            const distanceField = document.querySelector(`#training-${id} .training-details-grid`);
-            if (distanceField) {
-                const currentHtml = distanceField.innerHTML;
-                if (type === 'run') {
-                    if (!currentHtml.includes('trainingDistance')) {
-                        const newHtml = currentHtml.replace('</div>', `
-                            <div class="training-input-group">
-                                <label for="trainingDistance-${id}">Distance (km)</label>
-                                <input type="number" id="trainingDistance-${id}" step="0.1" placeholder="Distance" oninput="updatePointsDisplay(); updateConsistencyTracker();">
-                            </div>
-                        </div>`);
-                        distanceField.innerHTML = newHtml;
-                    }
-                } else {
-                    // Remove distance field if it exists
-                    const distanceInput = document.getElementById(`trainingDistance-${id}`);
-                    if (distanceInput) {
-                        distanceInput.parentElement.remove();
-                    }
+            // Update description
+            const desc = sessionDiv.querySelector('div[style*="margin-top: 10px"]');
+            desc.textContent = type === 'gym' ? '🏋️ Gym session' : type === 'home' ? '🏠 Home workout' : '🏃 Running session';
+            
+            // Update distance field
+            const fieldsGrid = sessionDiv.querySelector('.training-fields-grid');
+            const existingDistanceField = document.getElementById(`sessionDistance-${id}`);
+            
+            if (type === 'run') {
+                if (!existingDistanceField) {
+                    // Add distance field
+                    const distanceField = document.createElement('div');
+                    distanceField.className = 'training-field';
+                    distanceField.innerHTML = `
+                        <label for="sessionDistance-${id}">Distance (km)</label>
+                        <input type="number" id="sessionDistance-${id}" step="0.1" placeholder="Distance" oninput="updateTrainingStats()">
+                    `;
+                    fieldsGrid.appendChild(distanceField);
+                }
+            } else {
+                // Remove distance field if it exists
+                if (existingDistanceField) {
+                    existingDistanceField.parentElement.remove();
                 }
             }
             
+            updateTrainingStats();
+        }
+        
+        function updateTrainingStats() {
             updateConsistencyTracker();
             updatePointsDisplay();
         }
         
         function getAllTrainingSessions() {
             const sessions = [];
-            const trainingItems = document.querySelectorAll('.training-item');
             
-            trainingItems.forEach((item, index) => {
-                const id = index + 1;
-                const typeSelect = document.getElementById(`trainingType-${id}`);
-                const type = typeSelect ? typeSelect.value : 'gym';
-                const duration = parseInt(document.getElementById(`trainingDuration-${id}`)?.value) || 0;
-                const intensity = parseInt(document.getElementById(`trainingIntensity-${id}`)?.value) || 0;
-                const distance = type === 'run' ? parseFloat(document.getElementById(`trainingDistance-${id}`)?.value) || 0 : 0;
+            for (let i = 1; i <= trainingSessionCounter; i++) {
+                const sessionDiv = document.getElementById(`training-session-${i}`);
+                if (!sessionDiv) continue;
                 
-                // Get selected workout types
-                const selectedTypes = [];
-                const typeData = trainingTypes[type] || trainingTypes.gym;
-                typeData.workoutTypes.forEach(workoutType => {
-                    const checkbox = document.getElementById(`${type}-${workoutType.replace(/\s+/g, '')}-${id}`);
-                    if (checkbox && checkbox.checked) selectedTypes.push(workoutType);
-                });
+                const type = document.getElementById(`sessionType-${i}`)?.value || 'gym';
+                const duration = parseInt(document.getElementById(`sessionDuration-${i}`)?.value) || 0;
+                const intensity = parseInt(document.getElementById(`sessionIntensity-${i}`)?.value) || 0;
+                const distance = type === 'run' ? parseFloat(document.getElementById(`sessionDistance-${i}`)?.value) || 0 : 0;
                 
                 sessions.push({
-                    id,
+                    id: i,
                     type,
                     duration,
                     intensity,
                     distance,
-                    selectedTypes,
                     completed: duration > 0 || (type === 'run' && distance > 0)
                 });
-            });
+            }
             
             return sessions;
         }
@@ -898,7 +1687,7 @@
             const today = new Date().toISOString().split('T')[0];
             const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
             
-            if (allData[today]) return; // Don't clear if data exists for today
+            if (allData[today]) return;
             
             // Clear inputs
             ['stretching', 'steps', 'sleepHours', 'sleepMinutes', 'water', 'screenTime', 'pages', 
@@ -909,10 +1698,10 @@
             });
             
             // Clear training sessions
-            const container = document.getElementById('trainingItemsContainer');
+            const container = document.getElementById('trainingSessionsContainer');
             container.innerHTML = '';
             trainingSessionCounter = 0;
-            addTraining(); // Add one default training
+            addTrainingSession();
             
             // Clear checkboxes
             ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
@@ -1024,12 +1813,10 @@
         
         function isGoalPaused(goalKey) {
             if (sickRestDays.sick.active) {
-                // When sick: pause steps, push-ups, pull-ups, training
                 return ['steps', 'pushUps', 'pullUps', 'training'].includes(goalKey);
             }
             
             if (sickRestDays.rest.active) {
-                // When rest day: pause only running-related streaks
                 return goalKey === 'training';
             }
             
@@ -1068,6 +1855,7 @@
             
             // Get all training sessions
             const trainingSessions = getAllTrainingSessions();
+            const completedTrainings = trainingSessions.filter(s => s.completed).length;
             
             return {
                 // Basic inputs
@@ -1104,8 +1892,8 @@
                 
                 // Training sessions
                 trainingSessions: trainingSessions,
-                totalTrainings: trainingSessions.length,
-                completedTrainings: trainingSessions.filter(s => s.completed).length
+                completedTrainings: completedTrainings,
+                totalTrainings: trainingSessions.length
             };
         }
         
@@ -1299,7 +2087,7 @@
             localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
             
             // Save sick/rest status
-            sickRestDays.sick.active = false; // Reset after saving
+            sickRestDays.sick.active = false;
             sickRestDays.rest.active = false;
             localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
             
@@ -1346,7 +2134,6 @@
                     if (element.type === 'checkbox') {
                         element.checked = todaysData[key];
                     } else if (element.type === 'radio') {
-                        // Handle radio buttons
                         const value = todaysData[key];
                         const radio = document.querySelector(`input[name="${element.name}"][value="${value}"]`);
                         if (radio) radio.checked = true;
@@ -1358,47 +2145,35 @@
             
             // Load training sessions
             if (todaysData.trainingSessions && todaysData.trainingSessions.length > 0) {
-                const container = document.getElementById('trainingItemsContainer');
+                const container = document.getElementById('trainingSessionsContainer');
                 container.innerHTML = '';
                 trainingSessionCounter = 0;
                 
                 todaysData.trainingSessions.forEach(session => {
                     trainingSessionCounter++;
-                    addTraining(session.type);
+                    addTrainingSession(session.type);
                     
                     // Fill training session data
                     setTimeout(() => {
-                        const typeSelect = document.getElementById(`trainingType-${trainingSessionCounter}`);
+                        const typeSelect = document.getElementById(`sessionType-${trainingSessionCounter}`);
                         if (typeSelect) typeSelect.value = session.type;
                         
-                        const durationInput = document.getElementById(`trainingDuration-${trainingSessionCounter}`);
+                        const durationInput = document.getElementById(`sessionDuration-${trainingSessionCounter}`);
                         if (durationInput) durationInput.value = session.duration || '';
                         
-                        const intensityInput = document.getElementById(`trainingIntensity-${trainingSessionCounter}`);
+                        const intensityInput = document.getElementById(`sessionIntensity-${trainingSessionCounter}`);
                         if (intensityInput) intensityInput.value = session.intensity || '';
                         
                         if (session.type === 'run') {
-                            const distanceInput = document.getElementById(`trainingDistance-${trainingSessionCounter}`);
+                            const distanceInput = document.getElementById(`sessionDistance-${trainingSessionCounter}`);
                             if (distanceInput) distanceInput.value = session.distance || '';
                         }
-                        
-                        // Check workout type checkboxes
-                        if (session.selectedTypes) {
-                            session.selectedTypes.forEach(workoutType => {
-                                const checkboxId = `${session.type}-${workoutType.replace(/\s+/g, '')}-${trainingSessionCounter}`;
-                                const checkbox = document.getElementById(checkboxId);
-                                if (checkbox) checkbox.checked = true;
-                            });
-                        }
-                        
-                        updateTrainingType(trainingSessionCounter);
                     }, 100);
                 });
             } else {
-                // Add default training if none exist
-                const container = document.getElementById('trainingItemsContainer');
+                const container = document.getElementById('trainingSessionsContainer');
                 if (container.children.length === 0) {
-                    addTraining();
+                    addTrainingSession();
                 }
             }
             
@@ -1479,7 +2254,7 @@
                 let description = '';
                 let emoji = '';
                 
-                // Streak multiplier (only for positive points)
+                // Streak multiplier
                 const streak = streaks[goalKey] || 0;
                 for (const [days, mult] of Object.entries(pointsConfig.streakMultipliers).sort((a, b) => b[0] - a[0])) {
                     if (streak >= parseInt(days)) {
@@ -1497,23 +2272,23 @@
                         emoji = '💪';
                         completedGoals++;
                         
-                        // Training bonuses for each session
+                        // Training bonuses
                         let bonusPoints = 0;
                         currentData.trainingSessions.forEach((session, index) => {
                             if (session.completed) {
-                                // Duration bonus for each session > 75 minutes
+                                // Duration bonus
                                 if (session.duration > 75) {
                                     bonusPoints += pointsConfig.durationBonus;
                                     description += ` +${pointsConfig.durationBonus}dur`;
                                 }
                                 
-                                // Intensity bonus for each session > 7
+                                // Intensity bonus
                                 if (session.intensity > 6) {
                                     bonusPoints += pointsConfig.intensityBonus;
                                     description += ` +${pointsConfig.intensityBonus}int`;
                                 }
                                 
-                                // Extra training bonus for sessions beyond the first
+                                // Extra training bonus
                                 if (index > 0) {
                                     bonusPoints += pointsConfig.extraTrainingBonus;
                                     description += ` +${pointsConfig.extraTrainingBonus}extra`;
@@ -1523,7 +2298,6 @@
                         
                         points += bonusPoints;
                     } else if (!goalMet && !isPaused) {
-                        // Deduction for missed training
                         points = pointsConfig.trainingDeduction;
                         description = `Training (Missed)`;
                         emoji = '❌';
@@ -1539,7 +2313,6 @@
                         emoji = goalKey === 'pushUps' ? '💪' : '🤸';
                         completedGoals++;
                     } else if (!goalMet && !isPaused) {
-                        // Deduction for missed bodyweight
                         points = pointsConfig[`${goalKey}Deduction`];
                         description = goalKey === 'pushUps' ? 'Push-ups (Missed)' : 'Pull-ups (Missed)';
                         emoji = '❌';
@@ -1553,7 +2326,6 @@
                         emoji = goalKey === 'healthyEating' ? '🥗' : '🛏️';
                         completedGoals++;
                     } else {
-                        // Deduction for missed goal
                         points = pointsConfig[`${goalKey}Deduction`];
                         description = goalKey === 'healthyEating' ? 'Healthy Eating (Missed)' : 'Make Bed (Missed)';
                         emoji = '❌';
@@ -1568,18 +2340,15 @@
                         emoji = '🧼';
                         completedGoals++;
                     } else if (current === 1) {
-                        // Partial deduction for 1 time when goal is 2
                         points = pointsConfig.hygienePartialDeduction;
                         description = `Hygiene (Only ${current} time)`;
                         emoji = '⚠️';
                     } else if (current === 0) {
-                        // Full deduction for 0 times
                         points = pointsConfig.hygieneDeduction;
                         description = `Hygiene (Missed)`;
                         emoji = '❌';
                     }
                 } else if (goalKey === 'sleep') {
-                    // Strict sleep rules
                     const sleepQuality = currentData.sleepQuality;
                     const sleepDuration = currentData.sleep;
                     
@@ -1587,21 +2356,17 @@
                     description = 'Sleep';
                     emoji = '😴';
                     
-                    // Check if BOTH conditions are met
                     if (sleepQuality > 75 && sleepDuration >= 8.0 && sleepDuration <= 9.5) {
                         sleepPoints = pointsConfig.sleepQualityBonus * multiplier;
                         description += ' (Quality & Duration)';
                         completedGoals++;
-                    } 
-                    // Deductions
-                    else if (sleepQuality <= 60) {
+                    } else if (sleepQuality <= 60) {
                         sleepPoints = pointsConfig.sleepQualityDeduction;
                         description += ' (Low Quality)';
                     } else if (sleepDuration < 7) {
                         sleepPoints = pointsConfig.sleepDurationDeduction;
                         description += ' (Short Sleep)';
                     }
-                    // If only one condition met → 0 points (already handled by sleepPoints = 0)
                     
                     points = sleepPoints;
                     
@@ -1617,7 +2382,7 @@
                         emoji = getEmojiForActivity(goalKey);
                         completedGoals++;
                         
-                        // Special bonuses
+                        // Steps bonus
                         if (goalKey === 'steps' && current > goal) {
                             const extraSteps = current - goal;
                             const extraMultipliers = Math.min(
@@ -1631,7 +2396,6 @@
                             }
                         }
                     } else {
-                        // Deduction for missed goal (except when paused for sick/rest)
                         if (!isPaused) {
                             points = pointsConfig[`${goalKey}Deduction`];
                             description = `${goalKey.charAt(0).toUpperCase() + goalKey.slice(1)} (Missed)`;
@@ -1670,7 +2434,7 @@
                 pointsBreakdown.push({ emoji: '🚿', description: 'Cold Shower', points: Math.round(points), multiplier: multiplier > 1 ? `x${multiplier}` : '', isNegative: false });
             }
             
-            // Lust control points (positive if NOT lusting)
+            // Lust control points
             if (!currentData.lust) {
                 const streak = streaks.lustControl || 0;
                 let multiplier = 1;
@@ -1685,7 +2449,6 @@
                 completedGoals++;
                 pointsBreakdown.push({ emoji: '🚫', description: 'Lust Control', points: Math.round(points), multiplier: multiplier > 1 ? `x${multiplier}` : '', isNegative: false });
             } else {
-                // Deduct points for lust
                 const deduction = pointsConfig.lustControl * -1;
                 totalPoints += deduction;
                 pointsBreakdown.push({ emoji: '⚠️', description: 'Lust (Deduction)', points: deduction, multiplier: '', isNegative: true });
@@ -1695,7 +2458,6 @@
             const pushUpsMet = (currentData.pushUps >= goals.pushUps) && !isGoalPaused('pushUps');
             const pullUpsMet = (currentData.pullUps >= goals.pullUps) && !isGoalPaused('pullUps');
             if (pushUpsMet && pullUpsMet) {
-                // Calculate base bodyweight points
                 const basePushUpsPoints = pointsConfig.pushUps;
                 const basePullUpsPoints = pointsConfig.pullUps;
                 const bonus = Math.round((basePushUpsPoints + basePullUpsPoints) * (pointsConfig.bodyweightBothBonus - 1));
@@ -1736,7 +2498,7 @@
                     if (dayData.coldShower) completed++;
                     if (!dayData.lust) completed++;
                     
-                    return completed >= Object.keys(goals).length + 1; // All goals except lust control
+                    return completed >= Object.keys(goals).length + 1;
                 });
                 
                 if (perfectDays.length >= 7) {
@@ -1836,7 +2598,7 @@
             const streaks = { 
                 stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
                 training: 0, coldShower: 0, lustControl: 0, pushUps: 0, pullUps: 0,
-                healthyEating: 0, makeBed: 0, hygiene: 0 // New streaks
+                healthyEating: 0, makeBed: 0, hygiene: 0
             };
             if (dates.length === 0) return streaks;
             
@@ -1897,7 +2659,6 @@
             const streaks = calculateStreaks(dates, allData);
             const today = new Date().toISOString().split('T')[0];
             
-            // Apply sick/rest pauses
             if (sickRestDays.sick.active) {
                 streaks.steps = Math.max(streaks.steps, 1);
                 streaks.pushUps = Math.max(streaks.pushUps, 1);
@@ -1983,7 +2744,7 @@
                 consistency[goalKey] = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
             });
             
-            // Overall consistency (average of all habits)
+            // Overall consistency
             const values = Object.values(consistency);
             const overall = values.length > 0 ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : 0;
             
@@ -1994,7 +2755,6 @@
             const consistency = calculateHabitConsistency();
             const habitConsistencyElement = document.getElementById('habitConsistency');
             
-            // Update overall consistency at top
             document.getElementById('overallConsistency').textContent = `${consistency.overall}%`;
             
             let html = '';
@@ -2239,9 +2999,8 @@
                 if (currentPeriod === 'daily') {
                     const dayData = allData[label];
                     if (dayData) {
-                        // Calculate daily consistency
                         let completed = 0;
-                        let total = Object.keys(goals).length + 2; // +2 for cold shower and lust control
+                        let total = Object.keys(goals).length + 2;
                         
                         Object.keys(goals).forEach(key => {
                             if (isGoalMetForDay(dayData, key)) completed++;
@@ -2294,10 +3053,10 @@
             });
             
             // Clear training sessions
-            const container = document.getElementById('trainingItemsContainer');
+            const container = document.getElementById('trainingSessionsContainer');
             container.innerHTML = '';
             trainingSessionCounter = 0;
-            addTraining(); // Add one default training
+            addTrainingSession();
             
             // Reset sick/rest
             sickRestDays = { sick: { active: false, history: [] }, rest: { active: false, history: [] } };
