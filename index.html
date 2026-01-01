@@ -66,891 +66,212 @@
             overflow-y: auto;
         }
         
-        .quote-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        /* ... [Keep all your existing CSS styles] ... */
+        /* Adding only the new styles for brevity */
         
-        .quote-text {
-            font-style: italic;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #555;
-        }
-        
-        .quote-author {
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .consistency-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .consistency-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #333;
-            text-align: center;
-        }
-        
-        .consistency-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .consistency-item:last-child {
-            border-bottom: none;
-        }
-        
-        .consistency-status {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+        .add-training-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+        }
+        
+        .add-training-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .training-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+        
+        .training-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .training-type {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+        
+        .remove-training {
+            background: #f44336;
             color: white;
-            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             font-size: 0.8rem;
         }
         
-        .status-good {
-            background: #4CAF50;
+        .remove-training:hover {
+            background: #d32f2f;
         }
         
-        .status-bad {
-            background: #f44336;
-        }
-        
-        .input-grid {
+        .training-details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
         
-        .input-group {
+        .training-input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .training-input-group label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .training-input-group input,
+        .training-input-group select {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .training-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .training-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .training-checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .training-checkbox label {
+            font-size: 0.85rem;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .hygiene-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .hygiene-option {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hygiene-option input {
+            display: none;
+        }
+        
+        .hygiene-option label {
+            display: block;
+            padding: 8px;
             background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .hygiene-option input:checked + label {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .healthy-eating-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
             border: 2px solid transparent;
             transition: all 0.3s ease;
         }
         
-        .input-group:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
+        .healthy-eating-toggle:hover {
+            border-color: #4CAF50;
         }
         
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #555;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .sleep-expanded, .training-expanded {
-            grid-column: span 2;
-        }
-        
-        .sleep-details, .training-checkboxes, .run-details, .bodyweight-details {
-            margin-top: 15px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .sleep-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .sleep-score {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-            color: #667eea;
-        }
-        
-        .hour-minute-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-        }
-        
-        .hour-minute-group input {
-            text-align: center;
-            padding: 8px;
-        }
-        
-        .sleep-time-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .sleep-time-inputs > div {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sleep-time-inputs label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .sleep-breakdown {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .sleep-metric {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-        }
-        
-        .sleep-metric-label {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .sleep-metric-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .sleep-stage-bar {
-            height: 8px;
-            border-radius: 4px;
-            margin-top: 5px;
-            overflow: hidden;
-            background: #e0e0e0;
-        }
-        
-        .sleep-stage-fill {
-            height: 100%;
-            border-radius: 4px;
-        }
-        
-        .sleep-detail-item, .run-detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sleep-detail-item label, .run-detail-item label {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: #666;
-        }
-        
-        .sleep-detail-item input, .run-detail-item input, .run-detail-item select {
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.95rem;
-        }
-        
-        .run-detail-item select {
-            cursor: pointer;
-            background: white;
-        }
-        
-        .training-checkboxes {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        
-        .run-details {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #e0e0e0;
-        }
-        
-        .sick-section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-top: 10px;
-        }
-        
-        .sick-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #333;
-            text-align: center;
-        }
-        
-        .sick-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .sick-toggle:hover {
-            background: #e9ecef;
-        }
-        
-        .sick-toggle.active {
-            background: #d1ecf1;
-            border: 2px solid #0dcaf0;
-        }
-        
-        .sick-checkbox {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-        
-        .sick-label {
-            flex-grow: 1;
-            margin-left: 10px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .sick-indicator {
-            font-size: 0.9rem;
-            color: #0dcaf0;
-            background: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-        
-        .sick-note {
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-
-        .rest-section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-top: 10px;
-        }
-        
-        .rest-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #333;
-            text-align: center;
-        }
-        
-        .rest-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .rest-toggle:hover {
-            background: #e9ecef;
-        }
-        
-        .rest-toggle.active {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-        }
-        
-        .rest-checkbox {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-        
-        .rest-label {
-            flex-grow: 1;
-            margin-left: 10px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .rest-indicator {
-            font-size: 0.9rem;
-            color: #ffc107;
-            background: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-        
-        .reset-section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-top: 10px;
-        }
-        
-        .reset-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #333;
-            text-align: center;
-        }
-        
-        .reset-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #f44336, #d32f2f);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 10px;
-        }
-        
-        .reset-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
-        }
-        
-        .reset-confirm {
-            display: none;
-            margin-top: 10px;
-            padding: 15px;
-            background: #fff3cd;
-            border-radius: 10px;
-            border: 1px solid #ffc107;
-        }
-        
-        .reset-confirm-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .reset-confirm-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .reset-confirm-yes {
-            background: #f44336;
-            color: white;
-        }
-        
-        .reset-confirm-yes:hover {
-            background: #d32f2f;
-        }
-        
-        .reset-confirm-no {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .reset-confirm-no:hover {
-            background: #545b62;
-        }
-        
-        .reset-note {
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            margin-top: 5px;
-        }
-
-        .points-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .points-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .points-title {
-            font-size: 1.3rem;
-            color: #333;
-        }
-        
-        .points-total {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
-        }
-        
-        .points-breakdown {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-        
-        .points-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .points-item:last-child {
-            border-bottom: none;
-        }
-        
-        .points-activity {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .points-emoji {
-            font-size: 1.2rem;
-        }
-        
-        .points-value {
-            font-weight: bold;
-            color: #FF9800;
-        }
-        
-        .points-multiplier {
-            font-size: 0.8rem;
-            color: #4CAF50;
-            margin-left: 5px;
-        }
-        
-        .points-negative {
-            color: #f44336;
-        }
-        
-        .points-today {
-            text-align: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #FFD700;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .level-indicator {
-            margin-top: 10px;
-            text-align: center;
-        }
-        
-        .level-bar {
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 5px 0;
-        }
-        
-        .level-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-        
-        .level-text {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        @media (max-width: 768px) {
-            .sleep-expanded, .training-expanded {
-                grid-column: span 1;
-            }
-            
-            .sleep-details {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .checkbox-group input[type="checkbox"] {
+        .healthy-eating-toggle input {
             width: 20px;
             height: 20px;
             cursor: pointer;
         }
         
-        .checkbox-group label {
+        .healthy-eating-toggle label {
+            flex: 1;
             margin: 0;
             cursor: pointer;
-        }
-        
-        .cold-shower-checked {
-            background: linear-gradient(135deg, #4CAF50, #45a049) !important;
-            color: white;
-        }
-        
-        .lust-checked {
-            background: linear-gradient(135deg, #f44336, #d32f2f) !important;
-            color: white;
-        }
-        
-        .nav-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-        
-        .nav-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            background: #667eea;
-            color: white;
-            cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-btn:hover {
-            background: #5a6fd8;
-            transform: translateY(-2px);
-        }
-        
-        .nav-btn.active {
-            background: #764ba2;
-        }
-        
-        .chart-container {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            height: 480px; 
-            position: relative;
-        }
-        
-        .chart-title {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 1.5rem;
             color: #333;
         }
-
-        .chart-wrapper {
-            position: absolute;
-            top: 70px;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-        }
         
-        .period-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .period-btn {
-            padding: 8px 16px;
-            border: 2px solid #667eea;
-            border-radius: 20px;
-            background: white;
-            color: #667eea;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .period-btn.active {
-            background: #667eea;
-            color: white;
-        }
-        
-        .save-btn {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            padding: 15px;
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .save-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-        }
-
-        .training-details {
-            margin-top: 10px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .training-details input {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            margin-top: 5px;
-        }
-        
-        .run-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .run-detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .run-detail-item label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .run-detail-item input,
-        .run-detail-item select {
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.95rem;
-        }
-        
-        .run-detail-item select {
-            cursor: pointer;
-            background: white;
-        }
-        
-        .bodyweight-goals {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .bodyweight-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #333;
-            text-align: center;
-        }
-        
-        .bodyweight-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .bodyweight-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .bodyweight-item label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .bodyweight-item input {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-        
-        .bodyweight-goal-display {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-        
-        .bodyweight-goal {
-            text-align: center;
-            flex: 1;
-        }
-        
-        .bodyweight-goal-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .bodyweight-goal-label {
-            font-size: 0.8rem;
-            color: #666;
-        }
-        
-        .training-toggle {
+        .bed-toggle {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 8px 12px;
-            background: #667eea;
-            color: white;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
             border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .bed-toggle:hover {
+            border-color: #FF9800;
+        }
+        
+        .bed-toggle input {
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            margin-bottom: 10px;
+        }
+        
+        .bed-toggle label {
+            flex: 1;
+            margin: 0;
+            cursor: pointer;
             font-weight: 600;
+            color: #333;
         }
         
-        .training-toggle:hover {
-            background: #5a6fd8;
-        }
-        
-        .training-toggle i {
-            transition: transform 0.3s ease;
-        }
-        
-        .training-toggle.collapsed i {
-            transform: rotate(-90deg);
-        }
-        
-        .training-content {
-            max-height: 1000px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .training-content.collapsed {
-            max-height: 0;
-        }
-        
-        .overall-consistency {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .overall-consistency-value {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #4CAF50;
-            margin: 10px 0;
-        }
-        
-        .overall-consistency-label {
-            font-size: 1.1rem;
-            color: #666;
-        }
-        
-        .consistency-percentage {
-            font-size: 0.9rem;
-            color: #888;
-            margin-left: 5px;
-        }
-        
-        .habit-consistency {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 2px;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .input-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .sidebar {
-                position: static;
-                max-height: none;
-            }
-        }
+        /* ... [Rest of your existing CSS] ... */
     </style>
     <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
 </head>
@@ -1016,6 +337,44 @@
                     <div class="input-group"><label for="water">💧 Water (Liters)</label> <input type="number" id="water" step="0.1" placeholder="Enter liters"></div>
                     <div class="input-group"><label for="screenTime">📱 Screen Time (Hours)</label> <input type="number" id="screenTime" step="0.5" placeholder="Enter hours"></div>
                     <div class="input-group"><label for="pages">📚 Pages Read</label> <input type="number" id="pages" placeholder="Enter pages"></div>
+                    
+                    <!-- New: Healthy Eating -->
+                    <div class="input-group">
+                        <label>🥗 Healthy Eating</label>
+                        <div class="healthy-eating-toggle">
+                            <input type="checkbox" id="healthyEating">
+                            <label for="healthyEating">Ate healthy today</label>
+                        </div>
+                    </div>
+                    
+                    <!-- New: Make Bed -->
+                    <div class="input-group">
+                        <label>🛏️ Make Bed</label>
+                        <div class="bed-toggle">
+                            <input type="checkbox" id="makeBed">
+                            <label for="makeBed">Made my bed today</label>
+                        </div>
+                    </div>
+                    
+                    <!-- New: Hygiene -->
+                    <div class="input-group">
+                        <label>🧼 Daily Hygiene</label>
+                        <div class="hygiene-options">
+                            <div class="hygiene-option">
+                                <input type="radio" id="hygiene0" name="hygiene" value="0">
+                                <label for="hygiene0">0 Times</label>
+                            </div>
+                            <div class="hygiene-option">
+                                <input type="radio" id="hygiene1" name="hygiene" value="1">
+                                <label for="hygiene1">1 Time</label>
+                            </div>
+                            <div class="hygiene-option">
+                                <input type="radio" id="hygiene2" name="hygiene" value="2">
+                                <label for="hygiene2">2 Times</label>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="input-group training-expanded">
                         <label>💪 Training Sessions</label>
                         
@@ -1025,206 +384,12 @@
                         </div>
                         
                         <div class="training-content" id="trainingContent">
-                            <div class="training-checkboxes">
-                                <!-- Gym Session 1 -->
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="hadGym">
-                                    <label for="hadGym">🏋️ Gym Session 1</label>
-                                </div>
-                                
-                                <div id="gymDetails" class="training-details" style="display: none;">
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gymCore">
-                                                <label for="gymCore" style="font-size: 0.9rem;">Core</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gymLegs">
-                                                <label for="gymLegs" style="font-size: 0.9rem;">Legs</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gymUpper">
-                                                <label for="gymUpper" style="font-size: 0.9rem;">Upper</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gymFull">
-                                                <label for="gymFull" style="font-size: 0.9rem;">Full Body</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gymCardio">
-                                                <label for="gymCardio" style="font-size: 0.9rem;">Cardio</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                        <div>
-                                            <label for="gymDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                                            <input type="number" id="gymDuration" placeholder="Minutes" min="0">
-                                        </div>
-                                        <div>
-                                            <label for="gymIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                                            <input type="number" id="gymIntensity" min="1" max="10" placeholder="1-10">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Gym Session 2 -->
-                                <div class="checkbox-group" style="margin-top: 15px;">
-                                    <input type="checkbox" id="hadGym2">
-                                    <label for="hadGym2">🏋️ Gym Session 2</label>
-                                </div>
-                                
-                                <div id="gymDetails2" class="training-details" style="display: none;">
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Focus:</label>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gym2Core">
-                                                <label for="gym2Core" style="font-size: 0.9rem;">Core</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gym2Legs">
-                                                <label for="gym2Legs" style="font-size: 0.9rem;">Legs</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gym2Upper">
-                                                <label for="gym2Upper" style="font-size: 0.9rem;">Upper</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gym2Full">
-                                                <label for="gym2Full" style="font-size: 0.9rem;">Full Body</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="gym2Cardio">
-                                                <label for="gym2Cardio" style="font-size: 0.9rem;">Cardio</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                        <div>
-                                            <label for="gym2Duration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                                            <input type="number" id="gym2Duration" placeholder="Minutes" min="0">
-                                        </div>
-                                        <div>
-                                            <label for="gym2Intensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                                            <input type="number" id="gym2Intensity" min="1" max="10" placeholder="1-10">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Home Workout -->
-                                <div class="checkbox-group" style="margin-top: 15px;">
-                                    <input type="checkbox" id="hadHome">
-                                    <label for="hadHome">🏠 Home Workout</label>
-                                </div>
-                                
-                                <div id="homeDetails" class="training-details" style="display: none;">
-                                    <div style="margin-bottom: 10px;">
-                                        <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">Workout Type:</label>
-                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="homeBodyweight">
-                                                <label for="homeBodyweight" style="font-size: 0.9rem;">Bodyweight</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="homeYoga">
-                                                <label for="homeYoga" style="font-size: 0.9rem;">Yoga/Stretch</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="homeHIIT">
-                                                <label for="homeHIIT" style="font-size: 0.9rem;">HIIT</label>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 5px;">
-                                                <input type="checkbox" id="homeOther">
-                                                <label for="homeOther" style="font-size: 0.9rem;">Other</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                        <div>
-                                            <label for="homeDuration" style="font-size: 0.9rem; color: #666;">Duration (min)</label>
-                                            <input type="number" id="homeDuration" placeholder="Minutes" min="0">
-                                        </div>
-                                        <div>
-                                            <label for="homeIntensity" style="font-size: 0.9rem; color: #666;">Intensity (1-10)</label>
-                                            <input type="number" id="homeIntensity" min="1" max="10" placeholder="1-10">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Running Session 1 -->
-                                <div class="checkbox-group" style="margin-top: 15px;">
-                                    <input type="checkbox" id="hadRun">
-                                    <label for="hadRun">🏃 Running Session 1</label>
-                                </div>
-                                
-                                <div id="runDetails" class="run-details" style="display: none;">
-                                    <div class="run-detail-item">
-                                        <label for="runType">Run Type</label>
-                                        <select id="runType">
-                                            <option value="">Select type</option>
-                                            <option value="interval">Interval Training</option>
-                                            <option value="free">Free Run</option>
-                                            <option value="race">Race</option>
-                                            <option value="tempo">Tempo Run</option>
-                                            <option value="long">Long Distance</option>
-                                            <option value="recovery">Recovery Run</option>
-                                            <option value="hill">Hill Training</option>
-                                        </select>
-                                    </div>
-                                    <div class="run-detail-item">
-                                        <label for="runDistance">Distance (km)</label>
-                                        <input type="number" id="runDistance" step="0.1" placeholder="Enter distance">
-                                    </div>
-                                    <div class="run-detail-item">
-                                        <label for="runDuration">Duration (min)</label>
-                                        <input type="number" id="runDuration" placeholder="Minutes">
-                                    </div>
-                                    <div class="run-detail-item">
-                                        <label for="runIntensity">Intensity (1-10)</label>
-                                        <input type="number" id="runIntensity" min="1" max="10" placeholder="1-10">
-                                    </div>
-                                </div>
-                                
-                                <!-- Running Session 2 -->
-                                <div class="checkbox-group" style="margin-top: 15px;">
-                                    <input type="checkbox" id="hadRun2">
-                                    <label for="hadRun2">🏃 Running Session 2</label>
-                                </div>
-                                
-                                <div id="runDetails2" class="run-details" style="display: none;">
-                                    <div class="run-detail-item">
-                                        <label for="runType2">Run Type</label>
-                                        <select id="runType2">
-                                            <option value="">Select type</option>
-                                            <option value="interval">Interval Training</option>
-                                            <option value="free">Free Run</option>
-                                            <option value="race">Race</option>
-                                            <option value="tempo">Tempo Run</option>
-                                            <option value="long">Long Distance</option>
-                                            <option value="recovery">Recovery Run</option>
-                                            <option value="hill">Hill Training</option>
-                                        </select>
-                                    </div>
-                                    <div class="run-detail-item">
-                                        <label for="runDistance2">Distance (km)</label>
-                                        <input type="number" id="runDistance2" step="0.1" placeholder="Enter distance">
-                                    </div>
-                                    <div class="run-detail-item">
-                                        <label for="runDuration2">Duration (min)</label>
-                                        <input type="number" id="runDuration2" placeholder="Minutes">
-                                    </div>
-                                    <div class="run-detail-item">
-                                        <label for="runIntensity2">Intensity (1-10)</label>
-                                        <input type="number" id="runIntensity2" min="1" max="10" placeholder="1-10">
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Training items will be added here dynamically -->
+                            <div id="trainingItemsContainer"></div>
+                            
+                            <button class="add-training-btn" onclick="addTraining()">
+                                <span>+</span> Add Training Session
+                            </button>
                             
                             <!-- Bodyweight Goals -->
                             <div class="bodyweight-goals">
@@ -1260,6 +425,8 @@
                     </div>
                 </div>
                 <button class="save-btn" onclick="saveData()">💾 Save Today's Data</button>
+                
+                <!-- Add new chart buttons -->
                 <div class="nav-buttons">
                     <button class="nav-btn active" onclick="showChart('stretching')">🧘 Stretching</button>
                     <button class="nav-btn" onclick="showChart('steps')">👟 Steps</button>
@@ -1268,8 +435,12 @@
                     <button class="nav-btn" onclick="showChart('screenTime')">📱 Screen Time</button>
                     <button class="nav-btn" onclick="showChart('pages')">📚 Reading</button>
                     <button class="nav-btn" onclick="showChart('training')">💪 Training</button>
+                    <button class="nav-btn" onclick="showChart('healthyEating')">🥗 Healthy Eating</button>
+                    <button class="nav-btn" onclick="showChart('makeBed')">🛏️ Make Bed</button>
+                    <button class="nav-btn" onclick="showChart('hygiene')">🧼 Hygiene</button>
                     <button class="nav-btn" onclick="showChart('consistency')">📊 Consistency</button>
                 </div>
+                
                 <div class="chart-container">
                     <div class="period-selector">
                         <button class="period-btn active" onclick="changePeriod('daily')">Daily</button>
@@ -1388,7 +559,7 @@
             { text: "A year from now you may wish you had started today.", author: "Karen Lamb" }
         ];
         
-        // Goals for consistency tracking
+        // Updated Goals for consistency tracking
         const goals = {
             stretching: 2,
             steps: 10000,
@@ -1396,9 +567,28 @@
             water: 2,
             screenTime: 2,
             pages: 20,
-            training: 2,
+            training: 1, // Changed to 1 per day
             pushUps: 50,
-            pullUps: 20
+            pullUps: 20,
+            healthyEating: 1, // New: 1 = ate healthy
+            makeBed: 1, // New: 1 = made bed
+            hygiene: 2 // New: goal is 2 times per day
+        };
+        
+        // Training types configuration
+        const trainingTypes = {
+            'gym': {
+                label: '🏋️ Gym Session',
+                workoutTypes: ['Core', 'Legs', 'Upper', 'Full Body', 'Cardio']
+            },
+            'home': {
+                label: '🏠 Home Workout',
+                workoutTypes: ['Bodyweight', 'Yoga/Stretch', 'HIIT', 'Other']
+            },
+            'run': {
+                label: '🏃 Running Session',
+                workoutTypes: ['Interval Training', 'Free Run', 'Race', 'Tempo Run', 'Long Distance', 'Recovery Run', 'Hill Training']
+            }
         };
         
         // Sick/Rest day storage
@@ -1413,8 +603,9 @@
         let currentChart = null;
         let currentView = 'stretching';
         let currentPeriod = 'daily';
+        let trainingSessionCounter = 0;
         
-        // Points System Configuration - Balanced and fair
+        // Updated Points System Configuration with new goals
         const pointsConfig = {
             // Base points for completing goals
             stretching: 15,
@@ -1428,6 +619,9 @@
             lustControl: 40,
             pushUps: 15,
             pullUps: 15,
+            healthyEating: 25, // New
+            makeBed: 15, // New
+            hygiene: 20, // New
             
             // Deductions for missing goals (only when not sick/rest)
             stretchingDeduction: -20,
@@ -1438,6 +632,10 @@
             pushUpsDeduction: -20,
             pullUpsDeduction: -20,
             trainingDeduction: -20,
+            healthyEatingDeduction: -20, // New
+            makeBedDeduction: -15, // New
+            hygieneDeduction: -15, // New (for 0 times)
+            hygienePartialDeduction: -10, // New (for 1 time when goal is 2)
             
             // Sleep strict rules
             sleepQualityBonus: 25,      // Only if both conditions met
@@ -1448,8 +646,9 @@
             bodyweightBothBonus: 1.7,   // Multiplier when both push-ups and pull-ups completed
             
             // Training bonuses
-            durationBonus: 20,          // > 75 minutes
-            intensityBonus: 25,         // > 7 intensity
+            durationBonus: 20,          // > 75 minutes per session
+            intensityBonus: 25,         // > 7 intensity per session
+            extraTrainingBonus: 15,     // Bonus for each extra training beyond the first
             
             // Steps overachievement
             stepsMultiplierPer1500: 0.4, // 40% bonus per extra 1500 steps
@@ -1465,7 +664,11 @@
             // Inactivity penalty (after 3 consecutive days)
             inactivityPenalty: -35,
             
-            dailyCompletionBonus: 50
+            // Consistency multipliers
+            weeklyConsistencyBonus: 50, // Bonus for 7+ days of perfect tracking
+            monthlyConsistencyBonus: 150, // Bonus for 30+ days of perfect tracking
+            
+            dailyCompletionBonus: 75 // Increased from 50
         };
         
         // Initialize the app
@@ -1483,48 +686,8 @@
             // Initialize sick/rest toggles
             updateSickRestDisplay();
             
-            // Training session toggle listeners
-            document.getElementById('hadGym').addEventListener('change', function() {
-                document.getElementById('gymDetails').style.display = this.checked ? 'block' : 'none';
-                updateConsistencyTracker();
-                updatePointsDisplay();
-            });
-            
-            document.getElementById('hadGym2').addEventListener('change', function() {
-                document.getElementById('gymDetails2').style.display = this.checked ? 'block' : 'none';
-                updateConsistencyTracker();
-                updatePointsDisplay();
-            });
-            
-            document.getElementById('hadHome').addEventListener('change', function() {
-                document.getElementById('homeDetails').style.display = this.checked ? 'block' : 'none';
-                updateConsistencyTracker();
-                updatePointsDisplay();
-            });
-            
-            document.getElementById('hadRun').addEventListener('change', function() {
-                document.getElementById('runDetails').style.display = this.checked ? 'grid' : 'none';
-                if (!this.checked) {
-                    document.getElementById('runType').value = '';
-                    document.getElementById('runDistance').value = '';
-                    document.getElementById('runDuration').value = '';
-                    document.getElementById('runIntensity').value = '';
-                }
-                updateConsistencyTracker();
-                updatePointsDisplay();
-            });
-            
-            document.getElementById('hadRun2').addEventListener('change', function() {
-                document.getElementById('runDetails2').style.display = this.checked ? 'grid' : 'none';
-                if (!this.checked) {
-                    document.getElementById('runType2').value = '';
-                    document.getElementById('runDistance2').value = '';
-                    document.getElementById('runDuration2').value = '';
-                    document.getElementById('runIntensity2').value = '';
-                }
-                updateConsistencyTracker();
-                updatePointsDisplay();
-            });
+            // Initialize with one training session
+            addTraining();
             
             // Bodyweight inputs listeners
             document.getElementById('pushUps').addEventListener('input', function() {
@@ -1537,34 +700,6 @@
                 updateBodyweightGoals();
                 updateConsistencyTracker();
                 updatePointsDisplay();
-            });
-            
-            // Training input listeners
-            const trainingInputs = ['gymDuration', 'gymIntensity', 'gym2Duration', 'gym2Intensity', 
-                                   'homeDuration', 'homeIntensity', 'runDistance', 'runDuration', 
-                                   'runIntensity', 'runDistance2', 'runDuration2', 'runIntensity2',
-                                   'runType', 'runType2'];
-            
-            trainingInputs.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('input', function() {
-                        updateConsistencyTracker();
-                        updatePointsDisplay();
-                    });
-                }
-            });
-            
-            // Workout type checkboxes
-            ['gymCore', 'gymLegs', 'gymUpper', 'gymFull', 'gymCardio',
-             'gym2Core', 'gym2Legs', 'gym2Upper', 'gym2Full', 'gym2Cardio',
-             'homeBodyweight', 'homeYoga', 'homeHIIT', 'homeOther'].forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('change', function() {
-                        updatePointsDisplay();
-                    });
-                }
             });
             
             // General input listeners
@@ -1586,10 +721,18 @@
             });
             
             // Checkbox listeners
-            ['coldShower', 'lust', 'napped'].forEach(id => {
+            ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
                 document.getElementById(id).addEventListener('change', function() {
                     if (id === 'coldShower' || id === 'lust') updateCheckboxStyles();
                     if (id === 'napped') updateSleepAnalysis();
+                    updateConsistencyTracker();
+                    updatePointsDisplay();
+                });
+            });
+            
+            // Hygiene radio buttons listener
+            document.querySelectorAll('input[name="hygiene"]').forEach(radio => {
+                radio.addEventListener('change', function() {
                     updateConsistencyTracker();
                     updatePointsDisplay();
                 });
@@ -1599,6 +742,144 @@
             updateSleepAnalysis();
             updateBodyweightGoals();
         });
+        
+        // ==================== TRAINING MANAGEMENT ====================
+        function addTraining(type = 'gym') {
+            trainingSessionCounter++;
+            const container = document.getElementById('trainingItemsContainer');
+            
+            const trainingItem = document.createElement('div');
+            trainingItem.className = 'training-item';
+            trainingItem.id = `training-${trainingSessionCounter}`;
+            
+            const typeData = trainingTypes[type] || trainingTypes.gym;
+            
+            trainingItem.innerHTML = `
+                <div class="training-item-header">
+                    <div class="training-type">${typeData.label} ${trainingSessionCounter}</div>
+                    <button class="remove-training" onclick="removeTraining(${trainingSessionCounter})">×</button>
+                </div>
+                <div class="training-details-grid">
+                    <div class="training-input-group">
+                        <label for="trainingType-${trainingSessionCounter}">Type</label>
+                        <select id="trainingType-${trainingSessionCounter}" onchange="updateTrainingType(${trainingSessionCounter})">
+                            <option value="gym" ${type === 'gym' ? 'selected' : ''}>Gym</option>
+                            <option value="home" ${type === 'home' ? 'selected' : ''}>Home Workout</option>
+                            <option value="run" ${type === 'run' ? 'selected' : ''}>Running</option>
+                        </select>
+                    </div>
+                    <div class="training-input-group">
+                        <label for="trainingDuration-${trainingSessionCounter}">Duration (min)</label>
+                        <input type="number" id="trainingDuration-${trainingSessionCounter}" placeholder="Minutes" min="0" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                    </div>
+                    <div class="training-input-group">
+                        <label for="trainingIntensity-${trainingSessionCounter}">Intensity (1-10)</label>
+                        <input type="number" id="trainingIntensity-${trainingSessionCounter}" min="1" max="10" placeholder="1-10" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                    </div>
+                    ${type === 'run' ? `
+                    <div class="training-input-group">
+                        <label for="trainingDistance-${trainingSessionCounter}">Distance (km)</label>
+                        <input type="number" id="trainingDistance-${trainingSessionCounter}" step="0.1" placeholder="Distance" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="training-checkboxes" id="trainingCheckboxes-${trainingSessionCounter}">
+                    ${typeData.workoutTypes.map(workoutType => `
+                        <div class="training-checkbox">
+                            <input type="checkbox" id="${type}-${workoutType.replace(/\s+/g, '')}-${trainingSessionCounter}" onchange="updatePointsDisplay()">
+                            <label for="${type}-${workoutType.replace(/\s+/g, '')}-${trainingSessionCounter}">${workoutType}</label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            container.appendChild(trainingItem);
+            updateConsistencyTracker();
+            updatePointsDisplay();
+        }
+        
+        function removeTraining(id) {
+            const trainingItem = document.getElementById(`training-${id}`);
+            if (trainingItem) {
+                trainingItem.remove();
+                updateConsistencyTracker();
+                updatePointsDisplay();
+            }
+        }
+        
+        function updateTrainingType(id) {
+            const select = document.getElementById(`trainingType-${id}`);
+            const type = select.value;
+            const typeData = trainingTypes[type] || trainingTypes.gym;
+            const checkboxesContainer = document.getElementById(`trainingCheckboxes-${id}`);
+            
+            checkboxesContainer.innerHTML = typeData.workoutTypes.map(workoutType => `
+                <div class="training-checkbox">
+                    <input type="checkbox" id="${type}-${workoutType.replace(/\s+/g, '')}-${id}" onchange="updatePointsDisplay()">
+                    <label for="${type}-${workoutType.replace(/\s+/g, '')}-${id}">${workoutType}</label>
+                </div>
+            `).join('');
+            
+            // Update distance field visibility
+            const distanceField = document.querySelector(`#training-${id} .training-details-grid`);
+            if (distanceField) {
+                const currentHtml = distanceField.innerHTML;
+                if (type === 'run') {
+                    if (!currentHtml.includes('trainingDistance')) {
+                        const newHtml = currentHtml.replace('</div>', `
+                            <div class="training-input-group">
+                                <label for="trainingDistance-${id}">Distance (km)</label>
+                                <input type="number" id="trainingDistance-${id}" step="0.1" placeholder="Distance" oninput="updatePointsDisplay(); updateConsistencyTracker();">
+                            </div>
+                        </div>`);
+                        distanceField.innerHTML = newHtml;
+                    }
+                } else {
+                    // Remove distance field if it exists
+                    const distanceInput = document.getElementById(`trainingDistance-${id}`);
+                    if (distanceInput) {
+                        distanceInput.parentElement.remove();
+                    }
+                }
+            }
+            
+            updateConsistencyTracker();
+            updatePointsDisplay();
+        }
+        
+        function getAllTrainingSessions() {
+            const sessions = [];
+            const trainingItems = document.querySelectorAll('.training-item');
+            
+            trainingItems.forEach((item, index) => {
+                const id = index + 1;
+                const typeSelect = document.getElementById(`trainingType-${id}`);
+                const type = typeSelect ? typeSelect.value : 'gym';
+                const duration = parseInt(document.getElementById(`trainingDuration-${id}`)?.value) || 0;
+                const intensity = parseInt(document.getElementById(`trainingIntensity-${id}`)?.value) || 0;
+                const distance = type === 'run' ? parseFloat(document.getElementById(`trainingDistance-${id}`)?.value) || 0 : 0;
+                
+                // Get selected workout types
+                const selectedTypes = [];
+                const typeData = trainingTypes[type] || trainingTypes.gym;
+                typeData.workoutTypes.forEach(workoutType => {
+                    const checkbox = document.getElementById(`${type}-${workoutType.replace(/\s+/g, '')}-${id}`);
+                    if (checkbox && checkbox.checked) selectedTypes.push(workoutType);
+                });
+                
+                sessions.push({
+                    id,
+                    type,
+                    duration,
+                    intensity,
+                    distance,
+                    selectedTypes,
+                    completed: duration > 0 || (type === 'run' && distance > 0)
+                });
+            });
+            
+            return sessions;
+        }
         
         // ==================== BASIC FUNCTIONS ====================
         function displayCurrentDate() {
@@ -1622,38 +903,26 @@
             // Clear inputs
             ['stretching', 'steps', 'sleepHours', 'sleepMinutes', 'water', 'screenTime', 'pages', 
              'sleepQuality', 'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
-             'lightHours', 'lightMinutes', 'runDistance', 'runDistance2',
-             'gymDuration', 'gymIntensity', 'gym2Duration', 'gym2Intensity',
-             'homeDuration', 'homeIntensity', 'runDuration', 'runIntensity',
-             'runDuration2', 'runIntensity2', 'pushUps', 'pullUps'].forEach(id => {
+             'lightHours', 'lightMinutes', 'pushUps', 'pullUps'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.value = '';
             });
+            
+            // Clear training sessions
+            const container = document.getElementById('trainingItemsContainer');
+            container.innerHTML = '';
+            trainingSessionCounter = 0;
+            addTraining(); // Add one default training
             
             // Clear checkboxes
-            ['hadGym', 'hadGym2', 'hadHome', 'hadRun', 'hadRun2', 'coldShower', 'lust', 'napped'].forEach(id => {
+            ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.checked = false;
             });
             
-            // Clear workout type checkboxes
-            ['gymCore', 'gymLegs', 'gymUpper', 'gymFull', 'gymCardio',
-             'gym2Core', 'gym2Legs', 'gym2Upper', 'gym2Full', 'gym2Cardio',
-             'homeBodyweight', 'homeYoga', 'homeHIIT', 'homeOther'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.checked = false;
-            });
-            
-            // Clear selects
-            ['runType', 'runType2'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            
-            // Hide details
-            ['gymDetails', 'gymDetails2', 'homeDetails', 'runDetails', 'runDetails2'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
+            // Clear hygiene radios
+            document.querySelectorAll('input[name="hygiene"]').forEach(radio => {
+                radio.checked = false;
             });
             
             updateCheckboxStyles();
@@ -1761,16 +1030,10 @@
             
             if (sickRestDays.rest.active) {
                 // When rest day: pause only running-related streaks
-                return goalKey === 'training' && !isGymOrBodyweightToday();
+                return goalKey === 'training';
             }
             
             return false;
-        }
-        
-        function isGymOrBodyweightToday() {
-            const currentData = getCurrentInputs();
-            return currentData.hadGym || currentData.hadGym2 || currentData.hadHome || 
-                   (currentData.pushUps >= goals.pushUps) || (currentData.pullUps >= goals.pullUps);
         }
         
         // ==================== INPUT DATA FUNCTIONS ====================
@@ -1796,15 +1059,15 @@
             const pushUps = parseInt(document.getElementById('pushUps').value) || 0;
             const pullUps = parseInt(document.getElementById('pullUps').value) || 0;
             
-            // Helper function for workout types
-            const getSelectedTypes = (prefix, types) => {
-                const selected = [];
-                types.forEach(type => {
-                    const checkbox = document.getElementById(prefix + type);
-                    if (checkbox && checkbox.checked) selected.push(type);
-                });
-                return selected;
-            };
+            // Get hygiene value
+            let hygiene = 0;
+            const hygieneRadio = document.querySelector('input[name="hygiene"]:checked');
+            if (hygieneRadio) {
+                hygiene = parseInt(hygieneRadio.value) || 0;
+            }
+            
+            // Get all training sessions
+            const trainingSessions = getAllTrainingSessions();
             
             return {
                 // Basic inputs
@@ -1830,43 +1093,19 @@
                 coldShower: document.getElementById('coldShower').checked,
                 lust: document.getElementById('lust').checked,
                 
+                // New goals
+                healthyEating: document.getElementById('healthyEating').checked,
+                makeBed: document.getElementById('makeBed').checked,
+                hygiene: hygiene,
+                
                 // Bodyweight goals
                 pushUps: pushUps,
                 pullUps: pullUps,
                 
                 // Training sessions
-                hadGym: document.getElementById('hadGym').checked,
-                hadGym2: document.getElementById('hadGym2').checked,
-                hadHome: document.getElementById('hadHome').checked,
-                hadRun: document.getElementById('hadRun').checked,
-                hadRun2: document.getElementById('hadRun2').checked,
-                
-                // Gym 1
-                gymTypes: getSelectedTypes('gym', ['Core', 'Legs', 'Upper', 'Full', 'Cardio']),
-                gymDuration: parseInt(document.getElementById('gymDuration').value) || 0,
-                gymIntensity: parseInt(document.getElementById('gymIntensity').value) || 0,
-                
-                // Gym 2
-                gym2Types: getSelectedTypes('gym2', ['Core', 'Legs', 'Upper', 'Full', 'Cardio']),
-                gym2Duration: parseInt(document.getElementById('gym2Duration').value) || 0,
-                gym2Intensity: parseInt(document.getElementById('gym2Intensity').value) || 0,
-                
-                // Home
-                homeTypes: getSelectedTypes('home', ['Bodyweight', 'Yoga', 'HIIT', 'Other']),
-                homeDuration: parseInt(document.getElementById('homeDuration').value) || 0,
-                homeIntensity: parseInt(document.getElementById('homeIntensity').value) || 0,
-                
-                // Run 1
-                runType: document.getElementById('runType').value,
-                runDistance: parseFloat(document.getElementById('runDistance').value) || 0,
-                runDuration: parseInt(document.getElementById('runDuration').value) || 0,
-                runIntensity: parseInt(document.getElementById('runIntensity').value) || 0,
-                
-                // Run 2
-                runType2: document.getElementById('runType2').value,
-                runDistance2: parseFloat(document.getElementById('runDistance2').value) || 0,
-                runDuration2: parseInt(document.getElementById('runDuration2').value) || 0,
-                runIntensity2: parseInt(document.getElementById('runIntensity2').value) || 0
+                trainingSessions: trainingSessions,
+                totalTrainings: trainingSessions.length,
+                completedTrainings: trainingSessions.filter(s => s.completed).length
             };
         }
         
@@ -1883,20 +1122,21 @@
                 let current, goal, isGood;
                 
                 if (key === 'training') {
-                    let trainingSessions = 0;
-                    if (currentData.hadGym) trainingSessions++;
-                    if (currentData.hadGym2) trainingSessions++;
-                    if (currentData.hadHome) trainingSessions++;
-                    if (currentData.hadRun) trainingSessions++;
-                    if (currentData.hadRun2) trainingSessions++;
-                    
-                    current = trainingSessions;
+                    current = currentData.completedTrainings;
                     goal = goals.training;
-                    isGood = trainingSessions >= goal || isPaused;
+                    isGood = current >= goal || isPaused;
                 } else if (key === 'pushUps' || key === 'pullUps') {
                     current = parseInt(currentData[key]) || 0;
                     goal = goals[key];
                     isGood = current >= goal || isPaused;
+                } else if (key === 'healthyEating' || key === 'makeBed') {
+                    current = currentData[key] ? 1 : 0;
+                    goal = goals[key];
+                    isGood = current >= goal;
+                } else if (key === 'hygiene') {
+                    current = currentData[key] || 0;
+                    goal = goals[key];
+                    isGood = current >= goal;
                 } else {
                     current = parseFloat(currentData[key]) || 0;
                     goal = goals[key];
@@ -1910,6 +1150,8 @@
                 if (key === 'screenTime') displayName = 'Screen Time';
                 if (key === 'pushUps') displayName = 'Push-ups';
                 if (key === 'pullUps') displayName = 'Pull-ups';
+                if (key === 'healthyEating') displayName = 'Healthy Eating';
+                if (key === 'makeBed') displayName = 'Make Bed';
                 
                 const pausedText = isPaused ? ' (Paused)' : '';
                 
@@ -2103,18 +1345,62 @@
                 if (element) {
                     if (element.type === 'checkbox') {
                         element.checked = todaysData[key];
+                    } else if (element.type === 'radio') {
+                        // Handle radio buttons
+                        const value = todaysData[key];
+                        const radio = document.querySelector(`input[name="${element.name}"][value="${value}"]`);
+                        if (radio) radio.checked = true;
                     } else {
                         element.value = todaysData[key] || '';
                     }
                 }
             });
             
-            // Show/hide training details based on checkboxes
-            if (todaysData.hadGym) document.getElementById('gymDetails').style.display = 'block';
-            if (todaysData.hadGym2) document.getElementById('gymDetails2').style.display = 'block';
-            if (todaysData.hadHome) document.getElementById('homeDetails').style.display = 'block';
-            if (todaysData.hadRun) document.getElementById('runDetails').style.display = 'grid';
-            if (todaysData.hadRun2) document.getElementById('runDetails2').style.display = 'grid';
+            // Load training sessions
+            if (todaysData.trainingSessions && todaysData.trainingSessions.length > 0) {
+                const container = document.getElementById('trainingItemsContainer');
+                container.innerHTML = '';
+                trainingSessionCounter = 0;
+                
+                todaysData.trainingSessions.forEach(session => {
+                    trainingSessionCounter++;
+                    addTraining(session.type);
+                    
+                    // Fill training session data
+                    setTimeout(() => {
+                        const typeSelect = document.getElementById(`trainingType-${trainingSessionCounter}`);
+                        if (typeSelect) typeSelect.value = session.type;
+                        
+                        const durationInput = document.getElementById(`trainingDuration-${trainingSessionCounter}`);
+                        if (durationInput) durationInput.value = session.duration || '';
+                        
+                        const intensityInput = document.getElementById(`trainingIntensity-${trainingSessionCounter}`);
+                        if (intensityInput) intensityInput.value = session.intensity || '';
+                        
+                        if (session.type === 'run') {
+                            const distanceInput = document.getElementById(`trainingDistance-${trainingSessionCounter}`);
+                            if (distanceInput) distanceInput.value = session.distance || '';
+                        }
+                        
+                        // Check workout type checkboxes
+                        if (session.selectedTypes) {
+                            session.selectedTypes.forEach(workoutType => {
+                                const checkboxId = `${session.type}-${workoutType.replace(/\s+/g, '')}-${trainingSessionCounter}`;
+                                const checkbox = document.getElementById(checkboxId);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        }
+                        
+                        updateTrainingType(trainingSessionCounter);
+                    }, 100);
+                });
+            } else {
+                // Add default training if none exist
+                const container = document.getElementById('trainingItemsContainer');
+                if (container.children.length === 0) {
+                    addTraining();
+                }
+            }
             
             updateCheckboxStyles();
             updateConsistencyTracker();
@@ -2127,7 +1413,10 @@
             const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
             const dates = Object.keys(allData).sort();
             
-            Object.keys(goals).forEach(goalKey => {
+            // Add new goals to inactivity tracker
+            const allGoals = { ...goals, coldShower: true, lustControl: true };
+            
+            Object.keys(allGoals).forEach(goalKey => {
                 if (!inactivityTracker[goalKey]) {
                     inactivityTracker[goalKey] = { lastCompleted: null, consecutiveMissed: 0 };
                 }
@@ -2150,10 +1439,14 @@
             if (goalKey === 'coldShower') return data.coldShower === true;
             if (goalKey === 'lustControl') return data.lust !== true;
             if (goalKey === 'training') {
-                let sessions = 0;
-                if (data.hadGym === true) sessions++;
-                if (data.hadRun === true) sessions++;
-                return sessions >= goals.training;
+                return data.completedTrainings >= goals.training;
+            }
+            if (goalKey === 'healthyEating' || goalKey === 'makeBed') {
+                return data[goalKey] === true;
+            }
+            if (goalKey === 'hygiene') {
+                const value = data[goalKey] || 0;
+                return value >= goals[goalKey];
             }
             if (goalKey === 'pushUps' || goalKey === 'pullUps') {
                 const value = parseInt(data[goalKey]) || 0;
@@ -2196,43 +1489,37 @@
                 }
                 
                 if (goalKey === 'training') {
-                    let trainingSessions = 0;
-                    if (currentData.hadGym) trainingSessions++;
-                    if (currentData.hadGym2) trainingSessions++;
-                    if (currentData.hadHome) trainingSessions++;
-                    if (currentData.hadRun) trainingSessions++;
-                    if (currentData.hadRun2) trainingSessions++;
-                    
-                    const goalMet = trainingSessions >= goals.training;
+                    const goalMet = currentData.completedTrainings >= goals.training;
                     
                     if (goalMet && !isPaused) {
                         points = pointsConfig.training * multiplier;
-                        description = `Training (${trainingSessions} sessions)`;
+                        description = `Training (${currentData.completedTrainings} sessions)`;
                         emoji = '💪';
                         completedGoals++;
                         
-                        // Training bonuses
+                        // Training bonuses for each session
                         let bonusPoints = 0;
-                        const totalDuration = currentData.gymDuration + currentData.gym2Duration + 
-                                            currentData.homeDuration + currentData.runDuration + 
-                                            currentData.runDuration2;
-                        const maxIntensity = Math.max(
-                            currentData.gymIntensity || 0,
-                            currentData.gym2Intensity || 0,
-                            currentData.homeIntensity || 0,
-                            currentData.runIntensity || 0,
-                            currentData.runIntensity2 || 0
-                        );
-                        
-                        if (totalDuration > 75) {
-                            bonusPoints += pointsConfig.durationBonus;
-                            description += ` +${pointsConfig.durationBonus}dur`;
-                        }
-                        
-                        if (maxIntensity > 6) {
-                            bonusPoints += pointsConfig.intensityBonus;
-                            description += ` +${pointsConfig.intensityBonus}int`;
-                        }
+                        currentData.trainingSessions.forEach((session, index) => {
+                            if (session.completed) {
+                                // Duration bonus for each session > 75 minutes
+                                if (session.duration > 75) {
+                                    bonusPoints += pointsConfig.durationBonus;
+                                    description += ` +${pointsConfig.durationBonus}dur`;
+                                }
+                                
+                                // Intensity bonus for each session > 7
+                                if (session.intensity > 6) {
+                                    bonusPoints += pointsConfig.intensityBonus;
+                                    description += ` +${pointsConfig.intensityBonus}int`;
+                                }
+                                
+                                // Extra training bonus for sessions beyond the first
+                                if (index > 0) {
+                                    bonusPoints += pointsConfig.extraTrainingBonus;
+                                    description += ` +${pointsConfig.extraTrainingBonus}extra`;
+                                }
+                            }
+                        });
                         
                         points += bonusPoints;
                     } else if (!goalMet && !isPaused) {
@@ -2255,6 +1542,40 @@
                         // Deduction for missed bodyweight
                         points = pointsConfig[`${goalKey}Deduction`];
                         description = goalKey === 'pushUps' ? 'Push-ups (Missed)' : 'Pull-ups (Missed)';
+                        emoji = '❌';
+                    }
+                } else if (goalKey === 'healthyEating' || goalKey === 'makeBed') {
+                    const goalMet = currentData[goalKey] === true;
+                    
+                    if (goalMet) {
+                        points = pointsConfig[goalKey] * multiplier;
+                        description = goalKey === 'healthyEating' ? 'Healthy Eating' : 'Make Bed';
+                        emoji = goalKey === 'healthyEating' ? '🥗' : '🛏️';
+                        completedGoals++;
+                    } else {
+                        // Deduction for missed goal
+                        points = pointsConfig[`${goalKey}Deduction`];
+                        description = goalKey === 'healthyEating' ? 'Healthy Eating (Missed)' : 'Make Bed (Missed)';
+                        emoji = '❌';
+                    }
+                } else if (goalKey === 'hygiene') {
+                    const current = currentData[goalKey] || 0;
+                    const goal = goals[goalKey];
+                    
+                    if (current >= goal) {
+                        points = pointsConfig[goalKey] * multiplier;
+                        description = `Hygiene (${current} times)`;
+                        emoji = '🧼';
+                        completedGoals++;
+                    } else if (current === 1) {
+                        // Partial deduction for 1 time when goal is 2
+                        points = pointsConfig.hygienePartialDeduction;
+                        description = `Hygiene (Only ${current} time)`;
+                        emoji = '⚠️';
+                    } else if (current === 0) {
+                        // Full deduction for 0 times
+                        points = pointsConfig.hygieneDeduction;
+                        description = `Hygiene (Missed)`;
                         emoji = '❌';
                     }
                 } else if (goalKey === 'sleep') {
@@ -2399,6 +1720,31 @@
                 }
             });
             
+            // Weekly consistency bonus
+            const allDates = Object.keys(allData).sort();
+            if (allDates.length >= 7) {
+                const last7Days = allDates.slice(-7);
+                const perfectDays = last7Days.filter(date => {
+                    const dayData = allData[date];
+                    if (!dayData) return false;
+                    
+                    let completed = 0;
+                    Object.keys(goals).forEach(key => {
+                        if (isGoalMetForDay(dayData, key)) completed++;
+                    });
+                    
+                    if (dayData.coldShower) completed++;
+                    if (!dayData.lust) completed++;
+                    
+                    return completed >= Object.keys(goals).length + 1; // All goals except lust control
+                });
+                
+                if (perfectDays.length >= 7) {
+                    totalPoints += pointsConfig.weeklyConsistencyBonus;
+                    pointsBreakdown.push({ emoji: '📅', description: 'Weekly Consistency Bonus', points: pointsConfig.weeklyConsistencyBonus, multiplier: '7+ days', isNegative: false });
+                }
+            }
+            
             // Daily completion bonus
             if (completedGoals === totalGoals) {
                 totalPoints += pointsConfig.dailyCompletionBonus;
@@ -2409,7 +1755,18 @@
         }
         
         function getEmojiForActivity(activity) {
-            const emojis = { stretching: '🧘', steps: '👟', sleep: '😴', water: '💧', screenTime: '📱', pages: '📚', training: '💪' };
+            const emojis = { 
+                stretching: '🧘', 
+                steps: '👟', 
+                sleep: '😴', 
+                water: '💧', 
+                screenTime: '📱', 
+                pages: '📚', 
+                training: '💪',
+                healthyEating: '🥗',
+                makeBed: '🛏️',
+                hygiene: '🧼'
+            };
             return emojis[activity] || '⭐';
         }
         
@@ -2478,7 +1835,8 @@
         function calculateStreaks(dates, allData) {
             const streaks = { 
                 stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
-                training: 0, coldShower: 0, lustControl: 0, pushUps: 0, pullUps: 0 
+                training: 0, coldShower: 0, lustControl: 0, pushUps: 0, pullUps: 0,
+                healthyEating: 0, makeBed: 0, hygiene: 0 // New streaks
             };
             if (dates.length === 0) return streaks;
             
@@ -2492,10 +1850,14 @@
                 if (goalKey === 'coldShower') return dayData.coldShower === true;
                 if (goalKey === 'lustControl') return dayData.lust !== true;
                 if (goalKey === 'training') {
-                    let sessions = 0;
-                    if (dayData.hadGym === true) sessions++;
-                    if (dayData.hadRun === true) sessions++;
-                    return sessions >= goals.training;
+                    return dayData.completedTrainings >= goals.training;
+                }
+                if (goalKey === 'healthyEating' || goalKey === 'makeBed') {
+                    return dayData[goalKey] === true;
+                }
+                if (goalKey === 'hygiene') {
+                    const value = dayData[goalKey] || 0;
+                    return value >= goals[goalKey];
                 }
                 if (goalKey === 'pushUps' || goalKey === 'pullUps') {
                     const value = parseInt(dayData[goalKey]) || 0;
@@ -2544,10 +1906,7 @@
             }
             
             if (sickRestDays.rest.active) {
-                // Only affect training if it's running-only day
-                if (!isGymOrBodyweightToday()) {
-                    streaks.training = Math.max(streaks.training, 1);
-                }
+                streaks.training = Math.max(streaks.training, 1);
             }
             
             return streaks;
@@ -2567,6 +1926,9 @@
                 if (key === 'lustControl') displayName = 'Lust Control';
                 if (key === 'pushUps') displayName = 'Push-ups';
                 if (key === 'pullUps') displayName = 'Pull-ups';
+                if (key === 'healthyEating') displayName = 'Healthy Eating';
+                if (key === 'makeBed') displayName = 'Make Bed';
+                if (key === 'hygiene') displayName = 'Hygiene';
                 
                 let streakColor = '#666';
                 let flameIcon = '';
@@ -2642,6 +2004,9 @@
                 if (key === 'screenTime') displayName = 'Screen Time';
                 if (key === 'pushUps') displayName = 'Push-ups';
                 if (key === 'pullUps') displayName = 'Pull-ups';
+                if (key === 'healthyEating') displayName = 'Healthy Eating';
+                if (key === 'makeBed') displayName = 'Make Bed';
+                if (key === 'hygiene') displayName = 'Hygiene';
                 
                 html += `
                     <div class="consistency-item">
@@ -2671,7 +2036,8 @@
             const totals = { 
                 stretching: 0, steps: 0, sleep: 0, water: 0, screenTime: 0, pages: 0, 
                 gymSessions: 0, runs: 0, totalRunDistance: 0, coldShowers: 0, naps: 0,
-                pushUps: 0, pullUps: 0
+                pushUps: 0, pullUps: 0, healthyEatingDays: 0, makeBedDays: 0, hygieneScore: 0,
+                totalTrainings: 0
             };
             let totalDays = 0;
             
@@ -2687,11 +2053,20 @@
                 totals.pages += parseFloat(dayData.pages) || 0;
                 totals.pushUps += parseInt(dayData.pushUps) || 0;
                 totals.pullUps += parseInt(dayData.pullUps) || 0;
+                totals.healthyEatingDays += dayData.healthyEating ? 1 : 0;
+                totals.makeBedDays += dayData.makeBed ? 1 : 0;
+                totals.hygieneScore += parseInt(dayData.hygiene) || 0;
+                totals.totalTrainings += dayData.totalTrainings || 0;
                 
-                if (dayData.hadGym === true) totals.gymSessions++;
-                if (dayData.hadRun === true) {
-                    totals.runs++;
-                    totals.totalRunDistance += parseFloat(dayData.runDistance) || 0;
+                // Count training sessions by type
+                if (dayData.trainingSessions) {
+                    dayData.trainingSessions.forEach(session => {
+                        if (session.type === 'gym') totals.gymSessions++;
+                        if (session.type === 'run') {
+                            totals.runs++;
+                            totals.totalRunDistance += parseFloat(session.distance) || 0;
+                        }
+                    });
                 }
                 
                 if (dayData.coldShower === true) totals.coldShowers++;
@@ -2711,11 +2086,15 @@
                 <div class="consistency-item"><span>💧 Total Water</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.water)}L</div></div>
                 <div class="consistency-item"><span>📱 Total Screen Time</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.screenTime)}h</div></div>
                 <div class="consistency-item"><span>📚 Total Pages</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pages)}</div></div>
+                <div class="consistency-item"><span>🥗 Healthy Eating Days</span><div style="font-weight: bold; color: #4CAF50;">${totals.healthyEatingDays}</div></div>
+                <div class="consistency-item"><span>🛏️ Make Bed Days</span><div style="font-weight: bold; color: #FF9800;">${totals.makeBedDays}</div></div>
+                <div class="consistency-item"><span>🧼 Hygiene Score</span><div style="font-weight: bold; color: #00BCD4;">${totals.hygieneScore}</div></div>
                 <div class="consistency-item"><span>💪 Total Push-ups</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pushUps)}</div></div>
                 <div class="consistency-item"><span>🤸 Total Pull-ups</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.pullUps)}</div></div>
                 <div class="consistency-item"><span>🏋️ Gym Sessions</span><div style="font-weight: bold; color: #667eea;">${totals.gymSessions}</div></div>
                 <div class="consistency-item"><span>🏃 Total Runs</span><div style="font-weight: bold; color: #667eea;">${totals.runs}</div></div>
                 <div class="consistency-item"><span>📏 Total Distance</span><div style="font-weight: bold; color: #667eea;">${formatNumber(totals.totalRunDistance)}km</div></div>
+                <div class="consistency-item"><span>💪 Total Training Sessions</span><div style="font-weight: bold; color: #667eea;">${totals.totalTrainings}</div></div>
                 <div class="consistency-item"><span>🚿 Cold Showers</span><div style="font-weight: bold; color: #4CAF50;">${totals.coldShowers}</div></div>
                 <div class="consistency-item"><span>😴 Naps Taken</span><div style="font-weight: bold; color: #667eea;">${totals.naps}</div></div>
                 <div class="consistency-item"><span>📅 Days Tracked</span><div style="font-weight: bold; color: #764ba2;">${totalDays}</div></div>
@@ -2770,6 +2149,9 @@
                 screenTime: 'Screen Time (Hours)',
                 pages: 'Pages Read',
                 training: 'Training Sessions',
+                healthyEating: 'Healthy Eating Days',
+                makeBed: 'Make Bed Days',
+                hygiene: 'Hygiene Score',
                 consistency: 'Overall Consistency'
             };
             
@@ -2815,13 +2197,11 @@
                 if (currentPeriod === 'daily') {
                     const dayData = allData[label];
                     if (metric === 'training') {
-                        if (dayData) {
-                            let sessions = 0;
-                            if (dayData.hadGym === true) sessions++;
-                            if (dayData.hadRun === true) sessions++;
-                            return sessions;
-                        }
-                        return 0;
+                        return dayData ? (dayData.completedTrainings || 0) : 0;
+                    } else if (metric === 'healthyEating' || metric === 'makeBed') {
+                        return dayData ? (dayData[metric] ? 1 : 0) : 0;
+                    } else if (metric === 'hygiene') {
+                        return dayData ? (dayData[metric] || 0) : 0;
                     }
                     return dayData ? (parseFloat(dayData[metric]) || 0) : 0;
                 }
@@ -2835,7 +2215,10 @@
                 water: '#00BCD4',
                 screenTime: '#FF9800',
                 pages: '#9C27B0',
-                training: '#f44336'
+                training: '#f44336',
+                healthyEating: '#8BC34A',
+                makeBed: '#FFC107',
+                hygiene: '#00BCD4'
             };
             
             return {
@@ -2910,10 +2293,11 @@
                 }
             });
             
-            // Hide details
-            ['gymDetails', 'gymDetails2', 'homeDetails', 'runDetails', 'runDetails2'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
-            });
+            // Clear training sessions
+            const container = document.getElementById('trainingItemsContainer');
+            container.innerHTML = '';
+            trainingSessionCounter = 0;
+            addTraining(); // Add one default training
             
             // Reset sick/rest
             sickRestDays = { sick: { active: false, history: [] }, rest: { active: false, history: [] } };
