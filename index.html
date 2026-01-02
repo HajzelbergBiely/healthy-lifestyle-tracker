@@ -1487,82 +1487,84 @@
         // Updated Points System Configuration
         const pointsConfig = {
             // Base points for completing goals
-            stretching: 15,
-            steps: 20,
-            sleep: 35,
-            water: 20,
-            screenTime: 35,
-            pages: 15,
-            training: 30,
-            coldShower: 20,
-            lustControl: 40,
-            pushUps: 15,
-            pullUps: 15,
-            healthyEating: 25, // NEW
-            makeBed: 15, // NEW
-            hygiene: 20, // NEW
+            stretching: 18,
+            steps: 25,
+            sleep: 45,
+            water: 22,
+            screenTime: 45,
+            pages: 18,
+            training: 40,
+            coldShower: 25,
+            lustControl: 55,
+            pushUps: 20,
+            pullUps: 20,
+            healthyEating: 35,
+            makeBed: 15,
+            hygiene: 25,
+
             
             // Deductions for missing goals
-            stretchingDeduction: -20,
-            stepsDeduction: -25,
-            waterDeduction: -15,
-            screenTimeDeduction: -35,
-            pagesDeduction: -20,
-            pushUpsDeduction: -20,
-            pullUpsDeduction: -20,
-            trainingDeduction: -20,
-            healthyEatingDeduction: -20, // NEW
-            makeBedDeduction: -15, // NEW
-            hygieneDeduction: -15, // NEW (for 0 times)
-            hygienePartialDeduction: -10, // NEW (for 1 time when goal is 2)
+            stretchingDeduction: -40,
+            stepsDeduction: -55,
+            waterDeduction: -35,
+            screenTimeDeduction: -70,
+            pagesDeduction: -40,
+            pushUpsDeduction: -40,
+            pullUpsDeduction: -40,
+            trainingDeduction: -60,
+            healthyEatingDeduction: -55,
+            makeBedDeduction: -35,
+            hygieneDeduction: -40,
+            hygienePartialDeduction: -25,
             
             // Sleep strict rules
-            sleepQualityBonus: 25,
-            sleepDurationDeduction: -15,
-            sleepQualityDeduction: -20,
+            sleepQualityBonus: 40,
+            sleepDurationDeduction: -35,
+            sleepQualityDeduction: -45,
             
             // Bodyweight bonus multiplier
             bodyweightBothBonus: 1.7,
             
             // Training bonuses
-            durationBonus: 20,
-            intensityBonus: 25,
-            extraTrainingBonus: 15, // Bonus for each extra training beyond the first
+            durationBonus: 25,
+            intensityBonus: 30,
+            extraTrainingBonus: 12, // Bonus for each extra training beyond the first
             
             // Steps overachievement
-            stepsMultiplierPer1500: 0.4,
-            maxStepsMultipliers: 100,
+            stepsMultiplierPer1500: 0.2,
+            maxStepsMultipliers: 5,
             
             // Streak multipliers
             streakMultipliers: {
                 3: 1.3,
-                7: 1.5,
-                14: 2.0
+                7: 1.6,
+                14: 2.2
             },
             
             // Inactivity penalty
-            inactivityPenalty: -35,
+            inactivityPenalty: -60,
             
             // Consistency bonuses
-            weeklyConsistencyBonus: 50,
+            weeklyConsistencyBonus: 85,
             
-            dailyCompletionBonus: 75
+            dailyCompletionBonus: 110
         };
         
-        // Initialize the app
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', function() {
             displayCurrentDate();
             displayDailyQuote();
-            checkIfDataSavedForToday(); // NEW: Check if data is saved
             loadTodaysData();
+            initializeApp();
+        });
+        
+        function initializeApp() {
             updateConsistencyTracker();
             updateStreakTracker();
             updateTotalStats();
             updatePointsDisplay();
             updateHabitConsistency();
             initializeChart();
-            
-            // Initialize sick/rest toggles
             updateSickRestDisplay();
             
             // Add initial training session if none exist
@@ -1571,7 +1573,11 @@
                 addTrainingSession();
             }
             
-            // Bodyweight inputs listeners
+            setupEventListeners();
+        }
+        
+        function setupEventListeners() {
+            // Bodyweight inputs
             document.getElementById('pushUps').addEventListener('input', function() {
                 if (!todayDataSaved) {
                     updateBodyweightGoals();
@@ -1588,7 +1594,7 @@
                 }
             });
             
-            // General input listeners
+            // General inputs
             ['stretching', 'steps', 'sleepHours', 'water', 'screenTime', 'pages'].forEach(id => {
                 document.getElementById(id).addEventListener('input', function() {
                     if (!todayDataSaved) {
@@ -1598,7 +1604,7 @@
                 });
             });
             
-            // Sleep input listeners
+            // Sleep inputs
             ['sleepHours', 'sleepMinutes', 'sleepQuality', 'remHours', 'remMinutes', 
              'deepHours', 'deepMinutes', 'lightHours', 'lightMinutes'].forEach(id => {
                 document.getElementById(id).addEventListener('input', function() {
@@ -1610,7 +1616,7 @@
                 });
             });
             
-            // Checkbox listeners
+            // Checkboxes
             ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
                 document.getElementById(id).addEventListener('change', function() {
                     if (!todayDataSaved) {
@@ -1622,7 +1628,7 @@
                 });
             });
             
-            // Hygiene radio buttons listener
+            // Hygiene radio buttons
             document.querySelectorAll('input[name="hygiene"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     if (!todayDataSaved) {
@@ -1635,160 +1641,132 @@
             // Initialize displays
             updateSleepAnalysis();
             updateBodyweightGoals();
-        });
+        }
         
-        // NEW: Check if data is already saved for today
-        function checkIfDataSavedForToday() {
-            const today = new Date().toISOString().split('T')[0];
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            todayDataSaved = !!allData[today];
+        // ==================== BASIC FUNCTIONS ====================
+        function displayCurrentDate() {
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+        }
+        
+        function displayDailyQuote() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const quoteIndex = dayOfYear % quotes.length;
+            document.getElementById('dailyQuote').textContent = `"${quotes[quoteIndex].text}"`;
+            document.getElementById('quoteAuthor').textContent = `— ${quotes[quoteIndex].author}`;
+        }
+        
+        function toggleTrainingDetails() {
+            const content = document.getElementById('trainingContent');
+            const toggle = document.querySelector('.training-toggle');
+            const isCollapsed = content.classList.contains('collapsed');
             
-            if (todayDataSaved) {
-                disableAllInputs();
+            if (isCollapsed) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
             }
         }
         
-        // NEW: Disable all input fields after data is saved
-        function disableAllInputs() {
-            // Disable text/number inputs
-            document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => {
-                input.disabled = true;
-                input.style.opacity = '0.7';
-                input.style.cursor = 'not-allowed';
-            });
+        function updateCheckboxStyles() {
+            if (todayDataSaved) return;
             
-            // Disable checkboxes
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.disabled = true;
-                checkbox.style.cursor = 'not-allowed';
-            });
+            const coldShowerGroup = document.getElementById('coldShowerGroup');
+            const lustGroup = document.getElementById('lustGroup');
+            const coldShowerChecked = document.getElementById('coldShower').checked;
+            const lustChecked = document.getElementById('lust').checked;
             
-            // Disable radio buttons
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.disabled = true;
-                radio.style.cursor = 'not-allowed';
-            });
-            
-            // Disable selects
-            document.querySelectorAll('select').forEach(select => {
-                select.disabled = true;
-                select.style.opacity = '0.7';
-                select.style.cursor = 'not-allowed';
-            });
-            
-            // Disable training add button
-            const addBtn = document.querySelector('.add-training-btn');
-            if (addBtn) {
-                addBtn.disabled = true;
-                addBtn.style.opacity = '0.7';
-                addBtn.style.cursor = 'not-allowed';
-            }
-            
-            // Disable training remove buttons
-            document.querySelectorAll('.remove-training-btn').forEach(btn => {
-                btn.disabled = true;
-                btn.style.opacity = '0.7';
-                btn.style.cursor = 'not-allowed';
-            });
-            
-            // Change save button text
-            const saveBtn = document.querySelector('.save-btn');
-            if (saveBtn) {
-                saveBtn.textContent = '✅ Data Saved for Today';
-                saveBtn.style.background = 'linear-gradient(135deg, #718096, #4a5568)';
-                saveBtn.style.cursor = 'not-allowed';
-                saveBtn.disabled = true;
-            }
+            coldShowerGroup.classList.toggle('cold-shower-checked', coldShowerChecked);
+            lustGroup.classList.toggle('lust-checked', lustChecked);
         }
         
-        // NEW: Enable all input fields (for reset/new day)
-        function enableAllInputs() {
-            // Enable text/number inputs
-            document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => {
-                input.disabled = false;
-                input.style.opacity = '1';
-                input.style.cursor = 'text';
-            });
+        function updateBodyweightGoals() {
+            if (todayDataSaved) return;
             
-            // Enable checkboxes
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.disabled = false;
-                checkbox.style.cursor = 'pointer';
-            });
+            const pushUps = parseInt(document.getElementById('pushUps').value) || 0;
+            const pullUps = parseInt(document.getElementById('pullUps').value) || 0;
             
-            // Enable radio buttons
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.disabled = false;
-                radio.style.cursor = 'pointer';
-            });
-            
-            // Enable selects
-            document.querySelectorAll('select').forEach(select => {
-                select.disabled = false;
-                select.style.opacity = '1';
-                select.style.cursor = 'pointer';
-            });
-            
-            // Enable training add button
-            const addBtn = document.querySelector('.add-training-btn');
-            if (addBtn) {
-                addBtn.disabled = false;
-                addBtn.style.opacity = '1';
-                addBtn.style.cursor = 'pointer';
-            }
-            
-            // Enable training remove buttons
-            document.querySelectorAll('.remove-training-btn').forEach(btn => {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.style.cursor = 'pointer';
-            });
-            
-            // Reset save button
-            const saveBtn = document.querySelector('.save-btn');
-            if (saveBtn) {
-                saveBtn.textContent = '💾 Save Today\'s Data';
-                saveBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
-                saveBtn.style.cursor = 'pointer';
-                saveBtn.disabled = false;
-            }
+            document.getElementById('pushUpsGoal').textContent = `${pushUps}/${goals.pushUps}`;
+            document.getElementById('pullUpsGoal').textContent = `${pullUps}/${goals.pullUps}`;
         }
         
-        // NEW: Clear all input fields after saving
-        function clearInputFieldsAfterSave() {
-            // Clear basic inputs
-            ['stretching', 'steps', 'sleepHours', 'sleepMinutes', 'water', 'screenTime', 'pages', 
-             'sleepQuality', 'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
-             'lightHours', 'lightMinutes', 'pushUps', 'pullUps'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = '';
-            });
+        // ==================== SICK/REST DAYS ====================
+        function toggleSick() {
+            if (todayDataSaved) return;
             
-            // Clear training sessions (but keep the container for viewing saved data)
-            const container = document.getElementById('trainingSessionsContainer');
-            container.innerHTML = '';
-            trainingSessionCounter = 0;
+            const isActive = sickRestDays.sick.active;
+            sickRestDays.sick.active = !isActive;
             
-            // Clear checkboxes
-            ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.checked = false;
-            });
+            if (sickRestDays.sick.active) {
+                sickRestDays.sick.history.push(new Date().toISOString().split('T')[0]);
+            }
             
-            // Clear hygiene radios
-            document.querySelectorAll('input[name="hygiene"]').forEach(radio => {
-                radio.checked = false;
-            });
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            updateSickRestDisplay();
+            updateConsistencyTracker();
+            updatePointsDisplay();
+            updateStreakTracker();
+        }
+        
+        function toggleRest() {
+            if (todayDataSaved) return;
             
-            // Update displays
-            updateCheckboxStyles();
-            updateSleepAnalysis();
-            updateBodyweightGoals();
+            const isActive = sickRestDays.rest.active;
+            sickRestDays.rest.active = !isActive;
+            
+            if (sickRestDays.rest.active) {
+                sickRestDays.rest.history.push(new Date().toISOString().split('T')[0]);
+            }
+            
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            updateSickRestDisplay();
+            updateConsistencyTracker();
+            updatePointsDisplay();
+            updateStreakTracker();
+        }
+        
+        function updateSickRestDisplay() {
+            const sickToggle = document.getElementById('sickToggle');
+            const sickIndicator = document.getElementById('sickIndicator');
+            const sickElement = document.querySelector('.sick-toggle');
+            
+            const restToggle = document.getElementById('restToggle');
+            const restIndicator = document.getElementById('restIndicator');
+            const restElement = document.querySelector('.rest-toggle');
+            
+            sickToggle.checked = sickRestDays.sick.active;
+            sickIndicator.textContent = sickRestDays.sick.active ? 'ACTIVE' : 'OFF';
+            sickElement.classList.toggle('active', sickRestDays.sick.active);
+            
+            restToggle.checked = sickRestDays.rest.active;
+            restIndicator.textContent = sickRestDays.rest.active ? 'ACTIVE' : 'OFF';
+            restElement.classList.toggle('active', sickRestDays.rest.active);
+        }
+        
+        function isGoalPaused(goalKey) {
+            if (sickRestDays.sick.active) {
+                return ['steps', 'pushUps', 'pullUps', 'training'].includes(goalKey);
+            }
+            
+            if (sickRestDays.rest.active) {
+                return goalKey === 'training';
+            }
+            
+            return false;
         }
         
         // ==================== TRAINING SESSIONS ====================
         function addTrainingSession(type = 'gym') {
-            if (todayDataSaved) return; // Don't allow adding if data is saved
+            if (todayDataSaved) return;
             
             trainingSessionCounter++;
             const container = document.getElementById('trainingSessionsContainer');
@@ -1836,7 +1814,7 @@
         }
         
         function removeTrainingSession(id) {
-            if (todayDataSaved) return; // Don't allow removing if data is saved
+            if (todayDataSaved) return;
             
             const session = document.getElementById(`training-session-${id}`);
             if (session) {
@@ -1846,27 +1824,23 @@
         }
         
         function updateSessionType(id) {
-            if (todayDataSaved) return; // Don't allow updating if data is saved
+            if (todayDataSaved) return;
             
             const select = document.getElementById(`sessionType-${id}`);
             const type = select.value;
             const sessionDiv = document.getElementById(`training-session-${id}`);
             
-            // Update label
             const typeLabel = sessionDiv.querySelector('.training-session-type');
             typeLabel.textContent = `${trainingLabels[type]} ${id}`;
             
-            // Update description
             const desc = sessionDiv.querySelector('div[style*="margin-top: 10px"]');
             desc.textContent = type === 'gym' ? '🏋️ Gym session' : type === 'home' ? '🏠 Home workout' : '🏃 Running session';
             
-            // Update distance field
             const fieldsGrid = sessionDiv.querySelector('.training-fields-grid');
             const existingDistanceField = document.getElementById(`sessionDistance-${id}`);
             
             if (type === 'run') {
                 if (!existingDistanceField) {
-                    // Add distance field
                     const distanceField = document.createElement('div');
                     distanceField.className = 'training-field';
                     distanceField.innerHTML = `
@@ -1876,7 +1850,6 @@
                     fieldsGrid.appendChild(distanceField);
                 }
             } else {
-                // Remove distance field if it exists
                 if (existingDistanceField) {
                     existingDistanceField.parentElement.remove();
                 }
@@ -1917,179 +1890,7 @@
             return sessions;
         }
         
-        // ==================== BASIC FUNCTIONS ====================
-        function displayCurrentDate() {
-            const today = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
-            clearOldData();
-        }
-        
-        function clearOldData() {
-            const today = new Date().toISOString().split('T')[0];
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            
-            if (allData[today]) {
-                // Data exists for today, don't clear
-                todayDataSaved = true;
-                disableAllInputs();
-                return;
-            }
-            
-            // No data for today, clear inputs
-            todayDataSaved = false;
-            enableAllInputs();
-            
-            // Clear inputs
-            ['stretching', 'steps', 'sleepHours', 'sleepMinutes', 'water', 'screenTime', 'pages', 
-             'sleepQuality', 'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
-             'lightHours', 'lightMinutes', 'pushUps', 'pullUps'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            
-            // Clear training sessions only if no data saved
-            if (!todayDataSaved) {
-                const container = document.getElementById('trainingSessionsContainer');
-                container.innerHTML = '';
-                trainingSessionCounter = 0;
-                addTrainingSession();
-            }
-            
-            // Clear checkboxes
-            ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.checked = false;
-            });
-            
-            // Clear hygiene radios
-            document.querySelectorAll('input[name="hygiene"]').forEach(radio => {
-                radio.checked = false;
-            });
-            
-            updateCheckboxStyles();
-            updateConsistencyTracker();
-            updateSleepAnalysis();
-            updateBodyweightGoals();
-        }
-        
-        function displayDailyQuote() {
-            const today = new Date();
-            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-            const quoteIndex = dayOfYear % quotes.length;
-            document.getElementById('dailyQuote').textContent = `"${quotes[quoteIndex].text}"`;
-            document.getElementById('quoteAuthor').textContent = `— ${quotes[quoteIndex].author}`;
-        }
-        
-        function toggleTrainingDetails() {
-            const content = document.getElementById('trainingContent');
-            const toggle = document.querySelector('.training-toggle');
-            const isCollapsed = content.classList.contains('collapsed');
-            
-            if (isCollapsed) {
-                content.classList.remove('collapsed');
-                toggle.classList.remove('collapsed');
-            } else {
-                content.classList.add('collapsed');
-                toggle.classList.add('collapsed');
-            }
-        }
-        
-        function updateCheckboxStyles() {
-            if (todayDataSaved) return;
-            
-            const coldShowerGroup = document.getElementById('coldShowerGroup');
-            const lustGroup = document.getElementById('lustGroup');
-            const coldShowerChecked = document.getElementById('coldShower').checked;
-            const lustChecked = document.getElementById('lust').checked;
-            
-            coldShowerGroup.classList.toggle('cold-shower-checked', coldShowerChecked);
-            lustGroup.classList.toggle('lust-checked', lustChecked);
-            updateConsistencyTracker();
-        }
-        
-        function updateBodyweightGoals() {
-            if (todayDataSaved) return;
-            
-            const pushUps = parseInt(document.getElementById('pushUps').value) || 0;
-            const pullUps = parseInt(document.getElementById('pullUps').value) || 0;
-            
-            document.getElementById('pushUpsGoal').textContent = `${pushUps}/${goals.pushUps}`;
-            document.getElementById('pullUpsGoal').textContent = `${pullUps}/${goals.pullUps}`;
-        }
-        
-        function toggleSick() {
-            if (todayDataSaved) return;
-            
-            const isActive = sickRestDays.sick.active;
-            sickRestDays.sick.active = !isActive;
-            
-            if (sickRestDays.sick.active) {
-                sickRestDays.sick.history.push(new Date().toISOString().split('T')[0]);
-            }
-            
-            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
-            updateSickRestDisplay();
-            updateConsistencyTracker();
-            updatePointsDisplay();
-            updateStreakTracker();
-        }
-        
-        function toggleRest() {
-            if (todayDataSaved) return;
-            
-            const isActive = sickRestDays.rest.active;
-            sickRestDays.rest.active = !isActive;
-            
-            if (sickRestDays.rest.active) {
-                sickRestDays.rest.history.push(new Date().toISOString().split('T')[0]);
-            }
-            
-            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
-            updateSickRestDisplay();
-            updateConsistencyTracker();
-            updatePointsDisplay();
-            updateStreakTracker();
-        }
-        
-        function updateSickRestDisplay() {
-            const sickToggle = document.getElementById('sickToggle');
-            const sickIndicator = document.getElementById('sickIndicator');
-            const sickElement = document.querySelector('.sick-toggle');
-            
-            const restToggle = document.getElementById('restToggle');
-            const restIndicator = document.getElementById('restIndicator');
-            const restElement = document.querySelector('.rest-toggle');
-            
-            // Update sick toggle
-            sickToggle.checked = sickRestDays.sick.active;
-            sickIndicator.textContent = sickRestDays.sick.active ? 'ACTIVE' : 'OFF';
-            sickElement.classList.toggle('active', sickRestDays.sick.active);
-            
-            // Update rest toggle
-            restToggle.checked = sickRestDays.rest.active;
-            restIndicator.textContent = sickRestDays.rest.active ? 'ACTIVE' : 'OFF';
-            restElement.classList.toggle('active', sickRestDays.rest.active);
-        }
-        
-        function isGoalPaused(goalKey) {
-            if (sickRestDays.sick.active) {
-                return ['steps', 'pushUps', 'pullUps', 'training'].includes(goalKey);
-            }
-            
-            if (sickRestDays.rest.active) {
-                return goalKey === 'training';
-            }
-            
-            return false;
-        }
-        
-        // ==================== INPUT DATA FUNCTIONS ====================
+        // ==================== DATA MANAGEMENT ====================
         function getCurrentInputs() {
             // Sleep calculations
             const sleepHours = parseFloat(document.getElementById('sleepHours').value) || 0;
@@ -2108,18 +1909,18 @@
             const lightMinutes = parseFloat(document.getElementById('lightMinutes').value) || 0;
             const totalLightMinutes = (lightHours * 60) + lightMinutes;
             
-            // Bodyweight goals
+            // Bodyweight
             const pushUps = parseInt(document.getElementById('pushUps').value) || 0;
             const pullUps = parseInt(document.getElementById('pullUps').value) || 0;
             
-            // Get hygiene value
+            // Hygiene
             let hygiene = 0;
             const hygieneRadio = document.querySelector('input[name="hygiene"]:checked');
             if (hygieneRadio) {
                 hygiene = parseInt(hygieneRadio.value) || 0;
             }
             
-            // Get all training sessions
+            // Training sessions
             const trainingSessions = getAllTrainingSessions();
             const completedTrainings = trainingSessions.filter(s => s.completed).length;
             
@@ -2152,22 +1953,276 @@
                 makeBed: document.getElementById('makeBed').checked,
                 hygiene: hygiene,
                 
-                // Bodyweight goals
+                // Bodyweight
                 pushUps: pushUps,
                 pullUps: pullUps,
                 
-                // Training sessions
+                // Training
                 trainingSessions: trainingSessions,
                 completedTrainings: completedTrainings,
                 totalTrainings: trainingSessions.length
             };
         }
         
-        // ==================== CONSISTENCY TRACKER ====================
-        function updateConsistencyTracker() {
-            const tracker = document.getElementById('consistencyTracker');
-            const currentData = getCurrentInputs();
+        // ==================== INPUT CONTROLS ====================
+        function disableAllInputs() {
+            // Disable all inputs
+            document.querySelectorAll('input, select').forEach(el => {
+                if (el.type !== 'button' && el.type !== 'submit' && !el.classList.contains('toggle-checkbox')) {
+                    el.disabled = true;
+                    el.style.opacity = '0.7';
+                    el.style.cursor = 'not-allowed';
+                }
+            });
             
+            // Disable training buttons
+            const addBtn = document.querySelector('.add-training-btn');
+            if (addBtn) {
+                addBtn.disabled = true;
+                addBtn.style.opacity = '0.7';
+                addBtn.style.cursor = 'not-allowed';
+            }
+            
+            document.querySelectorAll('.remove-training-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+                btn.style.cursor = 'not-allowed';
+            });
+            
+            // Update save button
+            const saveBtn = document.querySelector('.save-btn');
+            if (saveBtn) {
+                saveBtn.textContent = '✅ Data Saved for Today';
+                saveBtn.style.background = 'linear-gradient(135deg, #718096, #4a5568)';
+                saveBtn.style.cursor = 'not-allowed';
+                saveBtn.disabled = true;
+            }
+        }
+        
+        function enableAllInputs() {
+            // Enable all inputs
+            document.querySelectorAll('input, select').forEach(el => {
+                if (el.type !== 'button' && el.type !== 'submit' && !el.classList.contains('toggle-checkbox')) {
+                    el.disabled = false;
+                    el.style.opacity = '1';
+                    el.style.cursor = el.type === 'checkbox' || el.type === 'radio' ? 'pointer' : 'text';
+                }
+            });
+            
+            // Enable training buttons
+            const addBtn = document.querySelector('.add-training-btn');
+            if (addBtn) {
+                addBtn.disabled = false;
+                addBtn.style.opacity = '1';
+                addBtn.style.cursor = 'pointer';
+            }
+            
+            document.querySelectorAll('.remove-training-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+            
+            // Reset save button
+            const saveBtn = document.querySelector('.save-btn');
+            if (saveBtn) {
+                saveBtn.textContent = '💾 Save Today\'s Data';
+                saveBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                saveBtn.style.cursor = 'pointer';
+                saveBtn.disabled = false;
+            }
+        }
+        
+        function clearInputFieldsAfterSave() {
+            // Clear inputs
+            ['stretching', 'steps', 'sleepHours', 'sleepMinutes', 'water', 'screenTime', 'pages', 
+             'sleepQuality', 'remHours', 'remMinutes', 'deepHours', 'deepMinutes', 
+             'lightHours', 'lightMinutes', 'pushUps', 'pullUps'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            
+            // Clear training sessions
+            const container = document.getElementById('trainingSessionsContainer');
+            container.innerHTML = '';
+            trainingSessionCounter = 0;
+            
+            // Clear checkboxes
+            ['coldShower', 'lust', 'napped', 'healthyEating', 'makeBed'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.checked = false;
+            });
+            
+            // Clear hygiene radios
+            document.querySelectorAll('input[name="hygiene"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            updateCheckboxStyles();
+            updateSleepAnalysis();
+            updateBodyweightGoals();
+        }
+        
+        // ==================== LOAD/SAVE DATA ====================
+        function loadTodaysData() {
+            const today = new Date().toISOString().split('T')[0];
+            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            const todaysData = allData[today];
+            
+            if (!todaysData) {
+                todayDataSaved = false;
+                enableAllInputs();
+                return;
+            }
+            
+            todayDataSaved = true;
+            populateInputFields(todaysData);
+            disableAllInputs();
+            updateConsistencyTrackerWithSavedData(todaysData);
+            updateSleepAnalysisWithSavedData(todaysData);
+            updateBodyweightGoalsWithSavedData(todaysData);
+            populateTrainingSessions(todaysData);
+        }
+        
+        function populateInputFields(data) {
+            // Basic inputs
+            if (data.stretching !== undefined) document.getElementById('stretching').value = data.stretching;
+            if (data.steps !== undefined) document.getElementById('steps').value = data.steps;
+            if (data.sleepHours !== undefined) document.getElementById('sleepHours').value = data.sleepHours;
+            if (data.sleepMinutes !== undefined) document.getElementById('sleepMinutes').value = data.sleepMinutes;
+            if (data.water !== undefined) document.getElementById('water').value = data.water;
+            if (data.screenTime !== undefined) document.getElementById('screenTime').value = data.screenTime;
+            if (data.pages !== undefined) document.getElementById('pages').value = data.pages;
+            
+            // Sleep analysis
+            if (data.sleepQuality !== undefined) document.getElementById('sleepQuality').value = data.sleepQuality;
+            if (data.remHours !== undefined) document.getElementById('remHours').value = data.remHours;
+            if (data.remMinutes !== undefined) document.getElementById('remMinutes').value = data.remMinutes;
+            if (data.deepHours !== undefined) document.getElementById('deepHours').value = data.deepHours;
+            if (data.deepMinutes !== undefined) document.getElementById('deepMinutes').value = data.deepMinutes;
+            if (data.lightHours !== undefined) document.getElementById('lightHours').value = data.lightHours;
+            if (data.lightMinutes !== undefined) document.getElementById('lightMinutes').value = data.lightMinutes;
+            
+            // Bodyweight
+            if (data.pushUps !== undefined) document.getElementById('pushUps').value = data.pushUps;
+            if (data.pullUps !== undefined) document.getElementById('pullUps').value = data.pullUps;
+            
+            // Checkboxes
+            if (data.coldShower !== undefined) document.getElementById('coldShower').checked = data.coldShower;
+            if (data.lust !== undefined) document.getElementById('lust').checked = data.lust;
+            if (data.napped !== undefined) document.getElementById('napped').checked = data.napped;
+            if (data.healthyEating !== undefined) document.getElementById('healthyEating').checked = data.healthyEating;
+            if (data.makeBed !== undefined) document.getElementById('makeBed').checked = data.makeBed;
+            
+            // Hygiene radio buttons
+            if (data.hygiene !== undefined) {
+                const hygieneRadio = document.querySelector(`input[name="hygiene"][value="${data.hygiene}"]`);
+                if (hygieneRadio) hygieneRadio.checked = true;
+            }
+            
+            updateCheckboxStyles();
+            updateSleepAnalysis();
+            updateBodyweightGoals();
+        }
+        
+        function populateTrainingSessions(data) {
+            const container = document.getElementById('trainingSessionsContainer');
+            container.innerHTML = '';
+            trainingSessionCounter = 0;
+            
+            if (data.trainingSessions && data.trainingSessions.length > 0) {
+                data.trainingSessions.forEach(session => {
+                    trainingSessionCounter++;
+                    addTrainingSession(session.type);
+                    
+                    // Set values
+                    setTimeout(() => {
+                        const durationInput = document.getElementById(`sessionDuration-${trainingSessionCounter}`);
+                        const intensityInput = document.getElementById(`sessionIntensity-${trainingSessionCounter}`);
+                        
+                        if (durationInput) durationInput.value = session.duration || '';
+                        if (intensityInput) intensityInput.value = session.intensity || '';
+                        
+                        if (session.type === 'run' && session.distance) {
+                            const distanceInput = document.getElementById(`sessionDistance-${trainingSessionCounter}`);
+                            if (distanceInput) distanceInput.value = session.distance;
+                        }
+                    }, 50);
+                });
+            }
+        }
+        
+        function saveData() {
+            if (todayDataSaved) {
+                alert("Data already saved for today!");
+                return;
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            const data = getCurrentInputs();
+            
+            // Calculate points
+            const pointsData = calculateTodayPoints();
+            
+            // Save activity data
+            let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
+            allData[today] = data;
+            localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
+            
+            // Save points
+            let pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { 
+                total: 0, 
+                days: {} 
+            };
+            
+            // Only add points if we haven't saved for today
+            if (!pointsHistory.days[today]) {
+                pointsHistory.total = (pointsHistory.total || 0) + pointsData.total;
+                pointsHistory.days[today] = { 
+                    points: pointsData.total, 
+                    breakdown: pointsData.breakdown,
+                    date: today
+                };
+                localStorage.setItem('lifeTrackerPoints', JSON.stringify(pointsHistory));
+            }
+            
+            // Reset sick/rest
+            sickRestDays.sick.active = false;
+            sickRestDays.rest.active = false;
+            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            
+            // Update inactivity tracker
+            updateInactivityTracker(today, data);
+            
+            // Set saved flag and disable inputs
+            todayDataSaved = true;
+            disableAllInputs();
+            
+            // Clear input fields
+            clearInputFieldsAfterSave();
+            
+            // Update UI
+            updateChart();
+            updateStreakTracker();
+            updateTotalStats();
+            updatePointsDisplay();
+            updateHabitConsistency();
+            updateSickRestDisplay();
+            updateConsistencyTrackerWithSavedData(data);
+            
+            // Show success
+            const btn = document.querySelector('.save-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Data Saved Successfully!';
+            btn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 3000);
+        }
+        
+        function updateConsistencyTrackerWithSavedData(data) {
+            const tracker = document.getElementById('consistencyTracker');
             let html = '';
             
             // Regular metrics
@@ -2176,23 +2231,23 @@
                 let current, goal, isGood;
                 
                 if (key === 'training') {
-                    current = currentData.completedTrainings;
+                    current = data.completedTrainings;
                     goal = goals.training;
                     isGood = current >= goal || isPaused;
                 } else if (key === 'pushUps' || key === 'pullUps') {
-                    current = parseInt(currentData[key]) || 0;
+                    current = parseInt(data[key]) || 0;
                     goal = goals[key];
                     isGood = current >= goal || isPaused;
                 } else if (key === 'healthyEating' || key === 'makeBed') {
-                    current = currentData[key] ? 1 : 0;
+                    current = data[key] ? 1 : 0;
                     goal = goals[key];
                     isGood = current >= goal;
                 } else if (key === 'hygiene') {
-                    current = currentData[key] || 0;
+                    current = data[key] || 0;
                     goal = goals[key];
                     isGood = current >= goal;
                 } else {
-                    current = parseFloat(currentData[key]) || 0;
+                    current = parseFloat(data[key]) || 0;
                     goal = goals[key];
                     isGood = key === 'screenTime' ? current <= goal : current >= goal;
                 }
@@ -2207,11 +2262,29 @@
                 if (key === 'healthyEating') displayName = 'Healthy Eating';
                 if (key === 'makeBed') displayName = 'Make Bed';
                 
+                // Show actual values
+                let valueDisplay = '';
+                if (key === 'training') {
+                    valueDisplay = ` (${current} session${current !== 1 ? 's' : ''})`;
+                } else if (key === 'healthyEating' || key === 'makeBed') {
+                    valueDisplay = current ? ' ✓' : ' ✗';
+                } else if (key === 'hygiene') {
+                    valueDisplay = ` (${current} time${current !== 1 ? 's' : ''})`;
+                } else if (key === 'screenTime') {
+                    valueDisplay = ` (${current}h)`;
+                } else if (key === 'steps') {
+                    valueDisplay = ` (${current.toLocaleString()})`;
+                } else if (key === 'pushUps' || key === 'pullUps') {
+                    valueDisplay = ` (${current})`;
+                } else {
+                    valueDisplay = ` (${current})`;
+                }
+                
                 const pausedText = isPaused ? ' (Paused)' : '';
                 
                 html += `
                     <div class="consistency-item">
-                        <span>${displayName}${pausedText}</span>
+                        <span>${displayName}${pausedText}${valueDisplay}</span>
                         <div class="consistency-status status-${status}">${icon}</div>
                     </div>
                 `;
@@ -2220,20 +2293,129 @@
             // Cold shower
             html += `
                 <div class="consistency-item">
-                    <span>Cold Shower</span>
-                    <div class="consistency-status status-${currentData.coldShower ? 'good' : 'bad'}">${currentData.coldShower ? '✓' : '✗'}</div>
+                    <span>Cold Shower ${data.coldShower ? '✓' : '✗'}</span>
+                    <div class="consistency-status status-${data.coldShower ? 'good' : 'bad'}">${data.coldShower ? '✓' : '✗'}</div>
                 </div>
             `;
             
-            // Lust control (inverted)
+            // Lust control
             html += `
                 <div class="consistency-item">
-                    <span>Lust Control</span>
-                    <div class="consistency-status status-${currentData.lust ? 'bad' : 'good'}">${currentData.lust ? '✗' : '✓'}</div>
+                    <span>Lust Control ${data.lust ? '✗' : '✓'}</span>
+                    <div class="consistency-status status-${data.lust ? 'bad' : 'good'}">${data.lust ? '✗' : '✓'}</div>
                 </div>
             `;
             
             tracker.innerHTML = html;
+        }
+        
+        function updateSleepAnalysisWithSavedData(data) {
+            const sleepAnalysis = document.getElementById('sleepAnalysis');
+            
+            let html = '';
+            
+            // Sleep Score
+            let sleepEmoji = '😴';
+            let sleepColor = '#667eea';
+            if (data.sleepQuality >= 75) {
+                sleepEmoji = '😊';
+                sleepColor = '#48bb78';
+            } else if (data.sleepQuality >= 60) {
+                sleepEmoji = '😐';
+                sleepColor = '#f6ad55';
+            } else if (data.sleepQuality > 0) {
+                sleepEmoji = '😟';
+                sleepColor = '#f56565';
+            }
+            
+            // Format sleep time
+            let sleepTimeDisplay = '';
+            if (data.sleepHours > 0 || data.sleepMinutes > 0) {
+                if (data.sleepHours > 0 && data.sleepMinutes > 0) {
+                    sleepTimeDisplay = `${data.sleepHours}h ${data.sleepMinutes}m`;
+                } else if (data.sleepHours > 0) {
+                    sleepTimeDisplay = `${data.sleepHours}h`;
+                } else {
+                    sleepTimeDisplay = `${data.sleepMinutes}m`;
+                }
+            }
+            
+            html += `
+                <div class="sleep-score" style="color: ${sleepColor}">
+                    ${data.sleepQuality > 0 ? data.sleepQuality : '--'}/100 ${sleepEmoji}
+                </div>
+                <div style="text-align: center; color: #a0aec0; margin-bottom: 15px;">
+                    ${sleepTimeDisplay || 'No sleep data'}
+                    ${data.napped ? ' + Nap 💤' : ''}
+                </div>
+            `;
+            
+            // Sleep stages
+            const totalMinutes = data.remSleep + data.deepSleep + data.lightSleep;
+            if (totalMinutes > 0) {
+                const remPercent = Math.round((data.remSleep/totalMinutes)*100);
+                const deepPercent = Math.round((data.deepSleep/totalMinutes)*100);
+                const lightPercent = Math.round((data.lightSleep/totalMinutes)*100);
+                
+                const formatTime = (totalMinutes) => {
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+                    if (hours > 0 && minutes > 0) return `${hours}h ${minutes}m`;
+                    if (hours > 0) return `${hours}h`;
+                    return `${minutes}m`;
+                };
+                
+                html += `
+                    <div class="sleep-breakdown">
+                        <div class="sleep-metric" style="border-left: 4px solid #667eea;">
+                            <div class="sleep-metric-label">REM Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(data.remSleep)}</div>
+                            <div style="font-size: 0.7rem; color: #a0aec0;">${remPercent}%</div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #48bb78;">
+                            <div class="sleep-metric-label">Deep Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(data.deepSleep)}</div>
+                            <div style="font-size: 0.7rem; color: #a0aec0;">${deepPercent}%</div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #48bb78;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #f6ad55;">
+                            <div class="sleep-metric-label">Light Sleep</div>
+                            <div class="sleep-metric-value">${formatTime(data.lightSleep)}</div>
+                            <div style="font-size: 0.7rem; color: #a0aec0;">${lightPercent}%</div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #f6ad55;"></div>
+                            </div>
+                        </div>
+                        <div class="sleep-metric" style="border-left: 4px solid #9c27b0;">
+                            <div class="sleep-metric-label">Total Stages</div>
+                            <div class="sleep-metric-value">${formatTime(totalMinutes)}</div>
+                            <div style="font-size: 0.7rem; color: #a0aec0;">${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m</div>
+                            <div class="sleep-stage-bar">
+                                <div class="sleep-stage-fill" style="width: 100%; background: #9c27b0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (data.sleep > 0) {
+                html += `<div style="text-align: center; color: #a0aec0; padding: 20px;">Sleep stage details not recorded</div>`;
+            } else {
+                html += `<div style="text-align: center; color: #a0aec0; padding: 20px;">No sleep data recorded</div>`;
+            }
+            
+            sleepAnalysis.innerHTML = html;
+        }
+        
+        function updateBodyweightGoalsWithSavedData(data) {
+            const pushUps = data.pushUps || 0;
+            const pullUps = data.pullUps || 0;
+            
+            document.getElementById('pushUpsGoal').textContent = `${pushUps}/${goals.pushUps}`;
+            document.getElementById('pullUpsGoal').textContent = `${pullUps}/${goals.pullUps}`;
         }
         
         // ==================== SLEEP ANALYSIS ====================
@@ -2329,10 +2511,6 @@
                             </div>
                         </div>
                     </div>
-                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #4a5568; text-align: center; font-size: 0.9rem; color: #a0aec0;">
-                        <div>💡 Ideal: 1.5-2h REM, 1-1.5h Deep sleep</div>
-                        <div style="font-size: 0.8rem; color: #718096; margin-top: 3px;">(20-25% each of total sleep)</div>
-                    </div>
                 `;
             } else if (currentData.sleep > 0) {
                 html += `<div style="text-align: center; color: #a0aec0; padding: 20px;">Enter sleep stage details for breakdown</div>`;
@@ -2343,60 +2521,10 @@
             sleepAnalysis.innerHTML = html;
         }
         
-        // ==================== SAVE & LOAD DATA ====================
-        function saveData() {
-            if (todayDataSaved) return; // Don't allow saving if already saved
-            
-            const today = new Date().toISOString().split('T')[0];
-            const data = getCurrentInputs();
-            
-            let allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            allData[today] = data;
-            localStorage.setItem('lifeTrackerData', JSON.stringify(allData));
-            
-            // Save sick/rest status
-            sickRestDays.sick.active = false;
-            sickRestDays.rest.active = false;
-            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
-            
-            // Save points
-            const pointsData = calculateTodayPoints();
-            let pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0, days: {} };
-            if (!pointsHistory.days[today]) {
-                pointsHistory.total += pointsData.total;
-                pointsHistory.days[today] = { points: pointsData.total, breakdown: pointsData.breakdown };
-                localStorage.setItem('lifeTrackerPoints', JSON.stringify(pointsHistory));
-            }
-            
-            // Update inactivity tracker
-            updateInactivityTracker(today, data);
-            
-            // NEW: Set todayDataSaved flag and disable inputs
-            todayDataSaved = true;
-            disableAllInputs();
-            
-            // NEW: Clear input fields (but keep consistency displays)
-            clearInputFieldsAfterSave();
-            
-            // Success message
-            const btn = document.querySelector('.save-btn');
-            btn.textContent = '✅ Data Saved Successfully!';
-            btn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
-            
-            updateChart();
-            updateStreakTracker();
-            updateTotalStats();
-            updatePointsDisplay();
-            updateHabitConsistency();
-            updateSickRestDisplay();
-            
-            // Show saved data in consistency tracker
-            updateConsistencyTrackerWithSavedData(data);
-        }
-        
-        // NEW: Update consistency tracker with saved data
-        function updateConsistencyTrackerWithSavedData(data) {
+        // ==================== CONSISTENCY TRACKER ====================
+        function updateConsistencyTracker() {
             const tracker = document.getElementById('consistencyTracker');
+            const currentData = getCurrentInputs();
             
             let html = '';
             
@@ -2406,23 +2534,23 @@
                 let current, goal, isGood;
                 
                 if (key === 'training') {
-                    current = data.completedTrainings;
+                    current = currentData.completedTrainings;
                     goal = goals.training;
                     isGood = current >= goal || isPaused;
                 } else if (key === 'pushUps' || key === 'pullUps') {
-                    current = parseInt(data[key]) || 0;
+                    current = parseInt(currentData[key]) || 0;
                     goal = goals[key];
                     isGood = current >= goal || isPaused;
                 } else if (key === 'healthyEating' || key === 'makeBed') {
-                    current = data[key] ? 1 : 0;
+                    current = currentData[key] ? 1 : 0;
                     goal = goals[key];
                     isGood = current >= goal;
                 } else if (key === 'hygiene') {
-                    current = data[key] || 0;
+                    current = currentData[key] || 0;
                     goal = goals[key];
                     isGood = current >= goal;
                 } else {
-                    current = parseFloat(data[key]) || 0;
+                    current = parseFloat(currentData[key]) || 0;
                     goal = goals[key];
                     isGood = key === 'screenTime' ? current <= goal : current >= goal;
                 }
@@ -2437,29 +2565,11 @@
                 if (key === 'healthyEating') displayName = 'Healthy Eating';
                 if (key === 'makeBed') displayName = 'Make Bed';
                 
-                // Show the actual values saved
-                let valueDisplay = '';
-                if (key === 'training') {
-                    valueDisplay = ` (${current} session${current !== 1 ? 's' : ''})`;
-                } else if (key === 'healthyEating' || key === 'makeBed') {
-                    valueDisplay = current ? ' ✓' : ' ✗';
-                } else if (key === 'hygiene') {
-                    valueDisplay = ` (${current} time${current !== 1 ? 's' : ''})`;
-                } else if (key === 'screenTime') {
-                    valueDisplay = ` (${current}h)`;
-                } else if (key === 'steps') {
-                    valueDisplay = ` (${current.toLocaleString()})`;
-                } else if (key === 'pushUps' || key === 'pullUps') {
-                    valueDisplay = ` (${current})`;
-                } else {
-                    valueDisplay = ` (${current})`;
-                }
-                
                 const pausedText = isPaused ? ' (Paused)' : '';
                 
                 html += `
                     <div class="consistency-item">
-                        <span>${displayName}${pausedText}${valueDisplay}</span>
+                        <span>${displayName}${pausedText}</span>
                         <div class="consistency-status status-${status}">${icon}</div>
                     </div>
                 `;
@@ -2468,164 +2578,25 @@
             // Cold shower
             html += `
                 <div class="consistency-item">
-                    <span>Cold Shower ${data.coldShower ? '✓' : '✗'}</span>
-                    <div class="consistency-status status-${data.coldShower ? 'good' : 'bad'}">${data.coldShower ? '✓' : '✗'}</div>
+                    <span>Cold Shower</span>
+                    <div class="consistency-status status-${currentData.coldShower ? 'good' : 'bad'}">${currentData.coldShower ? '✓' : '✗'}</div>
                 </div>
             `;
             
-            // Lust control (inverted)
+            // Lust control
             html += `
                 <div class="consistency-item">
-                    <span>Lust Control ${data.lust ? '✗' : '✓'}</span>
-                    <div class="consistency-status status-${data.lust ? 'bad' : 'good'}">${data.lust ? '✗' : '✓'}</div>
+                    <span>Lust Control</span>
+                    <div class="consistency-status status-${currentData.lust ? 'bad' : 'good'}">${currentData.lust ? '✗' : '✓'}</div>
                 </div>
             `;
             
             tracker.innerHTML = html;
         }
         
-        function loadTodaysData() {
-            const today = new Date().toISOString().split('T')[0];
-            const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const todaysData = allData[today];
-            
-            if (!todaysData) return;
-            
-            // Set todayDataSaved flag
-            todayDataSaved = true;
-            disableAllInputs();
-            
-            // Update consistency tracker with saved data
-            updateConsistencyTrackerWithSavedData(todaysData);
-            
-            // Update sleep analysis with saved data
-            updateSleepAnalysisWithSavedData(todaysData);
-            
-            // Update bodyweight goals with saved data
-            updateBodyweightGoalsWithSavedData(todaysData);
-        }
-        
-        // NEW: Update sleep analysis with saved data
-        function updateSleepAnalysisWithSavedData(data) {
-            const sleepAnalysis = document.getElementById('sleepAnalysis');
-            
-            let html = '';
-            
-            // Sleep Score
-            let sleepEmoji = '😴';
-            let sleepColor = '#667eea';
-            if (data.sleepQuality >= 75) {
-                sleepEmoji = '😊';
-                sleepColor = '#48bb78';
-            } else if (data.sleepQuality >= 60) {
-                sleepEmoji = '😐';
-                sleepColor = '#f6ad55';
-            } else if (data.sleepQuality > 0) {
-                sleepEmoji = '😟';
-                sleepColor = '#f56565';
-            }
-            
-            // Format sleep time
-            let sleepTimeDisplay = '';
-            if (data.sleepHours > 0 || data.sleepMinutes > 0) {
-                if (data.sleepHours > 0 && data.sleepMinutes > 0) {
-                    sleepTimeDisplay = `${data.sleepHours}h ${data.sleepMinutes}m`;
-                } else if (data.sleepHours > 0) {
-                    sleepTimeDisplay = `${data.sleepHours}h`;
-                } else {
-                    sleepTimeDisplay = `${data.sleepMinutes}m`;
-                }
-            }
-            
-            html += `
-                <div class="sleep-score" style="color: ${sleepColor}">
-                    ${data.sleepQuality > 0 ? data.sleepQuality : '--'}/100 ${sleepEmoji}
-                </div>
-                <div style="text-align: center; color: #a0aec0; margin-bottom: 15px;">
-                    ${sleepTimeDisplay || 'No sleep data'}
-                    ${data.napped ? ' + Nap 💤' : ''}
-                </div>
-            `;
-            
-            // Sleep stages
-            const totalMinutes = data.remSleep + data.deepSleep + data.lightSleep;
-            if (totalMinutes > 0) {
-                const remPercent = Math.round((data.remSleep/totalMinutes)*100);
-                const deepPercent = Math.round((data.deepSleep/totalMinutes)*100);
-                const lightPercent = Math.round((data.lightSleep/totalMinutes)*100);
-                
-                const formatTime = (totalMinutes) => {
-                    const hours = Math.floor(totalMinutes / 60);
-                    const minutes = totalMinutes % 60;
-                    if (hours > 0 && minutes > 0) return `${hours}h ${minutes}m`;
-                    if (hours > 0) return `${hours}h`;
-                    return `${minutes}m`;
-                };
-                
-                html += `
-                    <div class="sleep-breakdown">
-                        <div class="sleep-metric" style="border-left: 4px solid #667eea;">
-                            <div class="sleep-metric-label">REM Sleep</div>
-                            <div class="sleep-metric-value">${formatTime(data.remSleep)}</div>
-                            <div style="font-size: 0.7rem; color: #a0aec0;">${remPercent}%</div>
-                            <div class="sleep-stage-bar">
-                                <div class="sleep-stage-fill" style="width: ${remPercent}%; background: #667eea;"></div>
-                            </div>
-                        </div>
-                        <div class="sleep-metric" style="border-left: 4px solid #48bb78;">
-                            <div class="sleep-metric-label">Deep Sleep</div>
-                            <div class="sleep-metric-value">${formatTime(data.deepSleep)}</div>
-                            <div style="font-size: 0.7rem; color: #a0aec0;">${deepPercent}%</div>
-                            <div class="sleep-stage-bar">
-                                <div class="sleep-stage-fill" style="width: ${deepPercent}%; background: #48bb78;"></div>
-                            </div>
-                        </div>
-                        <div class="sleep-metric" style="border-left: 4px solid #f6ad55;">
-                            <div class="sleep-metric-label">Light Sleep</div>
-                            <div class="sleep-metric-value">${formatTime(data.lightSleep)}</div>
-                            <div style="font-size: 0.7rem; color: #a0aec0;">${lightPercent}%</div>
-                            <div class="sleep-stage-bar">
-                                <div class="sleep-stage-fill" style="width: ${lightPercent}%; background: #f6ad55;"></div>
-                            </div>
-                        </div>
-                        <div class="sleep-metric" style="border-left: 4px solid #9c27b0;">
-                            <div class="sleep-metric-label">Total Stages</div>
-                            <div class="sleep-metric-value">${formatTime(totalMinutes)}</div>
-                            <div style="font-size: 0.7rem; color: #a0aec0;">${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m</div>
-                            <div class="sleep-stage-bar">
-                                <div class="sleep-stage-fill" style="width: 100%; background: #9c27b0;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #4a5568; text-align: center; font-size: 0.9rem; color: #a0aec0;">
-                        <div>💡 Ideal: 1.5-2h REM, 1-1.5h Deep sleep</div>
-                        <div style="font-size: 0.8rem; color: #718096; margin-top: 3px;">(20-25% each of total sleep)</div>
-                    </div>
-                `;
-            } else if (data.sleep > 0) {
-                html += `<div style="text-align: center; color: #a0aec0; padding: 20px;">Sleep stage details not recorded</div>`;
-            } else {
-                html += `<div style="text-align: center; color: #a0aec0; padding: 20px;">No sleep data recorded</div>`;
-            }
-            
-            sleepAnalysis.innerHTML = html;
-        }
-        
-        // NEW: Update bodyweight goals with saved data
-        function updateBodyweightGoalsWithSavedData(data) {
-            const pushUps = data.pushUps || 0;
-            const pullUps = data.pullUps || 0;
-            
-            document.getElementById('pushUpsGoal').textContent = `${pushUps}/${goals.pushUps}`;
-            document.getElementById('pullUpsGoal').textContent = `${pullUps}/${goals.pullUps}`;
-        }
-        
         // ==================== INACTIVITY TRACKER ====================
         function updateInactivityTracker(today, data) {
             const allData = JSON.parse(localStorage.getItem('lifeTrackerData')) || {};
-            const dates = Object.keys(allData).sort();
-            
-            // Add new goals to inactivity tracker
             const allGoals = { ...goals, coldShower: true, lustControl: true };
             
             Object.keys(allGoals).forEach(goalKey => {
@@ -2650,12 +2621,8 @@
         function isGoalMetForDay(data, goalKey) {
             if (goalKey === 'coldShower') return data.coldShower === true;
             if (goalKey === 'lustControl') return data.lust !== true;
-            if (goalKey === 'training') {
-                return data.completedTrainings >= goals.training;
-            }
-            if (goalKey === 'healthyEating' || goalKey === 'makeBed') {
-                return data[goalKey] === true;
-            }
+            if (goalKey === 'training') return data.completedTrainings >= goals.training;
+            if (goalKey === 'healthyEating' || goalKey === 'makeBed') return data[goalKey] === true;
             if (goalKey === 'hygiene') {
                 const value = data[goalKey] || 0;
                 return value >= goals[goalKey];
@@ -2681,7 +2648,7 @@
             let totalPoints = 0;
             let pointsBreakdown = [];
             let completedGoals = 0;
-            const totalGoals = Object.keys(goals).length + 2; // +2 for cold shower and lust control
+            const totalGoals = Object.keys(goals).length + 2;
             
             // Calculate points for each goal
             Object.keys(goals).forEach(goalKey => {
@@ -2713,19 +2680,16 @@
                         let bonusPoints = 0;
                         currentData.trainingSessions.forEach((session, index) => {
                             if (session.completed) {
-                                // Duration bonus
                                 if (session.duration > 75) {
                                     bonusPoints += pointsConfig.durationBonus;
                                     description += ` +${pointsConfig.durationBonus}dur`;
                                 }
                                 
-                                // Intensity bonus
                                 if (session.intensity > 6) {
                                     bonusPoints += pointsConfig.intensityBonus;
                                     description += ` +${pointsConfig.intensityBonus}int`;
                                 }
                                 
-                                // Extra training bonus
                                 if (index > 0) {
                                     bonusPoints += pointsConfig.extraTrainingBonus;
                                     description += ` +${pointsConfig.extraTrainingBonus}extra`;
@@ -2970,49 +2934,101 @@
         }
         
         function updatePointsDisplay() {
-            if (todayDataSaved) {
-                // Don't show points breakdown if data is already saved
-                document.getElementById('pointsBreakdown').innerHTML = 
-                    `<div style="text-align: center; color: #a0aec0; padding: 10px;">Data saved for today. Points calculated and added to total.</div>`;
-                return;
-            }
-            
-            const pointsData = calculateTodayPoints();
             const lifetimePoints = calculateLifetimePoints();
             
+            // Update total points
             document.getElementById('totalPoints').textContent = lifetimePoints.total;
-            document.getElementById('todayPoints').textContent = `Today: ${pointsData.total} points`;
             
-            let html = '';
-            if (pointsData.breakdown.length > 0) {
-                pointsData.breakdown.forEach(item => {
-                    const pointsClass = item.isNegative ? 'points-negative' : 'points-value';
-                    const pointsDisplay = item.points > 0 ? `+${item.points}` : item.points;
-                    
-                    html += `
-                        <div class="points-item">
-                            <div class="points-activity">
-                                <span class="points-emoji">${item.emoji}</span>
-                                <span>${item.description}</span>
+            // Calculate today's points
+            if (!todayDataSaved) {
+                const pointsData = calculateTodayPoints();
+                document.getElementById('todayPoints').textContent = `Today: ${pointsData.total} points`;
+                
+                let html = '';
+                if (pointsData.breakdown.length > 0) {
+                    pointsData.breakdown.forEach(item => {
+                        const pointsClass = item.isNegative ? 'points-negative' : 'points-value';
+                        const pointsDisplay = item.points > 0 ? `+${item.points}` : item.points;
+                        
+                        html += `
+                            <div class="points-item">
+                                <div class="points-activity">
+                                    <span class="points-emoji">${item.emoji}</span>
+                                    <span>${item.description}</span>
+                                </div>
+                                <div>
+                                    <span class="${pointsClass}">${pointsDisplay}</span>
+                                    ${item.multiplier ? `<span class="points-multiplier">${item.multiplier}</span>` : ''}
+                                </div>
                             </div>
-                            <div>
-                                <span class="${pointsClass}">${pointsDisplay}</span>
-                                ${item.multiplier ? `<span class="points-multiplier">${item.multiplier}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
+                        `;
+                    });
+                } else {
+                    html = `<div style="text-align: center; color: #a0aec0; padding: 10px;">Complete goals to earn points!</div>`;
+                }
+                
+                document.getElementById('pointsBreakdown').innerHTML = html;
             } else {
-                html = `<div style="text-align: center; color: #a0aec0; padding: 10px;">Complete goals to earn points!</div>`;
+                // Show saved points for today
+                const today = new Date().toISOString().split('T')[0];
+                const pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { days: {} };
+                const todayPoints = pointsHistory.days[today];
+                
+                if (todayPoints) {
+                    document.getElementById('todayPoints').textContent = `Today: ${todayPoints.points} points`;
+                    
+                    let html = '';
+                    todayPoints.breakdown.forEach(item => {
+                        const pointsClass = item.isNegative ? 'points-negative' : 'points-value';
+                        const pointsDisplay = item.points > 0 ? `+${item.points}` : item.points;
+                        
+                        html += `
+                            <div class="points-item">
+                                <div class="points-activity">
+                                    <span class="points-emoji">${item.emoji}</span>
+                                    <span>${item.description}</span>
+                                </div>
+                                <div>
+                                    <span class="${pointsClass}">${pointsDisplay}</span>
+                                    ${item.multiplier ? `<span class="points-multiplier">${item.multiplier}</span>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    document.getElementById('pointsBreakdown').innerHTML = html;
+                } else {
+                    document.getElementById('todayPoints').textContent = 'Today: 0 points';
+                    document.getElementById('pointsBreakdown').innerHTML = 
+                        `<div style="text-align: center; color: #a0aec0; padding: 10px;">No points data for today</div>`;
+                }
             }
             
-            document.getElementById('pointsBreakdown').innerHTML = html;
             updateLevelProgress(lifetimePoints.total);
         }
         
         function calculateLifetimePoints() {
-            const storedPoints = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0 };
-            return { total: storedPoints.total };
+            const storedPoints = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { 
+                total: 0, 
+                days: {} 
+            };
+            
+            // Calculate total from all days to ensure accuracy
+            let calculatedTotal = 0;
+            Object.values(storedPoints.days).forEach(day => {
+                calculatedTotal += day.points || 0;
+            });
+            
+            // Update if mismatch
+            if (storedPoints.total !== calculatedTotal) {
+                storedPoints.total = calculatedTotal;
+                localStorage.setItem('lifeTrackerPoints', JSON.stringify(storedPoints));
+            }
+            
+            return { 
+                total: storedPoints.total,
+                days: storedPoints.days 
+            };
         }
         
         function updateLevelProgress(totalPoints) {
@@ -3046,7 +3062,6 @@
             if (dates.length === 0) return streaks;
             
             const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
             
             function goalMet(date, goalKey) {
                 const dayData = allData[date];
@@ -3054,12 +3069,8 @@
                 
                 if (goalKey === 'coldShower') return dayData.coldShower === true;
                 if (goalKey === 'lustControl') return dayData.lust !== true;
-                if (goalKey === 'training') {
-                    return dayData.completedTrainings >= goals.training;
-                }
-                if (goalKey === 'healthyEating' || goalKey === 'makeBed') {
-                    return dayData[goalKey] === true;
-                }
+                if (goalKey === 'training') return dayData.completedTrainings >= goals.training;
+                if (goalKey === 'healthyEating' || goalKey === 'makeBed') return dayData[goalKey] === true;
                 if (goalKey === 'hygiene') {
                     const value = dayData[goalKey] || 0;
                     return value >= goals[goalKey];
@@ -3100,7 +3111,6 @@
         
         function calculateStreaksWithPause(dates, allData) {
             const streaks = calculateStreaks(dates, allData);
-            const today = new Date().toISOString().split('T')[0];
             
             if (sickRestDays.sick.active) {
                 streaks.steps = Math.max(streaks.steps, 1);
@@ -3187,7 +3197,6 @@
                 consistency[goalKey] = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
             });
             
-            // Overall consistency
             const values = Object.values(consistency);
             const overall = values.length > 0 ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : 0;
             
@@ -3261,7 +3270,6 @@
                 totals.hygieneScore += parseInt(dayData.hygiene) || 0;
                 totals.totalTrainings += dayData.totalTrainings || 0;
                 
-                // Count training sessions by type
                 if (dayData.trainingSessions) {
                     dayData.trainingSessions.forEach(session => {
                         if (session.type === 'gym') totals.gymSessions++;
@@ -3305,20 +3313,6 @@
         }
         
         // ==================== CHART FUNCTIONS ====================
-        function showChart(type) {
-            currentView = type;
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateChart();
-        }
-        
-        function changePeriod(period) {
-            currentPeriod = period;
-            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateChart();
-        }
-        
         function initializeChart() {
             const ctx = document.getElementById('mainChart').getContext('2d');
             currentChart = new Chart(ctx, {
@@ -3330,33 +3324,37 @@
                     scales: { 
                         y: { 
                             beginAtZero: true,
-                            grid: {
-                                color: '#4a5568'
-                            },
-                            ticks: {
-                                color: '#cbd5e0'
-                            }
+                            grid: { color: '#4a5568' },
+                            ticks: { color: '#cbd5e0' }
                         },
                         x: {
-                            grid: {
-                                color: '#4a5568'
-                            },
-                            ticks: {
-                                color: '#cbd5e0'
-                            }
+                            grid: { color: '#4a5568' },
+                            ticks: { color: '#cbd5e0' }
                         }
                     },
                     plugins: { 
                         legend: { 
                             display: true, 
                             position: 'top',
-                            labels: {
-                                color: '#e2e8f0'
-                            }
+                            labels: { color: '#e2e8f0' }
                         } 
                     }
                 }
             });
+            updateChart();
+        }
+        
+        function showChart(type) {
+            currentView = type;
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateChart();
+        }
+        
+        function changePeriod(period) {
+            currentPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
             updateChart();
         }
         
@@ -3507,64 +3505,86 @@
         }
         
         function hardReset() {
-            localStorage.removeItem('lifeTrackerData');
-            localStorage.removeItem('sickRestDays');
-            localStorage.removeItem('inactivityTracker');
-            localStorage.removeItem('lifeTrackerPoints');
+            if (confirm("Are you sure you want to delete ALL data? This cannot be undone!")) {
+                localStorage.removeItem('lifeTrackerData');
+                localStorage.removeItem('sickRestDays');
+                localStorage.removeItem('inactivityTracker');
+                localStorage.removeItem('lifeTrackerPoints');
+                
+                // Reset state
+                todayDataSaved = false;
+                trainingSessionCounter = 0;
+                sickRestDays = { sick: { active: false, history: [] }, rest: { active: false, history: [] } };
+                inactivityTracker = {};
+                
+                // Enable inputs
+                enableAllInputs();
+                
+                // Clear all inputs
+                document.querySelectorAll('input, select').forEach(el => {
+                    if (el.type === 'checkbox' || el.type === 'radio') {
+                        el.checked = false;
+                    } else if (el.type !== 'button') {
+                        el.value = '';
+                    }
+                });
+                
+                // Clear training sessions
+                const container = document.getElementById('trainingSessionsContainer');
+                container.innerHTML = '';
+                addTrainingSession();
+                
+                // Update UI
+                updateCheckboxStyles();
+                updateConsistencyTracker();
+                updateSleepAnalysis();
+                updateBodyweightGoals();
+                updateStreakTracker();
+                updateTotalStats();
+                updateSickRestDisplay();
+                updatePointsDisplay();
+                updateHabitConsistency();
+                updateChart();
+                
+                hideResetConfirm();
+                
+                // Show success message
+                const resetBtn = document.querySelector('.reset-btn');
+                resetBtn.textContent = '✅ All Data Cleared!';
+                resetBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                setTimeout(() => {
+                    resetBtn.textContent = '🗑️ Hard Reset All Data';
+                    resetBtn.style.background = 'linear-gradient(135deg, #f56565, #c53030)';
+                }, 3000);
+            }
+        }
+        
+        // ==================== DEBUG FUNCTIONS ====================
+        function checkPointsIntegrity() {
+            const pointsHistory = JSON.parse(localStorage.getItem('lifeTrackerPoints')) || { total: 0, days: {} };
+            let calculatedTotal = 0;
             
-            // Enable all inputs
-            todayDataSaved = false;
-            enableAllInputs();
-            
-            // Clear all inputs
-            document.querySelectorAll('input, select').forEach(el => {
-                if (el.type === 'checkbox' || el.type === 'radio') {
-                    el.checked = false;
-                } else {
-                    el.value = '';
-                }
+            Object.values(pointsHistory.days).forEach(day => {
+                calculatedTotal += day.points || 0;
             });
             
-            // Clear training sessions
-            const container = document.getElementById('trainingSessionsContainer');
-            container.innerHTML = '';
-            trainingSessionCounter = 0;
-            addTrainingSession();
+            console.log("Stored total:", pointsHistory.total);
+            console.log("Calculated total:", calculatedTotal);
+            console.log("Days recorded:", Object.keys(pointsHistory.days).length);
             
-            // Reset sick/rest
-            sickRestDays = { sick: { active: false, history: [] }, rest: { active: false, history: [] } };
-            localStorage.setItem('sickRestDays', JSON.stringify(sickRestDays));
+            if (pointsHistory.total !== calculatedTotal) {
+                console.log("Points mismatch! Fixing...");
+                pointsHistory.total = calculatedTotal;
+                localStorage.setItem('lifeTrackerPoints', JSON.stringify(pointsHistory));
+                updatePointsDisplay();
+            }
             
-            // Reset inactivity tracker
-            inactivityTracker = {};
-            localStorage.setItem('inactivityTracker', JSON.stringify(inactivityTracker));
-            
-            hideResetConfirm();
-            
-            // Update UI
-            updateCheckboxStyles();
-            updateConsistencyTracker();
-            updateSleepAnalysis();
-            updateBodyweightGoals();
-            updateStreakTracker();
-            updateTotalStats();
-            updateSickRestDisplay();
-            updatePointsDisplay();
-            updateHabitConsistency();
-            updateChart();
-            
-            // Success message
-            const resetBtn = document.querySelector('.reset-btn');
-            resetBtn.textContent = '✅ All Data Cleared!';
-            resetBtn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
-            setTimeout(() => {
-                resetBtn.textContent = '🗑️ Hard Reset All Data';
-                resetBtn.style.background = 'linear-gradient(135deg, #f56565, #c53030)';
-            }, 3000);
+            return pointsHistory.total;
         }
     </script>
 </body>
 </html>
+
 
 
 
